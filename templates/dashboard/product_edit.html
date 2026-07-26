@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% load crispy_forms_tags %}
+
+
+
+{% block title %}
+
+Edit Product
+
+{% endblock %}
+
+
+
+
+{% block content %}
+
+
+<div class="container mt-5">
+
+
+<div class="card shadow">
+
+
+<div class="card-header">
+
+<h4>
+Edit {{ product.name }}
+</h4>
+
+</div>
+
+
+
+<div class="card-body">
+
+
+<form method="POST">
+
+
+{% csrf_token %}
+
+
+{{ form|crispy }}
+
+
+
+<button 
+class="btn btn-primary">
+
+Update Product
+
+</button>
+
+
+<a 
+href="{% url 'product_list' %}"
+class="btn btn-secondary">
+
+Cancel
+
+</a>
+
+
+</form>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+{% endblock %}

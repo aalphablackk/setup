@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+
+
+{% block content %}
+
+
+<div class="container mt-5">
+
+
+<div class="card shadow">
+
+
+<div class="card-body text-center">
+
+
+<h4>
+Delete {{ product.name }}?
+</h4>
+
+
+<p>
+This action cannot be undone.
+</p>
+
+
+
+<form method="POST">
+
+
+{% csrf_token %}
+
+
+<button class="btn btn-danger">
+
+Yes, Delete
+
+</button>
+
+
+
+<a 
+href="{% url 'product_list' %}"
+class="btn btn-secondary">
+
+Cancel
+
+</a>
+
+
+
+</form>
+
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,377 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+    <head>
+        
+        <meta charset="UTF-8">
+        
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        
+    <title>
+        {% block title %}
+        Alphix Store
+        {% endblock %}
+    </title>
+    
+    
+    
+    <!-- Bootstrap CSS -->
+    
+    <link 
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    rel="stylesheet">
+    
+    
+    
+    <!-- Bootstrap Icons -->
+
+    <link 
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    
+    
+
+    <!-- Custom CSS -->
+    
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+
+</head>
+
+
+
+<body class="d-flex flex-column min-vh-100">
+
+
+<!-- NAVBAR -->
+
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+
+
+    <div class="container">
+
+
+        <a class="navbar-brand fw-bold" href="{% url 'home' %}">
+
+            <i class="bi bi-shop"></i>
+
+            Alphix Store
+
+        </a>
+
+
+
+        <button 
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarNav">
+
+
+            <span class="navbar-toggler-icon"></span>
+
+
+        </button>
+
+
+
+
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+
+
+            <ul class="navbar-nav ms-auto align-items-center">
+
+
+                <li class="nav-item">
+
+                    <a class="nav-link" href="{% url 'home' %}">
+                        Home
+                    </a>
+
+                </li>
+
+
+
+                <li class="nav-item">
+
+                    <a class="nav-link" href="{% url 'all_products' %}">
+                        Products
+                    </a>
+
+                </li>
+
+                <li class="nav-item">
+
+                <a class="nav-link" href="{% url 'dashboard_home' %}">
+
+                Dashboard
+
+                </a>
+
+                </li>
+
+
+
+                <li class="nav-item">
+
+                    <a class="nav-link" href="#">
+                        About
+                    </a>
+
+                </li>
+
+
+
+                <li class="nav-item">
+
+                    <a class="nav-link" href="#">
+                        Contact
+                    </a>
+
+                </li>
+
+
+
+
+                <li class="nav-item ms-lg-3">
+
+                    <a class="btn btn-primary" href="#">
+
+                        <i class="bi bi-cart"></i>
+
+                        Cart
+
+                        <span class="badge bg-danger">
+                            0
+                        </span>
+
+                    </a>
+
+                </li>
+
+
+
+
+                <li class="nav-item dropdown ms-lg-3">
+
+
+                    <a 
+                    class="nav-link dropdown-toggle"
+                    href="#"
+                    data-bs-toggle="dropdown">
+
+
+                        <i class="bi bi-person-circle"></i>
+
+                        Account
+
+
+                    </a>
+
+
+
+                    <ul class="dropdown-menu dropdown-menu-end">
+
+
+                        <li>
+
+                            <a class="dropdown-item" href="#">
+                                Sign In
+                            </a>
+
+                        </li>
+
+
+
+                        <li>
+
+                            <a class="dropdown-item" href="#">
+                                Sign Up
+                            </a>
+
+                        </li>
+
+
+                    </ul>
+
+
+
+                </li>
+
+
+
+            </ul>
+
+
+        </div>
+
+
+    </div>
+
+
+</nav>
+
+
+
+
+
+
+<!-- MAIN CONTENT -->
+
+
+<main class="flex-grow-1">
+
+
+    {% block content %}
+
+    {% endblock %}
+
+
+</main>
+
+
+
+
+
+
+<!-- FOOTER -->
+
+
+<footer class="bg-dark text-light py-5 mt-auto">
+
+
+    <div class="container">
+
+
+        <div class="row">
+
+
+            <div class="col-md-4">
+
+
+                <h5>
+                    Alphix Store
+                </h5>
+
+
+                <p>
+                    Quality products delivered with trust.
+                </p>
+
+
+            </div>
+
+
+
+
+
+            <div class="col-md-4">
+
+
+                <h5>
+                    Quick Links
+                </h5>
+
+
+                <ul class="list-unstyled">
+
+
+                    <li>
+                        <a href="{% url 'home' %}" 
+                        class="text-light text-decoration-none">
+
+                            Home
+
+                        </a>
+                    </li>
+
+
+
+                    <li>
+                        <a href="{% url 'all_products' %}" 
+                        class="text-light text-decoration-none">
+
+                            Products
+
+                        </a>
+                    </li>
+
+
+                </ul>
+
+
+            </div>
+
+
+
+
+
+            <div class="col-md-4">
+
+
+                <h5>
+                    Support
+                </h5>
+
+
+                <p>
+                    Contact Us
+                </p>
+
+
+                <p>
+                    FAQ
+                </p>
+
+
+            </div>
+
+
+        </div>
+
+
+
+
+        <hr>
+
+
+
+        <div class="text-center">
+
+
+            <small>
+                © 2026 Alphix Store. All Rights Reserved.
+            </small>
+
+
+        </div>
+
+
+
+    </div>
+
+
+</footer>
+
+
+
+
+
+<!-- Bootstrap JS -->
+
+
+<script 
+src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+</script>
+
+
+
+</body>
+
+
+</html>

@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+
+{% block title %}
+Dashboard
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+    <div class="mb-5">
+
+        <h2 class="fw-bold">
+            Dashboard
+        </h2>
+
+        <p class="text-muted">
+            Welcome to the ALPHIX Store Management Dashboard.
+        </p>
+
+    </div>
+
+
+    <div class="row g-4">
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="card shadow-sm border-0">
+
+                <div class="card-body text-center">
+
+                    <h6 class="text-muted">
+                        Total Products
+                    </h6>
+
+                    <h2 class="fw-bold">
+                        {{ total_products }}
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="card shadow-sm border-0">
+
+                <div class="card-body text-center">
+
+                    <h6 class="text-muted">
+                        Categories
+                    </h6>
+
+                    <h2 class="fw-bold">
+                        {{total_categories}}
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="card shadow-sm border-0">
+
+                <div class="card-body text-center">
+
+                    <h6 class="text-muted">
+                        Orders
+                    </h6>
+
+                    <h2 class="fw-bold">
+                        0
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="card shadow-sm border-0">
+
+                <div class="card-body text-center">
+
+                    <h6 class="text-muted">
+                        Customers
+                    </h6>
+
+                    <h2 class="fw-bold">
+                        0
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="card mt-5 shadow-sm">
+
+        <div class="card-header">
+
+            Quick Actions
+
+        </div>
+
+        <div class="card-body">
+
+            <a href="{% url 'product_list' %}" class="btn btn-primary">
+                Manage Products
+            </a>
+
+            <a href="{% url "product_add" %}" class="btn btn-success">
+                Add Product
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,204 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+Home
+{% endblock %}
+
+
+
+{% block content %}
+
+
+<div class="container mt-5">
+
+
+    <!-- Hero Section -->
+
+    <div class="p-5 mb-5 bg-light rounded-3 shadow-sm">
+
+        <div class="container-fluid py-5">
+
+
+            <h1 class="display-5 fw-bold">
+                Welcome To Our Store
+            </h1>
+
+
+            <p class="col-md-8 fs-5">
+
+                Discover quality products at affordable prices.
+                Browse our collection and find what suits you.
+
+            </p>
+
+
+            <a href="{% url 'all_products' %}"
+               class="btn btn-primary btn-lg">
+
+                Shop Now
+
+            </a>
+
+
+        </div>
+
+    </div>
+
+
+
+
+
+
+    <!-- Featured Products -->
+
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+
+        <h2>
+            Featured Products
+        </h2>
+
+
+
+        <a href="{% url 'all_products' %}"
+           class="btn btn-outline-primary">
+
+            View More Products
+
+        </a>
+
+
+    </div>
+
+
+
+
+
+
+    <div class="row">
+
+
+
+        {% for product in products %}
+
+
+
+        <div class="col-lg-3 col-md-6 mb-4">
+
+
+            <div class="card h-100 shadow-sm">
+
+
+
+                {% for image in product.images.all %}
+
+
+                    {% if image.is_cover %}
+
+                    <img 
+                        src="{{ image.image.url }}"
+                        class="card-img-top"
+                        style="height:250px; object-fit:cover;"
+                    >
+
+                    {% endif %}
+
+
+                {% empty %}
+
+
+                    <div class="bg-secondary text-white text-center p-5">
+
+                        No Image
+
+                    </div>
+
+
+                {% endfor %}
+
+
+
+
+
+                <div class="card-body d-flex flex-column">
+
+
+                    <h5 class="card-title">
+
+                        {{ product.name }}
+
+                    </h5>
+
+
+
+                    <p class="text-muted">
+
+                        {{ product.brand.name }}
+
+                    </p>
+
+
+
+
+                    <h5 class="text-primary">
+
+                        ${{ product.price }}
+
+                    </h5>
+
+
+
+                    <p>
+
+                        {{ product.description|truncatewords:15 }}
+
+                    </p>
+
+
+
+                    <a 
+                    href="{% url 'product_detail' product.id %}"
+                    class="btn btn-dark mt-auto">
+
+                        View Product
+
+                    </a>
+
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+
+        {% empty %}
+
+
+
+        <div class="alert alert-info">
+
+            No products available.
+
+        </div>
+
+
+
+        {% endfor %}
+
+
+
+    </div>
+
+
+
+
+</div>
+
+
+{% endblock %}

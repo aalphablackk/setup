@@ -1,0 +1,334 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+{{ product.name }}
+{% endblock %}
+
+
+
+
+{% block content %}
+
+
+<div class="container mt-5">
+
+
+<div class="row">
+
+
+<!-- IMAGE SECTION -->
+
+<div class="col-md-6">
+
+
+<div id="productCarousel" class="carousel slide shadow">
+
+
+<div class="carousel-inner">
+
+
+{% for image in product.images.all %}
+
+
+<div class="carousel-item 
+{% if image.is_cover %}active{% endif %}">
+
+
+<img 
+src="{{ image.image.url }}"
+class="d-block w-100 rounded"
+style="
+height:500px;
+object-fit:cover;
+"
+>
+
+
+</div>
+
+
+{% endfor %}
+
+
+</div>
+
+
+
+
+<button 
+class="carousel-control-prev"
+type="button"
+data-bs-target="#productCarousel"
+data-bs-slide="prev">
+
+
+<span class="carousel-control-prev-icon"></span>
+
+
+</button>
+
+
+
+<button 
+class="carousel-control-next"
+type="button"
+data-bs-target="#productCarousel"
+data-bs-slide="next">
+
+
+<span class="carousel-control-next-icon"></span>
+
+
+</button>
+
+
+
+</div>
+
+
+
+
+
+<!-- THUMBNAILS -->
+
+
+<div class="row mt-3">
+
+
+{% for image in product.images.all %}
+
+
+<div class="col-3">
+
+
+<img 
+src="{{ image.image.url }}"
+class="img-thumbnail"
+style="
+height:100px;
+width:100%;
+object-fit:cover;
+cursor:pointer;
+"
+>
+
+
+</div>
+
+
+{% endfor %}
+
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+<!-- PRODUCT INFORMATION -->
+
+<div class="col-md-6">
+
+
+<h1>
+
+{{ product.name }}
+
+</h1>
+
+
+
+<p class="text-muted">
+
+Brand:
+{{ product.brand.name }}
+
+</p>
+
+
+
+<p class="text-muted">
+
+Category:
+{{ product.brand.category.name }}
+
+</p>
+
+
+
+<h3 class="text-primary">
+
+${{ product.price }}
+
+</h3>
+
+
+
+<p>
+
+{{ product.description }}
+
+</p>
+
+
+
+
+{% if product.is_in_stock %}
+
+
+<span class="badge bg-success">
+
+Available
+
+</span>
+
+
+{% else %}
+
+
+<span class="badge bg-danger">
+
+Out Of Stock
+
+</span>
+
+
+{% endif %}
+
+
+
+
+
+<br><br>
+
+
+
+<button class="btn btn-dark btn-lg">
+
+Add To Cart
+
+</button>
+
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+<hr class="my-5">
+
+
+
+
+
+<!-- SPECIFICATIONS -->
+
+
+<h3>
+
+Product Specifications
+
+</h3>
+
+
+
+<table class="table table-bordered">
+
+
+<thead class="table-dark">
+
+
+<tr>
+
+<th>
+Feature
+</th>
+
+
+<th>
+Value
+</th>
+
+
+</tr>
+
+
+</thead>
+
+
+
+
+<tbody>
+
+
+{% for specification in product.specifications.all %}
+
+
+<tr>
+
+<td>
+
+{{ specification.key }}
+
+</td>
+
+
+<td>
+
+{{ specification.value }}
+
+</td>
+
+
+</tr>
+
+
+
+{% empty %}
+
+
+<tr>
+
+<td colspan="2">
+
+No specifications available.
+
+</td>
+
+
+</tr>
+
+
+
+{% endfor %}
+
+
+
+</tbody>
+
+
+</table>
+
+
+
+</div>
+
+
+
+{% endblock %}
