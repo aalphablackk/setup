@@ -1,61 +1,68 @@
-
 <!DOCTYPE html>
 <html lang="en">
-    
-    <head>
-        
-        <meta charset="UTF-8">
-        
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
     <title>
+
         {% block title %}
-        Alphix Store
+            Alphix Store
         {% endblock %}
+
     </title>
-    
-    
-    
+
+
     <!-- Bootstrap CSS -->
-    
-    <link 
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-    rel="stylesheet">
-    
-    
-    
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+
     <!-- Bootstrap Icons -->
 
-    <link 
-    rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    
-    
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    >
+
 
     <!-- Custom CSS -->
-    
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 
+    {% load static %}
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/style.css' %}"
+    >
 
 </head>
-
 
 
 <body class="d-flex flex-column min-vh-100">
 
 
-<!-- NAVBAR -->
-
+<!-- ================= NAVBAR ================= -->
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
-
 
     <div class="container">
 
 
-        <a class="navbar-brand fw-bold" href="{% url 'home' %}">
+        <!-- BRAND -->
+
+        <a
+            class="navbar-brand fw-bold"
+            href="{% url 'home' %}"
+        >
 
             <i class="bi bi-shop"></i>
 
@@ -65,31 +72,39 @@
 
 
 
-        <button 
-        class="navbar-toggler"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#navbarNav">
+        <!-- MOBILE TOGGLE -->
 
+        <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav"
+        >
 
             <span class="navbar-toggler-icon"></span>
-
 
         </button>
 
 
 
+        <!-- NAVIGATION -->
 
-
-        <div class="collapse navbar-collapse" id="navbarNav">
-
+        <div
+            class="collapse navbar-collapse"
+            id="navbarNav"
+        >
 
             <ul class="navbar-nav ms-auto align-items-center">
 
 
+                <!-- HOME -->
+
                 <li class="nav-item">
 
-                    <a class="nav-link" href="{% url 'home' %}">
+                    <a
+                        class="nav-link"
+                        href="{% url 'home' %}"
+                    >
                         Home
                     </a>
 
@@ -97,29 +112,57 @@
 
 
 
+                <!-- PRODUCTS -->
+
                 <li class="nav-item">
 
-                    <a class="nav-link" href="{% url 'all_products' %}">
+                    <a
+                        class="nav-link"
+                        href="{% url 'all_products' %}"
+                    >
                         Products
                     </a>
 
                 </li>
 
+
+
+
+                <!-- DASHBOARD -->
+
+                {% if user.is_authenticated %}
+
+                    {% if user.is_staff %}
+
+                        <li class="nav-item">
+
+                            <a
+                                class="nav-link"
+                                href="{% url 'dashboard_home' %}"
+                            >
+
+
+
+                                Dashboard
+
+                            </a>
+
+                        </li>
+
+                    {% endif %}
+
+                {% endif %}
+
+
+
+                <!-- ABOUT -->
+
                 <li class="nav-item">
 
-                <a class="nav-link" href="{% url 'dashboard_home' %}">
-
-                Dashboard
-
-                </a>
-
-                </li>
-
-
-
-                <li class="nav-item">
-
-                    <a class="nav-link" href="#">
+                    <a
+                        class="nav-link"
+                        href="#"
+                    >
                         About
                     </a>
 
@@ -127,9 +170,14 @@
 
 
 
+                <!-- CONTACT -->
+
                 <li class="nav-item">
 
-                    <a class="nav-link" href="#">
+                    <a
+                        class="nav-link"
+                        href="#"
+                    >
                         Contact
                     </a>
 
@@ -137,10 +185,14 @@
 
 
 
+                <!-- CART -->
 
                 <li class="nav-item ms-lg-3">
 
-                    <a class="btn btn-primary" href="#">
+                    <a
+                        class="btn btn-primary"
+                        href="#"
+                    >
 
                         <i class="bi bi-cart"></i>
 
@@ -156,20 +208,29 @@
 
 
 
+                <!-- ACCOUNT -->
 
                 <li class="nav-item dropdown ms-lg-3">
 
 
-                    <a 
-                    class="nav-link dropdown-toggle"
-                    href="#"
-                    data-bs-toggle="dropdown">
-
+                    <a
+                        class="nav-link dropdown-toggle"
+                        href="#"
+                        data-bs-toggle="dropdown"
+                    >
 
                         <i class="bi bi-person-circle"></i>
 
-                        Account
 
+                        {% if user.is_authenticated %}
+
+                            {{ user.username }}
+
+                        {% else %}
+
+                            Account
+
+                        {% endif %}
 
                     </a>
 
@@ -178,156 +239,276 @@
                     <ul class="dropdown-menu dropdown-menu-end">
 
 
-                        <li>
-
-                            <a class="dropdown-item" href="#">
-                                Sign In
-                            </a>
-
-                        </li>
+                        {% if user.is_authenticated %}
 
 
+                            <!-- USER INFORMATION -->
 
-                        <li>
+                            <li>
 
-                            <a class="dropdown-item" href="#">
-                                Sign Up
-                            </a>
+                                <h6 class="dropdown-header">
 
-                        </li>
+                                    Hello,
+                                    {{ user.username }}
+
+                                </h6>
+
+                            </li>
+
+
+                            <li>
+
+                                <hr class="dropdown-divider">
+
+                            </li>
+
+
+
+                            <!-- PROFILE -->
+
+                            <li>
+
+                                <a
+                                    class="dropdown-item"
+                                    href="{% url "profile" %}"
+                                >
+
+                                    <i class="bi bi-person me-2"></i>
+
+                                    My Profile
+
+                                </a>
+
+                            </li>
+
+
+
+                            <!-- ORDERS -->
+
+                            <li>
+
+                                <a
+                                    class="dropdown-item"
+                                    href="#"
+                                >
+
+                                    <i class="bi bi-box-seam me-2"></i>
+
+                                    My Orders
+
+                                </a>
+
+                            </li>
+
+
+
+                            <li>
+
+                                <hr class="dropdown-divider">
+
+                            </li>
+
+
+
+                            <!-- LOGOUT -->
+
+                            <li>
+
+                                <a
+                                    class="dropdown-item text-danger"
+                                    href="{% url 'logout' %}"
+                                >
+
+                                    <i class="bi bi-box-arrow-right me-2"></i>
+
+                                    Logout
+
+                                </a>
+
+                            </li>
+
+
+                        {% else %}
+
+
+                            <!-- LOGIN -->
+
+                            <li>
+
+                                <a
+                                    class="dropdown-item"
+                                    href="{% url 'login' %}"
+                                >
+
+                                    <i class="bi bi-box-arrow-in-right me-2"></i>
+
+                                    Sign In
+
+                                </a>
+
+                            </li>
+
+
+
+                            <!-- REGISTER -->
+
+                            <li>
+
+                                <a
+                                    class="dropdown-item"
+                                    href="{% url 'register' %}"
+                                >
+
+                                    <i class="bi bi-person-plus me-2"></i>
+
+                                    Sign Up
+
+                                </a>
+
+                            </li>
+
+
+                        {% endif %}
 
 
                     </ul>
 
-
-
                 </li>
-
 
 
             </ul>
 
-
         </div>
 
-
     </div>
-
 
 </nav>
 
 
-
-
-
-
-<!-- MAIN CONTENT -->
-
+<!-- ================= MAIN CONTENT ================= -->
 
 <main class="flex-grow-1">
+    {% if messages %}
 
+    <div class="container pt-3">
+
+        {% for message in messages %}
+
+            <div
+                class="alert alert-{{ message.tags }} alert-dismissible fade show"
+                role="alert"
+            >
+
+                {{ message }}
+
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert"
+                    aria-label="Close"
+                ></button>
+
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+{% endif %}
 
     {% block content %}
 
     {% endblock %}
 
-
 </main>
 
 
 
-
-
-
-<!-- FOOTER -->
-
+<!-- ================= FOOTER ================= -->
 
 <footer class="bg-dark text-light py-5 mt-auto">
 
-
     <div class="container">
-
 
         <div class="row">
 
 
-            <div class="col-md-4">
+            <!-- STORE -->
 
+            <div class="col-md-4">
 
                 <h5>
                     Alphix Store
                 </h5>
 
-
                 <p>
                     Quality products delivered with trust.
                 </p>
-
 
             </div>
 
 
 
-
+            <!-- QUICK LINKS -->
 
             <div class="col-md-4">
-
 
                 <h5>
                     Quick Links
                 </h5>
 
-
                 <ul class="list-unstyled">
 
 
                     <li>
-                        <a href="{% url 'home' %}" 
-                        class="text-light text-decoration-none">
+
+                        <a
+                            href="{% url 'home' %}"
+                            class="text-light text-decoration-none"
+                        >
 
                             Home
 
                         </a>
+
                     </li>
 
 
-
                     <li>
-                        <a href="{% url 'all_products' %}" 
-                        class="text-light text-decoration-none">
+
+                        <a
+                            href="{% url 'all_products' %}"
+                            class="text-light text-decoration-none"
+                        >
 
                             Products
 
                         </a>
+
                     </li>
 
 
                 </ul>
 
-
             </div>
 
 
 
-
+            <!-- SUPPORT -->
 
             <div class="col-md-4">
-
 
                 <h5>
                     Support
                 </h5>
 
-
                 <p>
                     Contact Us
                 </p>
 
-
                 <p>
                     FAQ
                 </p>
-
 
             </div>
 
@@ -335,43 +516,33 @@
         </div>
 
 
-
-
         <hr>
-
 
 
         <div class="text-center">
 
-
             <small>
-                © 2026 Alphix Store. All Rights Reserved.
-            </small>
 
+                © 2026 Alphix Store.
+                All Rights Reserved.
+
+            </small>
 
         </div>
 
-
-
     </div>
-
 
 </footer>
 
 
 
-
-
 <!-- Bootstrap JS -->
 
-
-<script 
-src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
-</script>
-
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+></script>
 
 
 </body>
-
 
 </html>

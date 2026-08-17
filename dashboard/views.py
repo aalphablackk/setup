@@ -1,4 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required, user_passes_test
+# from accounts.decorators import role_required
+# from django.contrib.auth.decorators import user_passes_test
+
+
+def is_staff(user):
+    return user.is_authenticated and user.is_staff
+
 
 from products.models import (
     Product,
@@ -17,7 +25,8 @@ from products.forms import (
 
 
 # Dashboard Home
-
+@login_required
+@user_passes_test(is_staff, login_url="/")
 def dashboard_home(request):
 
     total_products = Product.objects.count()
@@ -36,6 +45,9 @@ def dashboard_home(request):
 
 
 # Product List
+
+@login_required
+@user_passes_test(is_staff, login_url="/")
 
 def product_list(request):
 
@@ -60,6 +72,9 @@ def product_list(request):
 
 
 # Add Product + Brand + Category
+
+@login_required
+@user_passes_test(is_staff, login_url="/")
 
 def product_add(request):
 
@@ -162,6 +177,9 @@ def product_add(request):
 # Product Images
 
 
+@login_required
+@user_passes_test(is_staff, login_url="/")
+
 def product_images(request, product_id):
 
 
@@ -226,6 +244,9 @@ def product_images(request, product_id):
 
 # Product Specifications
 
+
+@login_required
+@user_passes_test(is_staff, login_url="/")
 
 def product_specifications(request, product_id):
 
@@ -292,6 +313,9 @@ def product_specifications(request, product_id):
 # Edit Product
 
 
+@login_required
+@user_passes_test(is_staff, login_url="/")
+
 def product_edit(request, product_id):
 
 
@@ -349,6 +373,9 @@ def product_edit(request, product_id):
 # Delete Product
 
 
+@login_required
+@user_passes_test(is_staff, login_url="/")
+
 def product_delete(request, product_id):
 
 
@@ -375,6 +402,9 @@ def product_delete(request, product_id):
 
 # Delete Product Image
 
+
+@login_required
+@user_passes_test(is_staff, login_url="/")
 
 def delete_product_image(request, image_id):
 
@@ -412,6 +442,9 @@ def delete_product_image(request, image_id):
 
 # Set Cover Image
 
+
+@login_required
+@user_passes_test(is_staff, login_url="/")
 
 def set_cover_image(request, image_id):
 
@@ -465,6 +498,9 @@ def set_cover_image(request, image_id):
 # Delete Specification
 
 
+@login_required
+@user_passes_test(is_staff, login_url="/")
+
 def delete_specification(request, specification_id):
 
 
@@ -501,6 +537,9 @@ def delete_specification(request, specification_id):
 
 # Edit Specification
 
+
+@login_required
+@user_passes_test(is_staff, login_url="/")
 
 def edit_specification(request, specification_id):
 

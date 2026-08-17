@@ -1,0 +1,704 @@
+{% extends "base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}
+Profile | Alphix Store
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container py-5">
+
+    <!-- PAGE HEADER -->
+
+    <div class="row justify-content-center mb-4">
+
+        <div class="col-lg-8">
+
+            <div class="d-flex justify-content-between align-items-center">
+
+                <div>
+
+                    <h2 class="fw-bold mb-1">
+                        My Profile
+                    </h2>
+
+                    <p class="text-muted mb-0">
+                        Manage your personal information and account details.
+                    </p>
+
+                </div>
+
+                <div class="d-none d-md-block">
+
+                    <span class="badge bg-light text-dark border px-3 py-2">
+
+                        <i class="bi bi-person-circle me-1"></i>
+
+                        Account
+
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-8">
+
+
+            <!-- PROFILE CARD -->
+
+            <div class="card border-0 shadow-sm overflow-hidden">
+
+
+                <!-- PROFILE TOP -->
+
+                <div class="bg-dark text-white p-4">
+
+                    <div class="row align-items-center">
+
+
+                        <!-- PROFILE IMAGE -->
+
+                        <div class="col-md-auto text-center mb-3 mb-md-0">
+
+
+                            {% if profile.profile_picture %}
+
+                                <img
+                                    src="{{ profile.profile_picture.url }}"
+                                    alt="Profile Picture"
+                                    class="rounded-circle border border-4 border-white shadow"
+                                    width="130"
+                                    height="130"
+                                    style="object-fit: cover;"
+                                >
+
+                            {% else %}
+
+                                <div
+                                    class="rounded-circle bg-white text-dark d-flex align-items-center justify-content-center mx-auto shadow"
+                                    style="width: 130px; height: 130px;"
+                                >
+
+                                    <i
+                                        class="bi bi-person-fill"
+                                        style="font-size: 4.5rem;"
+                                    ></i>
+
+                                </div>
+
+                            {% endif %}
+
+                        </div>
+
+
+
+                        <!-- PROFILE NAME -->
+
+                        <div class="col-md">
+
+                            <div class="text-center text-md-start">
+
+
+                                <h2 class="fw-bold mb-1">
+
+                                    {% if request.user.first_name or request.user.last_name %}
+
+                                        {{ request.user.first_name }}
+                                        {{ request.user.last_name }}
+
+                                    {% else %}
+
+                                        {{ request.user.username }}
+
+                                    {% endif %}
+
+                                </h2>
+
+
+                                <p class="text-white-50 mb-3">
+
+                                    @{{ request.user.username }}
+
+                                </p>
+
+
+
+                                <!-- ROLES -->
+
+                                <div>
+
+                                    {% for role in profile.role.all %}
+
+                                        <span class="badge bg-primary rounded-pill px-3 py-2 me-1">
+
+                                            <i class="bi bi-shield-check me-1"></i>
+
+                                            {{ role.get_name_display }}
+
+                                        </span>
+
+                                    {% empty %}
+
+                                        <span class="badge bg-secondary rounded-pill px-3 py-2">
+
+                                            No role assigned
+
+                                        </span>
+
+                                    {% endfor %}
+
+                                </div>
+
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- PROFILE DETAILS -->
+
+                <div class="card-body p-4 p-md-5">
+
+
+                    <div class="d-flex align-items-center mb-4">
+
+                        <div
+                            class="bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center me-3"
+                            style="width: 42px; height: 42px;"
+                        >
+
+                            <i class="bi bi-person-lines-fill"></i>
+
+                        </div>
+
+                        <div>
+
+                            <h5 class="fw-bold mb-0">
+                                Personal Information
+                            </h5>
+
+                            <small class="text-muted">
+                                Your account details
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="row g-3">
+
+
+                        <!-- USERNAME -->
+
+                        <div class="col-md-6">
+
+                            <div class="bg-light rounded-3 p-3 h-100">
+
+                                <div class="d-flex align-items-center mb-2">
+
+                                    <i class="bi bi-at text-primary me-2"></i>
+
+                                    <small class="text-muted">
+                                        Username
+                                    </small>
+
+                                </div>
+
+                                <div class="fw-semibold">
+
+                                    {{ request.user.username }}
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- EMAIL -->
+
+                        <div class="col-md-6">
+
+                            <div class="bg-light rounded-3 p-3 h-100">
+
+                                <div class="d-flex align-items-center mb-2">
+
+                                    <i class="bi bi-envelope text-primary me-2"></i>
+
+                                    <small class="text-muted">
+                                        Email
+                                    </small>
+
+                                </div>
+
+                                <div class="fw-semibold text-break">
+
+                                    {% if request.user.email %}
+
+                                        {{ request.user.email }}
+
+                                    {% else %}
+
+                                        <span class="text-muted">
+                                            Not provided
+                                        </span>
+
+                                    {% endif %}
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- FIRST NAME -->
+
+                        <div class="col-md-6">
+
+                            <div class="bg-light rounded-3 p-3 h-100">
+
+                                <div class="d-flex align-items-center mb-2">
+
+                                    <i class="bi bi-person text-primary me-2"></i>
+
+                                    <small class="text-muted">
+                                        First Name
+                                    </small>
+
+                                </div>
+
+                                <div class="fw-semibold">
+
+                                    {% if request.user.first_name %}
+
+                                        {{ request.user.first_name }}
+
+                                    {% else %}
+
+                                        <span class="text-muted">
+                                            Not provided
+                                        </span>
+
+                                    {% endif %}
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- LAST NAME -->
+
+                        <div class="col-md-6">
+
+                            <div class="bg-light rounded-3 p-3 h-100">
+
+                                <div class="d-flex align-items-center mb-2">
+
+                                    <i class="bi bi-person text-primary me-2"></i>
+
+                                    <small class="text-muted">
+                                        Last Name
+                                    </small>
+
+                                </div>
+
+                                <div class="fw-semibold">
+
+                                    {% if request.user.last_name %}
+
+                                        {{ request.user.last_name }}
+
+                                    {% else %}
+
+                                        <span class="text-muted">
+                                            Not provided
+                                        </span>
+
+                                    {% endif %}
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- PHONE -->
+
+                        <div class="col-md-6">
+
+                            <div class="bg-light rounded-3 p-3 h-100">
+
+                                <div class="d-flex align-items-center mb-2">
+
+                                    <i class="bi bi-telephone text-primary me-2"></i>
+
+                                    <small class="text-muted">
+                                        Phone Number
+                                    </small>
+
+                                </div>
+
+                                <div class="fw-semibold">
+
+                                    {% if profile.phone_number %}
+
+                                        {{ profile.phone_number }}
+
+                                    {% else %}
+
+                                        <span class="text-muted">
+                                            Not provided
+                                        </span>
+
+                                    {% endif %}
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- GENDER -->
+
+                        <div class="col-md-6">
+
+                            <div class="bg-light rounded-3 p-3 h-100">
+
+                                <div class="d-flex align-items-center mb-2">
+
+                                    <i class="bi bi-gender-ambiguous text-primary me-2"></i>
+
+                                    <small class="text-muted">
+                                        Gender
+                                    </small>
+
+                                </div>
+
+                                <div class="fw-semibold">
+
+                                    {% if profile.gender %}
+
+                                        {{ profile.get_gender_display }}
+
+                                    {% else %}
+
+                                        <span class="text-muted">
+                                            Not provided
+                                        </span>
+
+                                    {% endif %}
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- ADDRESS -->
+
+                        <div class="col-12">
+
+                            <div class="bg-light rounded-3 p-3">
+
+                                <div class="d-flex align-items-center mb-2">
+
+                                    <i class="bi bi-geo-alt text-primary me-2"></i>
+
+                                    <small class="text-muted">
+                                        Address
+                                    </small>
+
+                                </div>
+
+                                <div class="fw-semibold">
+
+                                    {% if profile.address %}
+
+                                        {{ profile.address }}
+
+                                    {% else %}
+
+                                        <span class="text-muted">
+                                            No address provided
+                                        </span>
+
+                                    {% endif %}
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- ROLES -->
+
+                        <div class="col-12">
+
+                            <div class="bg-light rounded-3 p-3">
+
+                                <div class="d-flex align-items-center mb-3">
+
+                                    <i class="bi bi-shield-check text-primary me-2"></i>
+
+                                    <small class="text-muted">
+                                        Account Roles
+                                    </small>
+
+                                </div>
+
+
+                                {% for role in profile.role.all %}
+
+                                    <span class="badge bg-primary rounded-pill px-3 py-2 me-1 mb-1">
+
+                                        <i class="bi bi-check-circle me-1"></i>
+
+                                        {{ role.get_name_display }}
+
+                                    </span>
+
+                                {% empty %}
+
+                                    <span class="text-muted">
+                                        No role assigned
+                                    </span>
+
+                                {% endfor %}
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <!-- ACTIONS -->
+
+                    <div class="border-top mt-4 pt-4">
+
+                        <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3">
+
+
+                            <div>
+
+                                <small class="text-muted">
+
+                                    <i class="bi bi-shield-lock me-1"></i>
+
+                                    Keep your account information up to date.
+
+                                </small>
+
+                            </div>
+
+
+                            <button
+                                type="button"
+                                class="btn btn-primary px-4"
+                                data-bs-toggle="modal"
+                                data-bs-target="#editProfileModal"
+                            >
+
+                                <i class="bi bi-pencil-square me-1"></i>
+
+                                Edit Profile
+
+                            </button>
+
+                            <a
+                                href="{% url 'password_change' %}"
+                                class="btn btn-outline-dark"
+                            >
+
+                                <i class="bi bi-shield-lock me-1"></i>
+
+                                Change Password
+
+                            </a>
+
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- ================================================= -->
+<!-- EDIT PROFILE MODAL -->
+<!-- ================================================= -->
+
+<div
+    class="modal fade"
+    id="editProfileModal"
+    tabindex="-1"
+    aria-labelledby="editProfileModalLabel"
+    aria-hidden="true"
+>
+
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+
+        <div class="modal-content">
+
+
+            <!-- MODAL HEADER -->
+
+            <div class="modal-header">
+
+                <h5
+                    class="modal-title"
+                    id="editProfileModalLabel"
+                >
+
+                    <i class="bi bi-person-gear me-2"></i>
+
+                    Edit Profile
+
+                </h5>
+
+
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                ></button>
+
+            </div>
+
+
+
+            <!-- FORM -->
+
+            <form
+                method="POST"
+                enctype="multipart/form-data"
+            >
+
+                {% csrf_token %}
+
+
+                <div class="modal-body">
+
+
+                    <!-- USER INFORMATION -->
+
+                    <h6 class="fw-bold mb-3">
+
+                        Personal Information
+
+                    </h6>
+
+
+                    {{ user_form|crispy }}
+
+
+                    <hr class="my-4">
+
+
+                    <!-- PROFILE INFORMATION -->
+
+                    <h6 class="fw-bold mb-3">
+
+                        Profile Information
+
+                    </h6>
+
+
+                    {{ profile_form|crispy }}
+
+
+                </div>
+
+
+
+                <!-- MODAL FOOTER -->
+
+                <div class="modal-footer">
+
+
+                    <button
+                        type="button"
+                        class="btn btn-secondary"
+                        data-bs-dismiss="modal"
+                    >
+
+                        Cancel
+
+                    </button>
+
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary"
+                    >
+
+                        <i class="bi bi-check-circle me-1"></i>
+
+                        Save Changes
+
+                    </button>
+
+
+                </div>
+
+
+            </form>
+
+
+        </div>
+
+    </div>
+
+</div>
+
+
+{% endblock %}
