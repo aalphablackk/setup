@@ -1,0 +1,448 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Dashboard — Workbeam
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container-fluid px-0">
+
+    <!-- =====================================================
+         HEADER
+         ===================================================== -->
+
+    <section class="mb-4">
+
+        <div class="row align-items-center g-3">
+
+            <div class="col-lg-8">
+
+
+                <h1 class="h2 fw-bold mb-2">
+                    Good afternoon, James 👋
+                </h1>
+
+                <p class="wb-muted mb-0">
+                    Here's what your content team found for you today.
+                </p>
+
+            </div>
+
+
+            <div class="col-lg-4 text-lg-end">
+
+                <a
+                    href="#"
+                    class="btn btn-primary"
+                >
+                    <i class="bi bi-plus-lg me-2"></i>
+                    Create Content
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         QUICK ACTIONS
+         ===================================================== -->
+
+    <section class="mb-4">
+
+        <div class="row g-3">
+
+            <!-- Discover -->
+
+            <div class="col-md-4">
+
+                <a
+                    href="#"
+                    class="text-decoration-none text-body"
+                >
+
+                    <div class="brand-card p-4">
+
+                        <div class="brand-avatar mb-4">
+                            <i class="bi bi-search"></i>
+                        </div>
+
+                        <h5 class="fw-semibold mb-2">
+                            Discover Opportunities
+                        </h5>
+
+                        <p class="wb-muted mb-3">
+                            Find topics, conversations and ideas worth
+                            turning into content.
+                        </p>
+
+                        <span class="small fw-semibold text-primary">
+                            Explore opportunities
+                            <i class="bi bi-arrow-right ms-1"></i>
+                        </span>
+
+                    </div>
+
+                </a>
+
+            </div>
+
+
+            <!-- Create -->
+
+            <div class="col-md-4">
+
+                <a
+                    href="#"
+                    class="text-decoration-none text-body"
+                >
+
+                    <div class="brand-card p-4">
+
+                        <div class="brand-avatar mb-4">
+                            <i class="bi bi-pencil-square"></i>
+                        </div>
+
+                        <h5 class="fw-semibold mb-2">
+                            Create Content
+                        </h5>
+
+                        <p class="wb-muted mb-3">
+                            Turn an idea, project, link or piece of
+                            information into content.
+                        </p>
+
+                        <span class="small fw-semibold text-primary">
+                            Start creating
+                            <i class="bi bi-arrow-right ms-1"></i>
+                        </span>
+
+                    </div>
+
+                </a>
+
+            </div>
+
+
+            <!-- My Work -->
+
+            <div class="col-md-4">
+
+                <a
+                    href="#"
+                    class="text-decoration-none text-body"
+                >
+
+                    <div class="brand-card p-4">
+
+                        <div class="brand-avatar mb-4">
+                            <i class="bi bi-folder2-open"></i>
+                        </div>
+
+                        <h5 class="fw-semibold mb-2">
+                            Turn My Work Into Content
+                        </h5>
+
+                        <p class="wb-muted mb-3">
+                            Upload your project, link or screenshots and
+                            let Workbeam find the story.
+                        </p>
+
+                        <span class="small fw-semibold text-primary">
+                            Use my work
+                            <i class="bi bi-arrow-right ms-1"></i>
+                        </span>
+
+                    </div>
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         DASHBOARD CONTENT
+         ===================================================== -->
+
+    <section class="mb-4">
+
+        <div class="row g-4">
+
+            <!-- Opportunities -->
+
+            <div class="col-xl-8">
+
+                <div class="brand-detail-section h-100">
+
+                    <div class="p-4 border-bottom">
+
+                        <div class="d-flex justify-content-between align-items-start gap-3">
+
+                            <div>
+
+                                <h5 class="fw-semibold mb-1">
+                                    What's worth talking about
+                                </h5>
+
+                                <p class="wb-muted small mb-0">
+                                    Opportunities discovered by your
+                                    research engine.
+                                </p>
+
+                            </div>
+
+                            <span class="badge text-bg-light">
+                                {{ opportunities_count }} found
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="list-group list-group-flush">
+
+                        {% for opportunity in opportunities %}
+
+                            <div class="list-group-item bg-transparent px-4 py-3">
+
+                                <div class="d-flex gap-3">
+
+                                    <div class="brand-avatar flex-shrink-0">
+                                        <i class="bi {{ opportunity.icon }}"></i>
+                                    </div>
+
+
+                                    <div class="flex-grow-1">
+
+                                        <div class="d-flex justify-content-between align-items-start gap-3">
+
+                                            <h6 class="fw-semibold mb-1">
+                                                {{ opportunity.title }}
+                                            </h6>
+
+                                            <span class="badge rounded-pill text-bg-success">
+                                                {{ opportunity.signal }}
+                                            </span>
+
+                                        </div>
+
+                                        <p class="wb-muted small mb-2">
+                                            {{ opportunity.description }}
+                                        </p>
+
+                                        <button
+                                            type="button"
+                                            class="btn btn-sm btn-outline-primary"
+                                        >
+                                            Explore
+                                            <i class="bi bi-arrow-right ms-1"></i>
+                                        </button>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        {% empty %}
+
+                            <div class="p-5 text-center">
+
+                                <div class="wb-empty-icon">
+                                    <i class="bi bi-search"></i>
+                                </div>
+
+                                <h6 class="fw-semibold">
+                                    No opportunities yet
+                                </h6>
+
+                                <p class="wb-muted small mb-0">
+                                    Your research engine will surface
+                                    opportunities here.
+                                </p>
+
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Content Status -->
+
+            <div class="col-xl-4">
+
+                <div class="brand-detail-section h-100">
+
+                    <div class="p-4 border-bottom">
+
+                        <h5 class="fw-semibold mb-1">
+                            Your content
+                        </h5>
+
+                        <p class="wb-muted small mb-0">
+                            What's happening with your content.
+                        </p>
+
+                    </div>
+
+
+                    <div class="p-4">
+
+                        <!-- Drafts -->
+
+                        <div class="d-flex justify-content-between align-items-center py-3 border-bottom">
+
+                            <div class="d-flex align-items-center gap-2">
+
+                                <i class="bi bi-pencil text-primary"></i>
+
+                                <span>
+                                    Drafts
+                                </span>
+
+                            </div>
+
+                            <strong>
+                                {{ drafts_count }}
+                            </strong>
+
+                        </div>
+
+
+                        <!-- Review -->
+
+                        <div class="d-flex justify-content-between align-items-center py-3 border-bottom">
+
+                            <div class="d-flex align-items-center gap-2">
+
+                                <i class="bi bi-eye text-primary"></i>
+
+                                <span>
+                                    Waiting for review
+                                </span>
+
+                            </div>
+
+                            <strong>
+                                {{ review_count }}
+                            </strong>
+
+                        </div>
+
+
+                        <!-- Scheduled -->
+
+                        <div class="d-flex justify-content-between align-items-center py-3">
+
+                            <div class="d-flex align-items-center gap-2">
+
+                                <i class="bi bi-calendar-check text-primary"></i>
+
+                                <span>
+                                    Scheduled
+                                </span>
+
+                            </div>
+
+                            <strong>
+                                {{ scheduled_count }}
+                            </strong>
+
+                        </div>
+
+
+                        <a
+                            href="#"
+                            class="btn btn-outline-secondary w-100 mt-3"
+                        >
+                            View content
+                            <i class="bi bi-arrow-right ms-1"></i>
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         AI INSIGHT
+         ===================================================== -->
+
+    <section>
+
+        <div class="brand-detail-section p-4 p-lg-5">
+
+            <div class="row align-items-center g-4">
+
+                <div class="col-auto">
+
+                    <div class="brand-avatar">
+
+                        <i class="bi bi-lightbulb"></i>
+
+                    </div>
+
+                </div>
+
+
+                <div class="col">
+
+                    <span class="small fw-semibold text-primary">
+                        AI TEAM INSIGHT
+                    </span>
+
+                    <h5 class="mt-2 mb-2 fw-semibold">
+                        Your content has something we can build on.
+                    </h5>
+
+                    <p class="wb-muted mb-0">
+                        Your recent developer and cybersecurity content
+                        gives us a strong signal. Workbeam found
+                        3 related opportunities that could be turned
+                        into educational and relatable posts.
+                    </p>
+
+                </div>
+
+
+                <div class="col-lg-auto">
+
+                    <a
+                        href="#"
+                        class="btn btn-primary"
+                    >
+                        View insight
+                        <i class="bi bi-arrow-right ms-1"></i>
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</div>
+
+{% endblock %}

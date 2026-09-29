@@ -1,0 +1,8 @@
+documentation.md
+# Django
+db.sqlite3
+staticfiles/
+media/
+.env
+PRD.md
+templates.zip

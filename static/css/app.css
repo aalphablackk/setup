@@ -1,0 +1,2181 @@
+/* =========================================================
+   WORKBEAM DESIGN SYSTEM
+   SOURCE OF TRUTH
+
+   Change the variables in this section to re-theme the entire UI.
+   Components below intentionally use these tokens instead of
+   hard-coded colors, spacing, radii, or shadows.
+   ========================================================= */
+
+:root {
+    --wb-primary: #6d5dfc;
+    --wb-primary-hover: #5848e8;
+    --wb-primary-soft: #efedff;
+    --wb-secondary: #2f80ed;
+    --wb-accent: #14b8a6;
+    --wb-bg: #f7f8fc;
+    --wb-surface: #ffffff;
+    --wb-surface-muted: #f1f3f8;
+    --wb-surface-raised: #ffffff;
+    --wb-border: #e4e7ef;
+    --wb-border-strong: #cdd3df;
+    --wb-text: #182230;
+    --wb-text-muted: #667085;
+    --wb-text-subtle: #98a2b3;
+    --wb-success: #168a5b;
+    --wb-success-soft: #eaf8f1;
+    --wb-warning: #b86b00;
+    --wb-warning-soft: #fff5df;
+    --wb-danger: #d04455;
+    --wb-danger-soft: #fff0f2;
+    --wb-info: #2672d9;
+    --wb-info-soft: #edf5ff;
+    --wb-radius-xs: .375rem;
+    --wb-radius-sm: .625rem;
+    --wb-radius-md: .875rem;
+    --wb-radius-lg: 1.25rem;
+    --wb-radius-xl: 1.5rem;
+    --wb-radius-pill: 999px;
+    --wb-shadow-sm: 0 2px 8px rgb(16 24 40 / .05);
+    --wb-shadow-md: 0 12px 30px rgb(16 24 40 / .08);
+    --wb-shadow-lg: 0 20px 50px rgb(16 24 40 / .12);
+    --wb-transition-fast: 140ms ease;
+    --wb-transition: 180ms ease;
+    --wb-transition-slow: 260ms ease;
+    --wb-navbar-height: 68px;
+    --wb-sidebar-width: 250px;
+    --wb-content-max-width: 1600px;
+    --wb-focus-ring: 0 0 0 .22rem color-mix(in srgb, var(--wb-primary) 20%, transparent);
+}
+
+/* =========================================================
+   DARK MODE TOKENS
+   ========================================================= */
+
+[data-bs-theme="dark"] {
+    color-scheme: dark;
+    --wb-primary: #9b8cff;
+    --wb-primary-hover: #b0a5ff;
+    --wb-primary-soft: #29234e;
+    --wb-secondary: #6aa7ff;
+    --wb-accent: #48d6c2;
+    --wb-bg: #0d111b;
+    --wb-surface: #151b27;
+    --wb-surface-muted: #1c2432;
+    --wb-surface-raised: #202a3a;
+    --wb-border: #2a3547;
+    --wb-border-strong: #3b4a61;
+    --wb-text: #f4f7fb;
+    --wb-text-muted: #a5afc0;
+    --wb-text-subtle: #7c8799;
+    --wb-success: #5ed49b;
+    --wb-success-soft: #15382b;
+    --wb-warning: #f5bd61;
+    --wb-warning-soft: #3a2c16;
+    --wb-danger: #ff8795;
+    --wb-danger-soft: #3f2028;
+    --wb-info: #82b7ff;
+    --wb-info-soft: #172c49;
+    --wb-shadow-sm: 0 2px 10px rgb(0 0 0 / .22);
+    --wb-shadow-md: 0 14px 34px rgb(0 0 0 / .28);
+    --wb-shadow-lg: 0 24px 60px rgb(0 0 0 / .36);
+}
+
+/* =========================================================
+   BOOTSTRAP BRIDGE
+   ========================================================= */
+
+:root, [data-bs-theme="dark"] {
+    --bs-primary: var(--wb-primary);
+    --bs-primary-rgb: 109, 93, 252;
+    --bs-secondary: var(--wb-text-muted);
+    --bs-secondary-rgb: 102, 112, 133;
+    --bs-success: var(--wb-success);
+    --bs-warning: var(--wb-warning);
+    --bs-danger: var(--wb-danger);
+    --bs-info: var(--wb-info);
+    --bs-body-bg: var(--wb-bg);
+    --bs-body-color: var(--wb-text);
+    --bs-border-color: var(--wb-border);
+    --bs-link-color: var(--wb-primary);
+    --bs-link-hover-color: var(--wb-primary-hover);
+    --bs-card-bg: var(--wb-surface);
+    --bs-tertiary-bg: var(--wb-surface-muted);
+    --bs-emphasis-color: var(--wb-text);
+    --bs-progress-bg: var(--wb-surface-muted);
+    --bs-progress-bar-bg: var(--wb-primary);
+}
+
+/* =========================================================
+   RESET AND GLOBAL FOUNDATION
+   ========================================================= */
+
+html {
+    min-width: 320px;
+    background: var(--wb-bg);
+    scroll-behavior: smooth;
+}
+
+body {
+    min-height: 100vh;
+    overflow-x: hidden;
+    background: radial-gradient(circle at 100% 0%, color-mix(in srgb, var(--wb-primary) 4%, transparent), transparent 28rem),
+        var(--wb-bg);
+    color: var(--wb-text);
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    transition: background-color var(--wb-transition), color var(--wb-transition);
+}
+
+::selection {
+    background: color-mix(in srgb, var(--wb-primary) 24%, transparent);
+    color: var(--wb-text);
+}
+
+:focus-visible {
+    outline: 0;
+    box-shadow: var(--wb-focus-ring) !important;
+}
+
+a {
+    color: var(--wb-primary);
+    transition: color var(--wb-transition-fast);
+}
+
+a:hover {
+    color: var(--wb-primary-hover);
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: var(--wb-text);
+    letter-spacing: -.025em;
+}
+
+.text-muted, .wb-muted {
+    color: var(--wb-text-muted) !important;
+}
+
+.text-body {
+    color: var(--wb-text) !important;
+}
+
+.bg-body {
+    background-color: var(--wb-bg) !important;
+}
+
+.border, .border-top, .border-bottom, .border-start, .border-end {
+    border-color: var(--wb-border) !important;
+}
+
+.min-w-0 {
+    min-width: 0;
+}
+
+/* =========================================================
+   APP SHELL
+   ========================================================= */
+
+.wb-page {
+    min-height: calc(100vh - var(--wb-navbar-height));
+    max-width: var(--wb-content-max-width);
+}
+
+.wb-section {
+    margin-bottom: 2rem;
+}
+
+/* =========================================================
+   NAVBAR
+   ========================================================= */
+
+.navbar {
+    min-height: var(--wb-navbar-height);
+    z-index: 1030;
+    background: color-mix(in srgb, var(--wb-surface) 92%, transparent) !important;
+    border-color: var(--wb-border) !important;
+    box-shadow: 0 1px 0 rgb(16 24 40 / .02);
+    backdrop-filter: blur(14px);
+}
+
+.navbar .container-fluid {
+    min-height: var(--wb-navbar-height);
+}
+
+.navbar-brand {
+    color: var(--wb-text) !important;
+    font-size: 1.05rem;
+    letter-spacing: -.035em;
+}
+
+.navbar-brand::before {
+    content: "";
+    display: inline-block;
+    width: .55rem;
+    height: .55rem;
+    margin-right: .55rem;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--wb-primary), var(--wb-secondary));
+    box-shadow: 0 0 0 .25rem color-mix(in srgb, var(--wb-primary) 12%, transparent);
+    vertical-align: .06em;
+}
+
+.navbar-toggler {
+    border-color: var(--wb-border);
+}
+
+.navbar-toggler:hover {
+    background: var(--wb-surface-muted);
+}
+
+.navbar .btn-light, .navbar .btn-outline-secondary {
+    background: var(--wb-surface);
+    color: var(--wb-text);
+    border-color: var(--wb-border);
+}
+
+.navbar .btn-light:hover, .navbar .btn-outline-secondary:hover {
+    background: var(--wb-surface-muted);
+    color: var(--wb-text);
+    border-color: var(--wb-border-strong);
+}
+
+/* =========================================================
+   SIDEBAR
+   ========================================================= */
+
+.sidebar {
+    min-height: calc(100vh - var(--wb-navbar-height)) !important;
+    background: color-mix(in srgb, var(--wb-surface) 42%, var(--wb-bg)) !important;
+    border-color: var(--wb-border) !important;
+}
+
+.sidebar-section-title {
+    color: var(--wb-text-subtle);
+    font-size: .68rem;
+    letter-spacing: .11em;
+}
+
+.sidebar .nav-link {
+    display: flex;
+    align-items: center;
+    min-height: 42px;
+    padding: .65rem .75rem;
+    color: var(--wb-text-muted);
+    border: 1px solid transparent;
+    border-radius: var(--wb-radius-sm);
+    font-size: .9rem;
+    transition: background-color var(--wb-transition), color var(--wb-transition), border-color var(--wb-transition), transform var(--wb-transition);
+}
+
+.sidebar .nav-link:hover {
+    color: var(--wb-text);
+    background: var(--wb-surface-muted);
+    border-color: var(--wb-border);
+    transform: translateX(2px);
+}
+
+.sidebar .nav-link.active {
+    color: var(--wb-primary);
+    background: var(--wb-primary-soft);
+    border-color: color-mix(in srgb, var(--wb-primary) 15%, transparent);
+    font-weight: 650;
+}
+
+.sidebar .nav-link.active:hover {
+    color: var(--wb-primary-hover);
+    background: color-mix(in srgb, var(--wb-primary) 15%, var(--wb-surface));
+}
+
+.sidebar .nav-link i {
+    width: 1.25rem;
+    margin-right: .7rem;
+    color: currentColor;
+    text-align: center;
+    font-size: 1rem;
+}
+
+/* =========================================================
+   SURFACES AND CARDS
+   ========================================================= */
+
+.wb-card, .brand-card, .brand-hero, .brand-detail-section, .brand-form-card, .dashboard-hero {
+    background: var(--wb-surface);
+    border: 1px solid var(--wb-border);
+    border-radius: var(--wb-radius-lg);
+    box-shadow: var(--wb-shadow-sm);
+}
+
+.wb-card, .brand-card, .dashboard-hero {
+    transition: transform var(--wb-transition), box-shadow var(--wb-transition), border-color var(--wb-transition);
+}
+
+.wb-card:hover, .brand-card:hover, .dashboard-hero:hover {
+    border-color: color-mix(in srgb, var(--wb-primary) 28%, var(--wb-border));
+    box-shadow: var(--wb-shadow-md);
+}
+
+.brand-page, .brand-detail, .brand-form-page {
+    padding: 2rem 0 3rem;
+}
+
+/* =========================================================
+   BRAND AVATARS
+   ========================================================= */
+
+.brand-avatar, .brand-detail-avatar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: #fff;
+    font-weight: 750;
+    background: linear-gradient(135deg, var(--wb-primary), var(--wb-secondary));
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / .2), 0 6px 14px color-mix(in srgb, var(--wb-primary) 18%, transparent);
+}
+
+.brand-avatar {
+    width: 52px;
+    height: 52px;
+    border-radius: var(--wb-radius-md);
+    font-size: 1.05rem;
+}
+
+.brand-detail-avatar {
+    width: 72px;
+    height: 72px;
+    border-radius: var(--wb-radius-lg);
+    font-size: 1.5rem;
+}
+
+/* =========================================================
+   BRAND LIST AND CARDS
+   ========================================================= */
+
+.brand-header {
+    margin-bottom: 2rem;
+}
+
+.brand-header h1 {
+    font-weight: 750;
+    letter-spacing: -.04em;
+}
+
+.brand-header p {
+    max-width: 680px;
+    color: var(--wb-text-muted);
+}
+
+.brand-card {
+    height: 100%;
+}
+
+.brand-card-title {
+    margin-bottom: .15rem;
+    color: var(--wb-text);
+    font-size: 1.05rem;
+    font-weight: 700;
+}
+
+.brand-card-meta, .brand-card-info {
+    color: var(--wb-text-muted);
+    font-size: .88rem;
+}
+
+.brand-card-goal, .brand-info-highlight, .brand-context-box {
+    padding: 1rem;
+    background: var(--wb-surface-muted);
+    border: 1px solid var(--wb-border);
+    border-radius: var(--wb-radius-md);
+}
+
+.brand-card-goal-label {
+    display: block;
+    margin-bottom: .3rem;
+    color: var(--wb-text-muted);
+    font-size: .75rem;
+    font-weight: 650;
+    letter-spacing: .02em;
+    text-transform: uppercase;
+}
+
+.brand-card-goal strong {
+    font-weight: 650;
+}
+
+/* =========================================================
+   STATUS, EMPTY STATES, AND BADGES
+   ========================================================= */
+
+.wb-status {
+    display: inline-flex;
+    align-items: center;
+    gap: .35rem;
+    padding: .3rem .65rem;
+    border-radius: var(--wb-radius-pill);
+    font-size: .72rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.wb-status::before {
+    content: "";
+    width: .38rem;
+    height: .38rem;
+    border-radius: 50%;
+    background: currentColor;
+}
+
+.wb-status-active {
+    color: var(--wb-success);
+    background: var(--wb-success-soft);
+}
+
+.wb-status-inactive {
+    color: var(--wb-text-muted);
+    background: var(--wb-surface-muted);
+}
+
+.wb-empty {
+    padding: 4.5rem 1rem;
+    text-align: center;
+    background: var(--wb-surface);
+    border: 1px dashed var(--wb-border-strong);
+    border-radius: var(--wb-radius-lg);
+}
+
+.wb-empty-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    margin-bottom: 1rem;
+    color: var(--wb-primary);
+    background: var(--wb-primary-soft);
+    border-radius: var(--wb-radius-md);
+    font-size: 1.25rem;
+}
+
+.badge.text-bg-light {
+    color: var(--wb-text-muted) !important;
+    background: var(--wb-surface-muted) !important;
+}
+
+.badge.text-bg-primary {
+    background: var(--wb-primary) !important;
+}
+
+.badge.text-bg-success {
+    background: var(--wb-success) !important;
+}
+
+/* =========================================================
+   BRAND DETAIL
+   ========================================================= */
+
+.brand-hero {
+    padding: 1.5rem;
+    background: linear-gradient(135deg, var(--wb-surface), color-mix(in srgb, var(--wb-primary-soft) 42%, var(--wb-surface)));
+}
+
+.brand-detail-section {
+    height: 100%;
+}
+
+.brand-detail-section h2 {
+    margin-top: .25rem;
+    font-size: 1.05rem;
+    font-weight: 700;
+}
+
+.brand-detail-label {
+    margin-bottom: .3rem;
+    color: var(--wb-text-muted);
+    font-size: .76rem;
+    font-weight: 650;
+    letter-spacing: .02em;
+    text-transform: uppercase;
+}
+
+.brand-detail-value {
+    color: var(--wb-text);
+    font-weight: 600;
+}
+
+.brand-context-text, .brand-description {
+    color: var(--wb-text);
+    line-height: 1.75;
+}
+
+.brand-description {
+    max-width: 900px;
+    line-height: 1.8;
+}
+
+/* =========================================================
+   FORM CONTROLS
+   ========================================================= */
+
+.brand-form-intro, .brand-form-header {
+    max-width: 900px;
+}
+
+.form-label {
+    color: var(--wb-text);
+    font-size: .9rem;
+    font-weight: 650;
+}
+
+.form-control, .form-select {
+    min-height: 44px;
+    color: var(--wb-text);
+    background-color: var(--wb-surface);
+    border-color: var(--wb-border-strong);
+    border-radius: var(--wb-radius-sm);
+    transition: border-color var(--wb-transition-fast), box-shadow var(--wb-transition-fast), background-color var(--wb-transition-fast);
+}
+
+.form-control:focus, .form-select:focus {
+    color: var(--wb-text);
+    background-color: var(--wb-surface);
+    border-color: var(--wb-primary);
+    box-shadow: var(--wb-focus-ring);
+}
+
+.form-control::placeholder {
+    color: var(--wb-text-subtle);
+    opacity: 1;
+}
+
+textarea.form-control {
+    min-height: 110px;
+    resize: vertical;
+}
+
+.form-control:disabled, .form-select:disabled {
+    color: var(--wb-text-muted);
+    background-color: var(--wb-surface-muted);
+}
+
+/* =========================================================
+   CHOICE OPTIONS
+   ========================================================= */
+
+.brand-choice {
+    position: relative;
+}
+
+.brand-choice input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.brand-choice label {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    min-height: 48px;
+    padding: .7rem .85rem;
+    color: var(--wb-text);
+    background: var(--wb-surface);
+    border: 1px solid var(--wb-border);
+    border-radius: var(--wb-radius-sm);
+    cursor: pointer;
+    transition: background-color var(--wb-transition), border-color var(--wb-transition), color var(--wb-transition), box-shadow var(--wb-transition);
+}
+
+.brand-choice label:hover {
+    background: var(--wb-surface-muted);
+    border-color: var(--wb-primary);
+}
+
+.brand-choice input:focus-visible + label {
+    box-shadow: var(--wb-focus-ring);
+}
+
+.brand-choice input:checked + label {
+    color: var(--wb-primary);
+    background: var(--wb-primary-soft);
+    border-color: var(--wb-primary);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--wb-primary) 16%, transparent);
+}
+
+/* =========================================================
+   FORM ACCORDION
+   ========================================================= */
+
+.brand-form-accordion .accordion-item + .accordion-item {
+    margin-top: 0;
+    border-top: 0;
+}
+
+.brand-form-section-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 36px;
+    width: 36px;
+    height: 36px;
+    border-radius: var(--wb-radius-sm);
+    color: var(--wb-primary);
+    background: var(--wb-primary-soft);
+    font-size: .78rem;
+    font-weight: 750;
+    transition: background-color var(--wb-transition), color var(--wb-transition);
+}
+
+.brand-form-accordion .accordion-button:not(.collapsed) .brand-form-section-number {
+    color: #fff;
+    background: var(--wb-primary);
+}
+
+/* Backward-compatible hook if a template uses the shorter class name. */
+
+.brand-form-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 36px;
+    width: 36px;
+    height: 36px;
+    border-radius: var(--wb-radius-sm);
+    color: var(--wb-primary);
+    background: var(--wb-primary-soft);
+    font-size: .78rem;
+    font-weight: 750;
+}
+
+/* =========================================================
+   FORM ACTIONS
+   ========================================================= */
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+
+.btn {
+    min-height: 40px;
+    border-radius: var(--wb-radius-sm);
+    font-weight: 600;
+    transition: transform var(--wb-transition-fast), background-color var(--wb-transition-fast), border-color var(--wb-transition-fast), box-shadow var(--wb-transition-fast), color var(--wb-transition-fast);
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+.btn-primary {
+    --bs-btn-bg: var(--wb-primary);
+    --bs-btn-border-color: var(--wb-primary);
+    --bs-btn-hover-bg: var(--wb-primary-hover);
+    --bs-btn-hover-border-color: var(--wb-primary-hover);
+    --bs-btn-active-bg: var(--wb-primary-hover);
+    --bs-btn-active-border-color: var(--wb-primary-hover);
+    --bs-btn-disabled-bg: var(--wb-primary);
+    --bs-btn-disabled-border-color: var(--wb-primary);
+    box-shadow: 0 5px 12px color-mix(in srgb, var(--wb-primary) 18%, transparent);
+}
+
+.btn-primary:hover {
+    box-shadow: 0 7px 16px color-mix(in srgb, var(--wb-primary) 24%, transparent);
+}
+
+.btn-outline-primary {
+    --bs-btn-color: var(--wb-primary);
+    --bs-btn-border-color: var(--wb-primary);
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: var(--wb-primary);
+    --bs-btn-hover-border-color: var(--wb-primary);
+}
+
+.btn-outline-secondary {
+    --bs-btn-color: var(--wb-text);
+    --bs-btn-border-color: var(--wb-border-strong);
+    --bs-btn-hover-color: var(--wb-text);
+    --bs-btn-hover-bg: var(--wb-surface-muted);
+    --bs-btn-hover-border-color: var(--wb-border-strong);
+}
+
+.btn-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+}
+
+/* =========================================================
+   DASHBOARD, LISTS, AND TABLES
+   ========================================================= */
+
+.dashboard-page {
+    padding-bottom: 3rem;
+}
+
+.list-group-item {
+    color: var(--wb-text);
+    background: var(--wb-surface);
+    border-color: var(--wb-border);
+}
+
+.list-group-item.bg-transparent {
+    background: transparent !important;
+}
+
+.table {
+    --bs-table-color: var(--wb-text);
+    --bs-table-bg: transparent;
+    --bs-table-border-color: var(--wb-border);
+}
+
+.table thead th {
+    color: var(--wb-text-muted);
+    font-size: .75rem;
+    font-weight: 700;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+}
+
+/* =========================================================
+   DROPDOWNS, ALERTS, AND FOOTER
+   ========================================================= */
+
+.dropdown-menu {
+    padding: .4rem;
+    background: var(--wb-surface);
+    border-color: var(--wb-border);
+    border-radius: var(--wb-radius-md);
+    box-shadow: var(--wb-shadow-md);
+}
+
+.dropdown-header {
+    color: var(--wb-text-muted);
+}
+
+.dropdown-item {
+    color: var(--wb-text);
+    border-radius: var(--wb-radius-xs);
+}
+
+.dropdown-item:hover, .dropdown-item:focus {
+    color: var(--wb-text);
+    background: var(--wb-surface-muted);
+}
+
+.dropdown-divider {
+    border-color: var(--wb-border);
+}
+
+.alert {
+    color: var(--wb-text);
+    border-radius: var(--wb-radius-md);
+    border-color: var(--wb-border);
+}
+
+footer {
+    color: var(--wb-text-muted);
+    border-color: var(--wb-border) !important;
+}
+
+.bi {
+    vertical-align: -.125em;
+}
+
+/* =========================================================
+   RESPONSIVE BEHAVIOR
+   ========================================================= */
+
+@media (max-width: 991.98px) {
+    .brand-page, .brand-detail, .brand-form-page {
+        padding-top: 1.25rem;
+        padding-bottom: 2rem;
+    }
+
+    .brand-header {
+        margin-bottom: 1.5rem;
+    }
+
+    .brand-form-actions {
+        position: static;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .brand-header h1 {
+        font-size: 1.75rem;
+    }
+
+    .brand-detail-avatar {
+        width: 58px;
+        height: 58px;
+        font-size: 1.2rem;
+    }
+
+    .brand-hero {
+        padding: 1.25rem;
+    }
+
+    .brand-detail-section {
+        padding: 1.25rem !important;
+    }
+
+    .brand-form-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .brand-form-actions .btn {
+        width: 100%;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .brand-page, .brand-detail, .brand-form-page {
+        padding-top: 1rem;
+    }
+
+    .brand-card, .brand-create-card, .brand-hero, .brand-detail-section, .wb-card, .wb-empty {
+        border-radius: var(--wb-radius-md);
+    }
+
+    .brand-avatar {
+        width: 46px;
+        height: 46px;
+    }
+
+    .brand-detail-avatar {
+        width: 52px;
+        height: 52px;
+    }
+
+    .brand-choice label {
+        min-height: 44px;
+        padding: .65rem .75rem;
+    }
+
+    .brand-form-accordion .accordion-button {
+        min-height: 68px;
+        padding: .9rem 1rem;
+    }
+
+    .brand-form-accordion .accordion-body {
+        padding: 1.25rem;
+    }
+
+    .brand-form-section-number, .brand-form-number {
+        flex-basis: 32px;
+        width: 32px;
+        height: 32px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        scroll-behavior: auto !important;
+        transition-duration: .01ms !important;
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+    }
+}
+
+/* =========================================================
+   DASHBOARD REFINEMENT — MINIMAL / MODERN
+
+   This layer is intentionally placed last so dashboard-specific
+   polish wins over generic Bootstrap and card rules.
+   ========================================================= */
+
+/* Sharper type scale and quieter page rhythm. */
+
+.wb-page > .container-fluid.px-0 {
+    padding-top: .5rem;
+    padding-bottom: 2rem;
+}
+
+.wb-page > .container-fluid.px-0 h1 {
+    margin-bottom: .6rem;
+    font-size: clamp(1.75rem, 2.2vw, 2.25rem);
+    font-weight: 720;
+    letter-spacing: -.045em;
+    line-height: 1.1;
+}
+
+.wb-page > .container-fluid.px-0 h5, .wb-page > .container-fluid.px-0 h6 {
+    letter-spacing: -.02em;
+}
+
+.wb-page > .container-fluid.px-0 .wb-muted {
+    font-size: .9rem;
+    line-height: 1.6;
+}
+
+/* Dashboard sections use a consistent compact vertical rhythm. */
+
+.wb-page > .container-fluid.px-0 > section {
+    margin-bottom: 1.5rem !important;
+}
+
+/* Quick actions: flatter, more editorial cards with a clear hover lift. */
+
+.wb-page > .container-fluid.px-0 > section:nth-of-type(2) .brand-card {
+    position: relative;
+    min-height: 218px;
+    padding: 1.35rem !important;
+    overflow: hidden;
+    background: var(--wb-surface);
+    border-color: var(--wb-border);
+    border-radius: var(--wb-radius-md);
+    box-shadow: none;
+}
+
+
+.wb-page > .container-fluid.px-0 > section:nth-of-type(2) .brand-card:hover {
+    transform: translateY(-3px);
+    border-color: color-mix(in srgb, var(--wb-primary) 34%, var(--wb-border));
+    box-shadow: 0 10px 24px rgb(16 24 40 / .06);
+}
+
+.wb-page > .container-fluid.px-0 > section:nth-of-type(2) .brand-avatar {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 1.25rem !important;
+    border-radius: var(--wb-radius-sm);
+    font-size: .95rem;
+    box-shadow: none;
+}
+
+.wb-page > .container-fluid.px-0 > section:nth-of-type(2) h5 {
+    margin-bottom: .45rem !important;
+    font-size: .98rem;
+    font-weight: 700;
+}
+
+.wb-page > .container-fluid.px-0 > section:nth-of-type(2) p {
+    max-width: 28rem;
+    margin-bottom: 1rem !important;
+    font-size: .84rem;
+}
+
+.wb-page > .container-fluid.px-0 > section:nth-of-type(2) a > .brand-card > span {
+    position: relative;
+    z-index: 1;
+    color: var(--wb-text) !important;
+    font-size: .78rem;
+}
+
+.wb-page > .container-fluid.px-0 > section:nth-of-type(2) a:hover > .brand-card > span {
+    color: var(--wb-primary) !important;
+}
+
+/* Main dashboard panels: remove excess nested-card weight. */
+
+.wb-page > .container-fluid.px-0 .brand-detail-section {
+    overflow: hidden;
+    border-color: var(--wb-border);
+    border-radius: var(--wb-radius-md);
+    box-shadow: none;
+}
+
+.wb-page > .container-fluid.px-0 .brand-detail-section > .p-4, .wb-page > .container-fluid.px-0 .brand-detail-section > .p-4.p-lg-5 {
+    padding: 1.2rem 1.35rem !important;
+}
+
+.wb-page > .container-fluid.px-0 .brand-detail-section h5 {
+    font-size: .96rem;
+    font-weight: 700;
+}
+
+.wb-page > .container-fluid.px-0 .brand-detail-section .list-group-item {
+    padding: 1rem 1.35rem !important;
+    border-color: color-mix(in srgb, var(--wb-border) 72%, transparent);
+}
+
+.wb-page > .container-fluid.px-0 .brand-detail-section .list-group-item:last-child {
+    border-bottom: 0;
+}
+
+.wb-page > .container-fluid.px-0 .brand-detail-section .list-group-item .brand-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: var(--wb-radius-sm);
+    font-size: .86rem;
+    box-shadow: none;
+}
+
+.wb-page > .container-fluid.px-0 .brand-detail-section .list-group-item h6 {
+    font-size: .86rem;
+    line-height: 1.35;
+}
+
+.wb-page > .container-fluid.px-0 .brand-detail-section .list-group-item p {
+    margin-bottom: .65rem !important;
+    font-size: .8rem;
+    line-height: 1.5;
+}
+
+.wb-page > .container-fluid.px-0 .brand-detail-section .list-group-item .btn {
+    min-height: 32px;
+    padding: .3rem .65rem;
+    font-size: .75rem;
+}
+
+/* Content status rows read as a compact data list. */
+
+.wb-page > .container-fluid.px-0 .brand-detail-section > .p-4 > .d-flex {
+    padding-top: .8rem !important;
+    padding-bottom: .8rem !important;
+    border-color: color-mix(in srgb, var(--wb-border) 72%, transparent) !important;
+    font-size: .84rem;
+}
+
+.wb-page > .container-fluid.px-0 .brand-detail-section > .p-4 > .d-flex strong {
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+/* AI insight becomes a quiet callout rather than a large fourth card. */
+
+.wb-page > .container-fluid.px-0 > section:last-child .brand-detail-section {
+    background: color-mix(in srgb, var(--wb-primary-soft) 38%, var(--wb-surface));
+    border-color: color-mix(in srgb, var(--wb-primary) 14%, var(--wb-border));
+}
+
+.wb-page > .container-fluid.px-0 > section:last-child .brand-avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: var(--wb-radius-sm);
+    box-shadow: none;
+}
+
+.wb-page > .container-fluid.px-0 > section:last-child h5 {
+    font-size: .98rem;
+}
+
+.wb-page > .container-fluid.px-0 > section:last-child .small {
+    font-size: .68rem;
+    letter-spacing: .09em;
+}
+
+/* Keep dashboard controls restrained. */
+
+.wb-page > .container-fluid.px-0 .btn-primary {
+    box-shadow: none;
+}
+
+.wb-page > .container-fluid.px-0 .btn-primary:hover {
+    box-shadow: 0 6px 16px color-mix(in srgb, var(--wb-primary) 18%, transparent);
+}
+
+@media (max-width: 767.98px) {
+    .wb-page > .container-fluid.px-0 {
+        padding-top: 0;
+    }
+
+    .wb-page > .container-fluid.px-0 > section:nth-of-type(2) .brand-card {
+        min-height: 0;
+    }
+
+    .wb-page > .container-fluid.px-0 .brand-detail-section > .p-4, .wb-page > .container-fluid.px-0 .brand-detail-section > .p-4.p-lg-5 {
+        padding: 1rem !important;
+    }
+
+    .wb-page > .container-fluid.px-0 .brand-detail-section .list-group-item {
+        padding: .9rem 1rem !important;
+    }
+}
+
+/* =========================================================
+   BRAND BUILDER
+   Live form + overview
+   ========================================================= */
+
+.brand-form-section {
+    max-width: 900px;
+}
+
+.brand-form-card {
+    overflow: hidden;
+}
+
+.brand-form-card .form-control, .brand-form-card .form-select {
+    min-height: 44px;
+}
+
+.brand-form-card textarea.form-control {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.brand-form-card .form-label {
+    color: var(--wb-text);
+}
+
+.brand-form-card .form-text {
+    color: var(--wb-text-muted);
+}
+
+/* =========================================================
+   LIVE OVERVIEW
+   ========================================================= */
+
+.brand-overview {
+    background: var(--wb-surface);
+    border: 1px solid var(--wb-border);
+    border-radius: var(--wb-radius-lg);
+    box-shadow: var(--wb-shadow-sm);
+    overflow: hidden;
+}
+
+.brand-preview-item:last-child {
+    border-bottom: 0;
+}
+
+.brand-preview-label {
+    flex-shrink: 0;
+    color: var(--wb-text-muted);
+    font-size: .8rem;
+}
+
+.brand-preview-value {
+    max-width: 65%;
+    color: var(--wb-text);
+    font-size: .85rem;
+    font-weight: 500;
+    text-align: right;
+    overflow-wrap: anywhere;
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 991.98px) {
+    .brand-overview {
+        position: static !important;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .brand-preview-item {
+        display: block;
+    }
+
+    .brand-preview-label {
+        display: block;
+        margin-bottom: .2rem;
+    }
+
+    .brand-preview-value {
+        display: block;
+        max-width: 100%;
+        text-align: left;
+    }
+}
+
+/* =========================================================
+   BRAND ACCORDION BUILDER
+   ========================================================= */
+
+.brand-form-card .accordion-item {
+    background: transparent;
+    border-color: var(--wb-border);
+}
+
+.brand-form-card .accordion-button {
+    gap: .85rem;
+    padding: 1.25rem 1.5rem;
+    background: var(--wb-surface);
+    color: var(--wb-text);
+    box-shadow: none;
+}
+
+.brand-form-card .accordion-button:not(.collapsed) {
+    color: var(--wb-text);
+    background: var(--wb-surface);
+}
+
+.brand-form-card .accordion-button:focus {
+    box-shadow: none;
+}
+
+.brand-form-card .accordion-button::after {
+    opacity: .6;
+}
+
+.brand-form-card .accordion-body {
+    padding: 1.5rem;
+    background: var(--wb-surface);
+}
+
+.brand-form-card .accordion-button:not(.collapsed) .brand-step-number {
+    background: var(--wb-primary);
+    color: #fff;
+}
+
+.w-fit {
+    width: fit-content;
+}
+
+@media (max-width: 575.98px) {
+    .brand-form-card .accordion-button {
+        padding: 1rem;
+    }
+
+    .brand-form-card .accordion-body {
+        padding: 1.25rem 1rem;
+    }
+
+    .brand-form-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .brand-form-actions .d-flex {
+        width: 100%;
+    }
+
+    .brand-form-actions .btn {
+        flex: 1;
+    }
+}
+
+/* =========================================================
+   BRAND LIST — CARD GRID
+   ========================================================= */
+
+.wb-divider {
+    border-color: var(--wb-border);
+    opacity: 1;
+}
+
+.brand-info-row {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    margin-bottom: 1rem;
+}
+
+.brand-info-row:last-child {
+    margin-bottom: 0;
+}
+
+.brand-info-icon {
+    width: 34px;
+    height: 34px;
+    flex: 0 0 34px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--wb-radius-sm);
+    background: var(--wb-surface-muted);
+    color: var(--wb-text-muted);
+    font-size: .9rem;
+}
+
+.brand-info-label {
+    display: block;
+    color: var(--wb-text-muted);
+    font-size: .72rem;
+    margin-bottom: .1rem;
+}
+
+.brand-info-value {
+    display: block;
+    color: var(--wb-text);
+    font-size: .88rem;
+    font-weight: 500;
+}
+
+/* CREATE CARD */
+
+.brand-create-card {
+    padding: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100%;
+    text-decoration: none;
+    background: var(--wb-surface);
+    border: 1px dashed var(--wb-border);
+    border-radius: var(--wb-radius-lg);
+    color: var(--wb-text);
+    transition: border-color var(--wb-transition),
+        background-color var(--wb-transition),
+        transform var(--wb-transition);
+}
+
+.brand-create-card:hover {
+    box-shadow: var(--wb-shadow-md);
+    color: var(--wb-text);
+    border-color: var(--wb-primary);
+    background: var(--wb-surface-muted);
+    transform: translateY(-2px);
+}
+
+.brand-create-content {
+    padding: 2rem;
+    text-align: center;
+    max-width: 300px;
+}
+
+.brand-create-icon {
+    width: 48px;
+    height: 48px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+    border-radius: 12px;
+    background: var(--wb-surface-muted);
+    color: var(--wb-primary);
+    font-size: 1.1rem;
+}
+
+/* EMPTY */
+
+.brand-empty {
+    padding: 5rem 1.5rem;
+    text-align: center;
+    background: var(--wb-surface);
+    border: 1px dashed var(--wb-border);
+    border-radius: var(--wb-radius-lg);
+}
+
+.brand-empty-icon {
+    width: 56px;
+    height: 56px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.25rem;
+    border-radius: 14px;
+    background: var(--wb-surface-muted);
+    color: var(--wb-primary);
+    font-size: 1.35rem;
+}
+
+/* =========================================================
+   BRAND FORM — ACCORDION + LIVE OVERVIEW
+   ========================================================= */
+
+.wb-form-accordion {
+    --bs-accordion-bg: transparent;
+    --bs-accordion-border-color: var(--wb-border);
+    --bs-accordion-btn-bg: var(--wb-surface-muted);
+    --bs-accordion-active-bg: var(--wb-surface-muted);
+    --bs-accordion-active-color: var(--wb-text);
+}
+
+.wb-form-accordion .accordion-item {
+    background: var(--wb-surface);
+    border: 1px solid var(--wb-border);
+    border-radius: var(--wb-radius-md);
+    overflow: hidden;
+    margin-bottom: .75rem;
+}
+
+.wb-form-accordion .accordion-button {
+    gap: .85rem;
+    color: var(--wb-text);
+    background: var(--wb-surface);
+    box-shadow: none;
+    padding: 1rem 1.1rem;
+}
+
+.wb-form-accordion .accordion-button:not(.collapsed) {
+    color: var(--wb-text);
+    background: var(--wb-surface-muted);
+}
+
+.wb-form-accordion .accordion-button:focus {
+    box-shadow: none;
+}
+
+.wb-form-accordion .accordion-button > span:last-child {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: .15rem;
+}
+
+.wb-form-accordion .accordion-button small {
+    color: var(--wb-text-muted);
+    font-weight: 400;
+}
+
+.wb-step-number {
+    width: 30px;
+    height: 30px;
+    flex: 0 0 30px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: var(--wb-surface-muted);
+    border: 1px solid var(--wb-border);
+    color: var(--wb-text-muted);
+    font-size: .8rem;
+    font-weight: 700;
+}
+
+.wb-form-accordion .accordion-button:not(.collapsed) .wb-step-number {
+    background: var(--wb-primary);
+    border-color: var(--wb-primary);
+    color: #fff;
+}
+
+.wb-form-accordion .accordion-body {
+    padding: 1.25rem;
+    border-top: 1px solid var(--wb-border);
+}
+
+/* =========================================================
+   SELECTABLE OPTION GRID
+   ========================================================= */
+
+.wb-choice-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: .75rem;
+}
+
+.wb-choice {
+    position: relative;
+}
+
+.wb-choice input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.wb-choice-card {
+    min-height: 58px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: .65rem;
+    padding: .75rem;
+    border: 1px solid var(--wb-border);
+    border-radius: var(--wb-radius-sm);
+    background: var(--wb-surface);
+    color: var(--wb-text);
+    cursor: pointer;
+    transition: border-color var(--wb-transition),
+        background-color var(--wb-transition),
+        color var(--wb-transition),
+        transform var(--wb-transition);
+}
+
+.wb-choice-card:hover {
+    border-color: var(--wb-primary);
+    background: var(--wb-surface-muted);
+    transform: translateY(-1px);
+}
+
+.wb-choice-check {
+    width: 20px;
+    height: 20px;
+    flex: 0 0 20px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--wb-border);
+    border-radius: 5px;
+    color: transparent;
+    transition: var(--wb-transition);
+}
+
+.wb-choice input:checked + .wb-choice-card {
+    border-color: var(--wb-primary);
+    background: rgba(124, 58, 237, .08);
+    color: var(--wb-primary);
+}
+
+.wb-choice input:checked + .wb-choice-card .wb-choice-check {
+    background: var(--wb-primary);
+    border-color: var(--wb-primary);
+    color: #fff;
+}
+
+/* =========================================================
+   LIVE OVERVIEW
+   ========================================================= */
+
+.brand-live-overview {
+    background: var(--wb-surface);
+    border: 1px solid var(--wb-border);
+    border-radius: var(--wb-radius-lg);
+    box-shadow: var(--wb-shadow-sm);
+    overflow: hidden;
+}
+
+.brand-live-overview-header {
+    padding: 1.25rem;
+    border-bottom: 1px solid var(--wb-border);
+}
+
+.brand-preview-identity {
+    border-bottom: 1px solid var(--wb-border);
+    display: flex;
+    align-items: center;
+    gap: .85rem;
+    padding: 1.25rem;
+}
+
+.brand-preview-avatar {
+    width: 48px;
+    height: 48px;
+    flex: 0 0 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 13px;
+    background: linear-gradient(
+        135deg,
+        var(--wb-primary),
+        var(--wb-secondary)
+    );
+    color: #fff;
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.brand-preview-details {
+    margin: 0 1.25rem;
+    padding: .9rem 0;
+    border-top: 1px solid var(--wb-border);
+    border-bottom: 1px solid var(--wb-border);
+}
+
+.brand-preview-item {
+    border-bottom: 1px solid var(--wb-border);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: .65rem 0;
+}
+
+.brand-preview-item span {
+    color: var(--wb-text-muted);
+    font-size: .8rem;
+}
+
+.brand-preview-item strong {
+    max-width: 60%;
+    text-align: right;
+    font-size: .85rem;
+    font-weight: 600;
+    overflow-wrap: anywhere;
+}
+
+.brand-preview-section {
+    padding: 1.1rem 1.25rem;
+    border-bottom: 1px solid var(--wb-border);
+}
+
+.brand-preview-section-title {
+    margin-bottom: .65rem;
+    color: var(--wb-text-muted);
+    font-size: .75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+}
+
+.brand-preview-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .4rem;
+}
+
+.wb-preview-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: .35rem .6rem;
+    border-radius: 999px;
+    background: var(--wb-surface-muted);
+    border: 1px solid var(--wb-border);
+    color: var(--wb-text);
+    font-size: .75rem;
+    font-weight: 500;
+}
+
+.wb-preview-empty {
+    color: var(--wb-text-muted);
+    font-size: .8rem;
+}
+
+.brand-preview-footer {
+    padding: .9rem 1.25rem;
+    color: var(--wb-text-muted);
+    background: var(--wb-surface-muted);
+    font-size: .75rem;
+}
+
+/* =========================================================
+   FORM HELP
+   ========================================================= */
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1199.98px) {
+    .brand-live-overview {
+        position: static !important;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .wb-choice-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .brand-live-overview {
+        margin-top: .5rem;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .wb-choice-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .wb-form-accordion .accordion-body {
+        padding: 1rem;
+    }
+
+    .brand-preview-item {
+        display: block;
+    }
+
+    .brand-preview-item strong {
+        display: block;
+        max-width: 100%;
+        margin-top: .15rem;
+        text-align: left;
+    }
+}
+
+/* =========================================================
+   BRAND FORM BUILDER
+   ========================================================= */
+
+.brand-form-page {
+    padding: 1.5rem 0 3rem;
+}
+
+.brand-form-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1.5rem;
+}
+
+.brand-form-eyebrow {
+    display: block;
+    margin-bottom: .35rem;
+    color: var(--wb-primary);
+    font-size: .75rem;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+/* =========================================================
+   ACCORDION
+   ========================================================= */
+
+.brand-form-accordion {
+    --bs-accordion-bg: var(--wb-surface);
+    --bs-accordion-color: var(--wb-text);
+    --bs-accordion-border-color: var(--wb-border);
+    --bs-accordion-btn-bg: var(--wb-surface);
+    --bs-accordion-btn-color: var(--wb-text);
+    --bs-accordion-active-bg: var(--wb-surface);
+    --bs-accordion-active-color: var(--wb-text);
+    overflow: hidden;
+    border: 1px solid var(--wb-border);
+    border-radius: var(--wb-radius-lg);
+    box-shadow: var(--wb-shadow-sm);
+    display: flex;
+    flex-direction: column;
+    gap: .75rem;
+}
+
+.brand-form-accordion .accordion-item {
+    border-color: var(--wb-border);
+    overflow: hidden;
+    background: var(--wb-surface);
+    border: 1px solid var(--wb-border);
+    border-radius: var(--wb-radius-lg);
+    box-shadow: var(--wb-shadow-sm);
+}
+
+.brand-form-accordion .accordion-button {
+    min-height: 76px;
+    font-weight: 650;
+    gap: .9rem;
+    padding: 1.15rem 1.25rem;
+    background: var(--wb-surface);
+    color: var(--wb-text);
+    box-shadow: none;
+}
+
+.brand-form-accordion .accordion-button:not(.collapsed) {
+    color: var(--wb-text);
+    background: var(--wb-surface);
+    box-shadow: none;
+}
+
+.brand-form-accordion .accordion-button::after {
+    background-size: .9rem;
+    opacity: .65;
+}
+
+.brand-form-accordion .accordion-body {
+    padding: 1.25rem;
+    border-top: 1px solid var(--wb-border);
+}
+
+.brand-form-accordion .accordion-button:focus {
+    box-shadow: 0 0 0 .2rem rgba(124, 58, 237, .1);
+}
+
+.brand-step-number {
+    flex: 0 0 32px;
+    transition: background-color var(--wb-transition),
+        color var(--wb-transition);
+    width: 34px;
+    height: 34px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border: 1px solid var(--wb-border);
+    border-radius: var(--wb-radius-sm);
+    background: var(--wb-surface-muted);
+    color: var(--wb-text-muted);
+    font-size: .75rem;
+    font-weight: 700;
+}
+
+.accordion-button:not(.collapsed) .brand-step-number {
+    border-color: var(--wb-primary);
+    background: var(--wb-primary);
+    color: #fff;
+}
+
+.brand-form-accordion .accordion-button span:last-child {
+    display: flex;
+    flex-direction: column;
+    gap: .15rem;
+    min-width: 0;
+}
+
+.brand-form-accordion .accordion-button strong {
+    font-size: .95rem;
+}
+
+.brand-form-accordion .accordion-button small {
+    color: var(--wb-text-muted);
+    font-size: .78rem;
+    font-weight: 400;
+}
+
+/* =========================================================
+   FORM
+   ========================================================= */
+
+.brand-form-accordion .form-label {
+    margin-bottom: .5rem;
+    color: var(--wb-text);
+    font-size: .85rem;
+    font-weight: 600;
+}
+
+.brand-form-help {
+    margin-top: .4rem;
+    color: var(--wb-text-muted);
+    font-size: .78rem;
+}
+
+/* =========================================================
+   OPTION GRID
+   Three options per row
+   ========================================================= */
+
+.brand-option-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: .75rem;
+}
+
+.brand-option {
+    position: relative;
+}
+
+.brand-option input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+}
+
+.brand-option label {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: .65rem;
+    min-height: 52px;
+    width: 100%;
+    padding: .7rem .8rem;
+    background: var(--wb-surface);
+    border: 1px solid var(--wb-border);
+    border-radius: var(--wb-radius-md);
+    color: var(--wb-text);
+    cursor: pointer;
+    transition: border-color var(--wb-transition),
+        background-color var(--wb-transition),
+        box-shadow var(--wb-transition);
+}
+
+.brand-option label:hover {
+    border-color: var(--wb-primary);
+    background: var(--wb-surface-muted);
+}
+
+.brand-option input:checked + label {
+    border-color: var(--wb-primary);
+    background: color-mix(
+        in srgb,
+        var(--wb-primary) 9%,
+        var(--wb-surface)
+    );
+    color: var(--wb-primary);
+    box-shadow: 0 0 0 1px var(--wb-primary);
+}
+
+.brand-option-check {
+    width: 22px;
+    height: 22px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border: 1px solid var(--wb-border);
+    border-radius: 6px;
+    background: var(--wb-surface);
+    color: transparent;
+    font-size: .7rem;
+    transition: background-color var(--wb-transition),
+        border-color var(--wb-transition),
+        color var(--wb-transition);
+}
+
+.brand-option input:checked + label .brand-option-check {
+    border-color: var(--wb-primary);
+    background: var(--wb-primary);
+    color: #fff;
+}
+
+/* =========================================================
+   FORM ACTIONS
+   ========================================================= */
+
+.brand-form-actions {
+    position: sticky;
+    bottom: 1rem;
+    z-index: 10;
+    border: 1px solid var(--wb-border);
+    border-radius: var(--wb-radius-md);
+    box-shadow: var(--wb-shadow-md);
+    backdrop-filter: blur(12px);
+    align-items: center;
+    padding: 1.25rem 1.5rem;
+    border-top: 1px solid var(--wb-border);
+    background: var(--wb-surface);
+    display: flex;
+    justify-content: flex-end;
+    gap: .75rem;
+}
+
+/* =========================================================
+   LIVE OVERVIEW
+   ========================================================= */
+
+.brand-overview-card {
+    overflow: hidden;
+    background: var(--wb-surface);
+    border: 1px solid var(--wb-border);
+    border-radius: var(--wb-radius-lg);
+    box-shadow: var(--wb-shadow-sm);
+}
+
+.brand-overview-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.25rem;
+    border-bottom: 1px solid var(--wb-border);
+}
+
+.brand-overview-status {
+    padding: .3rem .6rem;
+    border-radius: 999px;
+    background: var(--wb-surface-muted);
+    color: var(--wb-text-muted);
+    font-size: .7rem;
+    font-weight: 600;
+}
+
+/* =========================================================
+   PREVIEW
+   ========================================================= */
+
+.brand-overview-preview {
+    display: flex;
+    align-items: center;
+    gap: .85rem;
+    margin: 1rem;
+    padding: 1rem;
+    background: var(--wb-surface-muted);
+    border: 1px solid var(--wb-border);
+    border-radius: var(--wb-radius-md);
+}
+
+.brand-overview-avatar {
+    width: 46px;
+    height: 46px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border-radius: var(--wb-radius-md);
+    background: linear-gradient(
+        135deg,
+        var(--wb-primary),
+        var(--wb-secondary)
+    );
+    color: #fff;
+    font-weight: 700;
+}
+
+/* =========================================================
+   OVERVIEW DETAILS
+   ========================================================= */
+
+.brand-overview-list {
+    padding: 0 1.25rem;
+}
+
+.brand-overview-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: .75rem 0;
+    border-bottom: 1px solid var(--wb-border);
+}
+
+.brand-overview-row:last-child {
+    border-bottom: 0;
+}
+
+.brand-overview-row span {
+    color: var(--wb-text-muted);
+    font-size: .78rem;
+}
+
+.brand-overview-row strong {
+    max-width: 60%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--wb-text);
+    font-size: .8rem;
+    font-weight: 600;
+    text-align: right;
+}
+
+/* =========================================================
+   WORKBEAM PROGRESS
+   ========================================================= */
+
+.brand-progress-area {
+    margin-top: .75rem;
+    padding: 1rem 1.1rem;
+    color: var(--wb-text);
+    background: color-mix(in srgb, var(--wb-surface-muted) 42%, transparent);
+    border: 1px solid var(--wb-border);
+    border-radius: var(--wb-radius-md);
+}
+
+.brand-progress-area > .d-flex {
+    margin-bottom: .65rem !important;
+}
+
+.brand-progress-area > .d-flex .small {
+    font-size: .76rem;
+    line-height: 1.35;
+}
+
+#progressText {
+    min-width: 2.75rem;
+    color: var(--wb-primary) !important;
+    font-variant-numeric: tabular-nums;
+    font-weight: 650 !important;
+    text-align: right;
+}
+
+/* The template uses .progress.brand-progress as the track. */
+.brand-progress.progress {
+    --bs-progress-bg: var(--wb-surface-muted);
+    --bs-progress-bar-bg: var(--wb-primary);
+    --bs-progress-border-radius: var(--wb-radius-pill);
+
+    display: block;
+    width: 100%;
+    height: 9px;
+    min-height: 9px;
+    overflow: hidden;
+    background-color: var(--wb-surface-muted) !important;
+    border: 1px solid color-mix(in srgb, var(--wb-border) 82%, transparent);
+    border-radius: var(--wb-radius-pill);
+    box-shadow: inset 0 1px 2px rgb(16 24 40 / .06);
+}
+
+.brand-progress.progress > .progress-bar,
+#brandProgressBar.progress-bar {
+    position: relative;
+    display: block;
+    width: 0%;
+    height: 100%;
+    min-width: 0;
+    overflow: hidden;
+    flex: 0 0 auto;
+    background-color: var(--wb-primary) !important;
+    background-image: linear-gradient(90deg, var(--wb-primary), var(--wb-secondary)) !important;
+    border-radius: inherit;
+    transition: width 420ms cubic-bezier(.22, 1, .36, 1), background-color var(--wb-transition);
+    will-change: width;
+}
+
+#brandProgressBar::after {
+    content: "";
+    position: absolute;
+    inset: 1px 0 auto;
+    height: 35%;
+    border-radius: inherit;
+    background: rgb(255 255 255 / .28);
+    pointer-events: none;
+}
+
+#progressMessage {
+    margin-top: .65rem !important;
+    margin-bottom: 0 !important;
+    color: var(--wb-text-muted) !important;
+    font-size: .75rem;
+    line-height: 1.45;
+}
+
+.brand-progress.progress[aria-valuenow="100"] > .progress-bar,
+.brand-progress.progress[aria-valuenow="100"] #brandProgressBar {
+    background-color: var(--wb-success) !important;
+    background-image: linear-gradient(90deg, var(--wb-success), #36b879) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .brand-progress.progress > .progress-bar,
+    #brandProgressBar {
+        transition: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .brand-progress-area {
+        padding-right: 1rem;
+        padding-left: 1rem;
+    }
+
+    .brand-progress.progress {
+        height: 8px;
+        min-height: 8px;
+    }
+}
+
+/* =========================================================
+   DARK MODE SAFETY
+   ========================================================= */
+
+[data-bs-theme="dark"] .brand-option input:checked + label {
+    background: color-mix(
+        in srgb,
+        var(--wb-primary) 14%,
+        var(--wb-surface)
+    );
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1199.98px) {
+    .brand-overview-card {
+        position: static !important;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .brand-form-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .brand-form-header .btn {
+        width: 100%;
+    }
+
+    .brand-option-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .brand-form-actions {
+        flex-direction: column-reverse;
+    }
+
+    .brand-form-actions .btn {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .brand-option-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .brand-form-accordion .accordion-button {
+        padding: 1rem;
+    }
+
+    .brand-form-accordion .accordion-body {
+        padding: 1rem;
+    }
+
+    .brand-overview-header, .brand-overview-list, .brand-progress-area {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+}

@@ -1,0 +1,273 @@
+{% extends "base.html" %}
+
+{% block title %}My Brands — Workbeam{% endblock %}
+
+{% block content %}
+
+<div class="brand-page">
+
+    <!-- PAGE HEADER -->
+    <div class="brand-header d-flex flex-column flex-md-row
+                align-items-md-end justify-content-between gap-3">
+
+        <div>
+            <span class="small text-uppercase fw-semibold text-muted">
+                Brand workspace
+            </span>
+
+            <h1 class="h2 mb-2 mt-1">
+                My Brands
+            </h1>
+
+            <p class="mb-0">
+                Manage the brands Workbeam uses to understand
+                your audience, goals and content direction.
+            </p>
+        </div>
+
+        <a href="{% url 'brands:create' %}"
+           class="btn btn-primary">
+
+            <i class="bi bi-plus-lg me-2"></i>
+            Create Brand
+
+        </a>
+
+    </div>
+
+
+    {% if brands %}
+
+        <!-- BRAND GRID -->
+        <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
+
+            {% for brand in brands %}
+
+                <div class="col">
+
+                    <article class="brand-card h-100">
+
+                        <div class="p-4 d-flex flex-column h-100">
+
+                            <!-- CARD HEADER -->
+                            <div class="d-flex align-items-start
+                                        justify-content-between gap-3">
+
+                                <div class="d-flex align-items-center gap-3">
+
+                                    <div class="brand-avatar">
+                                        {{ brand.name|first|upper }}
+                                    </div>
+
+                                    <div class="min-w-0">
+
+                                        <h2 class="brand-card-title text-truncate">
+                                            {{ brand.name }}
+                                        </h2>
+
+                                        <div class="brand-card-meta">
+                                            {{ brand.get_brand_type_display }}
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+
+                                {% if brand.is_active %}
+
+                                    <span class="wb-status wb-status-active">
+                                        Active
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="wb-status wb-status-inactive">
+                                        Inactive
+                                    </span>
+
+                                {% endif %}
+
+                            </div>
+
+
+                            <!-- DIVIDER -->
+                            <hr class="wb-divider my-4">
+
+
+                            <!-- BRAND INFORMATION -->
+                            <div class="brand-card-info mb-4">
+
+                                {% if brand.industry %}
+
+                                    <div class="brand-info-row">
+
+                                        <div class="brand-info-icon">
+                                            <i class="bi bi-grid"></i>
+                                        </div>
+
+                                        <div class="min-w-0">
+
+                                            <span class="brand-info-label">
+                                                Industry
+                                            </span>
+
+                                            <span class="brand-info-value text-truncate">
+                                                {{ brand.industry }}
+                                            </span>
+
+                                        </div>
+
+                                    </div>
+
+                                {% endif %}
+
+
+                                {% if brand.niche %}
+
+                                    <div class="brand-info-row">
+
+                                        <div class="brand-info-icon">
+                                            <i class="bi bi-bullseye"></i>
+                                        </div>
+
+                                        <div class="min-w-0">
+
+                                            <span class="brand-info-label">
+                                                Niche
+                                            </span>
+
+                                            <span class="brand-info-value text-truncate">
+                                                {{ brand.niche }}
+                                            </span>
+
+                                        </div>
+
+                                    </div>
+
+                                {% endif %}
+
+                            </div>
+
+
+                            <!-- GOAL -->
+                            {% if brand.primary_goal %}
+
+                                <div class="brand-card-goal mb-4">
+
+                                    <span class="brand-card-goal-label">
+                                        Primary goal
+                                    </span>
+
+                                    <strong>
+                                        {{ brand.get_primary_goal_display }}
+                                    </strong>
+
+                                </div>
+
+                            {% endif %}
+
+
+                            <!-- ACTIONS -->
+                            <div class="mt-auto d-flex gap-2">
+
+                                <a href="{% url 'brands:detail' brand.pk %}"
+                                   class="btn btn-primary flex-grow-1">
+
+                                    Open Brand
+
+                                    <i class="bi bi-arrow-right ms-2"></i>
+
+                                </a>
+
+                                <a href="{% url 'brands:update' brand.pk %}"
+                                   class="btn btn-outline-secondary btn-icon"
+                                   title="Edit brand">
+
+                                    <i class="bi bi-pencil"></i>
+
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </article>
+
+                </div>
+
+            {% endfor %}
+
+
+            <!-- CREATE ANOTHER -->
+            <div class="col">
+
+                <a href="{% url 'brands:create' %}"
+                   class="brand-create-card h-100">
+
+                    <div class="brand-create-content">
+
+                        <div class="brand-create-icon">
+                            <i class="bi bi-plus-lg"></i>
+                        </div>
+
+                        <h2 class="h5 fw-semibold mb-2">
+                            Create another brand
+                        </h2>
+
+                        <p class="small text-muted mb-4">
+                            Create a separate workspace for another
+                            brand, business or personal project.
+                        </p>
+
+                        <span class="btn btn-outline-primary">
+                            Create Brand
+                            <i class="bi bi-arrow-right ms-1"></i>
+                        </span>
+
+                    </div>
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+    {% else %}
+
+        <!-- EMPTY STATE -->
+        <div class="brand-empty">
+
+            <div class="brand-empty-icon">
+                <i class="bi bi-briefcase"></i>
+            </div>
+
+            <h2 class="h4 fw-semibold mb-2">
+                No brands yet
+            </h2>
+
+            <p class="text-muted mx-auto mb-4"
+               style="max-width: 520px;">
+
+                Create your first brand workspace and give Workbeam
+                the context it needs to help with your content,
+                research and strategy.
+
+            </p>
+
+            <a href="{% url 'brands:create' %}"
+               class="btn btn-primary px-4">
+
+                <i class="bi bi-plus-lg me-2"></i>
+                Create your first brand
+
+            </a>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

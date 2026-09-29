@@ -1,0 +1,1197 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {% if object %}
+        Edit {{ object.name }} — Workbeam
+    {% else %}
+        Create Brand — Workbeam
+    {% endif %}
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container-fluid px-3 px-lg-4 py-4">
+
+    <!-- =====================================================
+         PAGE HEADER
+         ===================================================== -->
+
+    <div class="mb-4">
+
+        <div class="d-flex align-items-center gap-2 mb-2">
+
+            <a
+                href="{% url 'brands:list' %}"
+                class="btn btn-sm btn-outline-secondary"
+            >
+                <i class="bi bi-arrow-left"></i>
+            </a>
+
+            <span class="small text-muted">
+                Brands
+            </span>
+
+        </div>
+
+        <h1 class="h3 fw-bold mb-1">
+            {% if object %}
+                Edit brand
+            {% else %}
+                Create a brand
+            {% endif %}
+        </h1>
+
+        <p class="text-muted mb-0">
+            {% if object %}
+                Update your brand information and keep Workbeam's context accurate.
+            {% else %}
+                Give Workbeam the context it needs to create more relevant content and strategy.
+            {% endif %}
+        </p>
+
+    </div>
+
+
+    <!-- =====================================================
+         FORM + LIVE OVERVIEW
+         ===================================================== -->
+
+    <div class="row g-4 align-items-start">
+
+
+        <!-- =================================================
+             FORM
+             ================================================= -->
+
+        <div class="col-xl-8">
+
+            <form
+                method="post"
+                novalidate
+                id="brandForm"
+            >
+
+                {% csrf_token %}
+
+
+                <!-- =========================================
+                     ACCORDION
+                     ========================================= -->
+
+                <div
+                    class="accordion"
+                    id="brandFormAccordion"
+                >
+
+
+                    <!-- =====================================
+                         1. BRAND IDENTITY
+                         ===================================== -->
+
+                    <div class="accordion-item border rounded-3 mb-3 overflow-hidden">
+
+                        <h2
+                            class="accordion-header"
+                            id="headingIdentity"
+                        >
+
+                            <button
+                                class="accordion-button"
+                                type="button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#collapseIdentity"
+                                aria-expanded="true"
+                                aria-controls="collapseIdentity"
+                            >
+
+                                <span class="d-flex align-items-center gap-3">
+
+                                    <span class="fw-semibold">
+                                        1
+                                    </span>
+
+                                    <span>
+                                        <strong class="d-block">
+                                            Brand identity
+                                        </strong>
+
+                                        <small class="text-muted">
+                                            Tell us what this brand is.
+                                        </small>
+                                    </span>
+
+                                </span>
+
+                            </button>
+
+                        </h2>
+
+
+                        <div
+                            id="collapseIdentity"
+                            class="accordion-collapse collapse show"
+                            aria-labelledby="headingIdentity"
+                            data-bs-parent="#brandFormAccordion"
+                        >
+
+                            <div class="accordion-body p-4">
+
+                                <div class="row g-4">
+
+
+                                    <!-- Brand name -->
+
+                                    <div class="col-12">
+
+                                        <label
+                                            for="{{ form.name.id_for_label }}"
+                                            class="form-label"
+                                        >
+                                            Brand name
+                                        </label>
+
+                                        {{ form.name }}
+
+                                        {% if form.name.errors %}
+                                            <div class="invalid-feedback d-block">
+                                                {{ form.name.errors|striptags }}
+                                            </div>
+                                        {% endif %}
+
+                                    </div>
+
+
+                                    <!-- Brand type -->
+
+                                    <div class="col-md-6">
+
+                                        <label
+                                            for="{{ form.brand_type.id_for_label }}"
+                                            class="form-label"
+                                        >
+                                            Brand type
+                                        </label>
+
+                                        {{ form.brand_type }}
+
+                                        {% if form.brand_type.errors %}
+                                            <div class="invalid-feedback d-block">
+                                                {{ form.brand_type.errors|striptags }}
+                                            </div>
+                                        {% endif %}
+
+                                    </div>
+
+
+                                    <!-- Industry -->
+
+                                    <div class="col-md-6">
+
+                                        <label
+                                            for="{{ form.industry.id_for_label }}"
+                                            class="form-label"
+                                        >
+                                            Industry
+                                        </label>
+
+                                        {{ form.industry }}
+
+                                        {% if form.industry.errors %}
+                                            <div class="invalid-feedback d-block">
+                                                {{ form.industry.errors|striptags }}
+                                            </div>
+                                        {% endif %}
+
+                                    </div>
+
+
+                                    <!-- Niche -->
+
+                                    <div class="col-12">
+
+                                        <label
+                                            for="{{ form.niche.id_for_label }}"
+                                            class="form-label"
+                                        >
+                                            Niche
+                                        </label>
+
+                                        {{ form.niche }}
+
+                                        {% if form.niche.errors %}
+                                            <div class="invalid-feedback d-block">
+                                                {{ form.niche.errors|striptags }}
+                                            </div>
+                                        {% endif %}
+
+                                        <div class="form-text">
+                                            Be specific about the market or area this brand focuses on.
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =====================================
+                         2. GOALS
+                         ===================================== -->
+
+                    <div class="accordion-item border rounded-3 mb-3 overflow-hidden">
+
+                        <h2
+                            class="accordion-header"
+                            id="headingGoals"
+                        >
+
+                            <button
+                                class="accordion-button collapsed"
+                                type="button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#collapseGoals"
+                                aria-expanded="false"
+                                aria-controls="collapseGoals"
+                            >
+
+                                <span class="d-flex align-items-center gap-3">
+
+                                    <span class="fw-semibold">
+                                        2
+                                    </span>
+
+                                    <span>
+                                        <strong class="d-block">
+                                            Goals
+                                        </strong>
+
+                                        <small class="text-muted">
+                                            Define what the brand wants to achieve.
+                                        </small>
+                                    </span>
+
+                                </span>
+
+                            </button>
+
+                        </h2>
+
+
+                        <div
+                            id="collapseGoals"
+                            class="accordion-collapse collapse"
+                            aria-labelledby="headingGoals"
+                            data-bs-parent="#brandFormAccordion"
+                        >
+
+                            <div class="accordion-body p-4">
+
+                                <label
+                                    for="{{ form.primary_goal.id_for_label }}"
+                                    class="form-label"
+                                >
+                                    Primary goal
+                                </label>
+
+                                {{ form.primary_goal }}
+
+                                {% if form.primary_goal.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ form.primary_goal.errors|striptags }}
+                                    </div>
+                                {% endif %}
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =====================================
+                         3. TARGET AUDIENCE
+                         ===================================== -->
+
+                    <div class="accordion-item border rounded-3 mb-3 overflow-hidden">
+
+                        <h2
+                            class="accordion-header"
+                            id="headingAudience"
+                        >
+
+                            <button
+                                class="accordion-button collapsed"
+                                type="button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#collapseAudience"
+                                aria-expanded="false"
+                                aria-controls="collapseAudience"
+                            >
+
+                                <span class="d-flex align-items-center gap-3">
+
+                                    <span class="fw-semibold">
+                                        3
+                                    </span>
+
+                                    <span>
+                                        <strong class="d-block">
+                                            Target audience
+                                        </strong>
+
+                                        <small class="text-muted">
+                                            Tell Workbeam who the content is for.
+                                        </small>
+                                    </span>
+
+                                </span>
+
+                            </button>
+
+                        </h2>
+
+
+                        <div
+                            id="collapseAudience"
+                            class="accordion-collapse collapse"
+                            aria-labelledby="headingAudience"
+                            data-bs-parent="#brandFormAccordion"
+                        >
+
+                            <div class="accordion-body p-4">
+
+                                <label class="form-label">
+                                    Target audience
+                                </label>
+
+                                <div class="row g-3">
+
+                                    {% for choice in form.target_audience %}
+
+                                        <div class="col-12 col-md-6 col-lg-4">
+
+                                            <div class="brand-choice">
+
+                                                {{ choice.tag }}
+
+                                                <label
+                                                    for="{{ choice.id_for_label }}"
+                                                >
+                                                    <span>
+                                                        {{ choice.choice_label }}
+                                                    </span>
+                                                </label>
+
+                                            </div>
+
+                                        </div>
+
+                                    {% endfor %}
+
+                                </div>
+
+                                {% if form.target_audience.errors %}
+                                    <div class="invalid-feedback d-block mt-2">
+                                        {{ form.target_audience.errors|striptags }}
+                                    </div>
+                                {% endif %}
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =====================================
+                         4. PLATFORMS
+                         ===================================== -->
+
+                    <div class="accordion-item border rounded-3 mb-3 overflow-hidden">
+
+                        <h2
+                            class="accordion-header"
+                            id="headingPlatforms"
+                        >
+
+                            <button
+                                class="accordion-button collapsed"
+                                type="button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#collapsePlatforms"
+                                aria-expanded="false"
+                                aria-controls="collapsePlatforms"
+                            >
+
+                                <span class="d-flex align-items-center gap-3">
+
+                                    <span class="fw-semibold">
+                                        4
+                                    </span>
+
+                                    <span>
+                                        <strong class="d-block">
+                                            Content platforms
+                                        </strong>
+
+                                        <small class="text-muted">
+                                            Choose where your content will be published.
+                                        </small>
+                                    </span>
+
+                                </span>
+
+                            </button>
+
+                        </h2>
+
+
+                        <div
+                            id="collapsePlatforms"
+                            class="accordion-collapse collapse"
+                            aria-labelledby="headingPlatforms"
+                            data-bs-parent="#brandFormAccordion"
+                        >
+
+                            <div class="accordion-body p-4">
+
+                                <label class="form-label">
+                                    Platforms
+                                </label>
+
+                                <div class="row g-3">
+
+                                    {% for choice in form.platforms %}
+
+                                        <div class="col-12 col-md-6 col-lg-4">
+
+                                            <div class="brand-choice">
+
+                                                {{ choice.tag }}
+
+                                                <label
+                                                    for="{{ choice.id_for_label }}"
+                                                >
+                                                    <span>
+                                                        {{ choice.choice_label }}
+                                                    </span>
+                                                </label>
+
+                                            </div>
+
+                                        </div>
+
+                                    {% endfor %}
+
+                                </div>
+
+                                {% if form.platforms.errors %}
+                                    <div class="invalid-feedback d-block mt-2">
+                                        {{ form.platforms.errors|striptags }}
+                                    </div>
+                                {% endif %}
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =====================================
+                         5. ADDITIONAL CONTEXT
+                         ===================================== -->
+
+                    <div class="accordion-item border rounded-3 mb-3 overflow-hidden">
+
+                        <h2
+                            class="accordion-header"
+                            id="headingAdditional"
+                        >
+
+                            <button
+                                class="accordion-button collapsed"
+                                type="button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#collapseAdditional"
+                                aria-expanded="false"
+                                aria-controls="collapseAdditional"
+                            >
+
+                                <span class="d-flex align-items-center gap-3">
+
+                                    <span class="fw-semibold">
+                                        5
+                                    </span>
+
+                                    <span>
+                                        <strong class="d-block">
+                                            Additional context
+                                        </strong>
+
+                                        <small class="text-muted">
+                                            Anything else Workbeam should know.
+                                        </small>
+                                    </span>
+
+                                </span>
+
+                            </button>
+
+                        </h2>
+
+
+                        <div
+                            id="collapseAdditional"
+                            class="accordion-collapse collapse"
+                            aria-labelledby="headingAdditional"
+                            data-bs-parent="#brandFormAccordion"
+                        >
+
+                            <div class="accordion-body p-4">
+
+                                <label
+                                    for="{{ form.additional_information.id_for_label }}"
+                                    class="form-label"
+                                >
+                                    Additional information
+                                </label>
+
+                                {{ form.additional_information }}
+
+                                {% if form.additional_information.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ form.additional_information.errors|striptags }}
+                                    </div>
+                                {% endif %}
+
+                                <div class="form-text">
+                                    Add information about your voice, positioning,
+                                    competitors, products, services or anything
+                                    else that may help Workbeam understand the brand.
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =====================================
+                         ACTIONS
+                         ===================================== -->
+
+                    <div class="d-flex flex-column flex-sm-row justify-content-end gap-2 mt-4">
+
+                        <a
+                            href="{% url 'brands:list' %}"
+                            class="btn btn-outline-secondary"
+                        >
+                            Cancel
+                        </a>
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary px-4"
+                        >
+                            {% if object %}
+                                <i class="bi bi-check-lg me-2"></i>
+                                Save changes
+                            {% else %}
+                                <i class="bi bi-check-lg me-2"></i>
+                                Create brand
+                            {% endif %}
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </form>
+
+        </div>
+
+
+        <!-- =================================================
+             LIVE OVERVIEW
+             ================================================= -->
+
+        <div class="col-xl-4">
+
+            <div
+                class="brand-form-card p-4 sticky-xl-top"
+                style="top: 88px;"
+            >
+
+                <!-- Overview heading -->
+
+                <div class="mb-4">
+
+                    <div class="small text-uppercase text-muted fw-semibold mb-1">
+                        Live overview
+                    </div>
+
+                    <h2 class="h5 fw-bold mb-1">
+                        Your brand profile
+                    </h2>
+
+                    <p class="small text-muted mb-0">
+                        Your overview updates as you complete the form.
+                    </p>
+
+                </div>
+
+
+                <!-- Brand identity -->
+
+                <div class="d-flex align-items-center gap-3 mb-4">
+
+                    <div class="brand-detail-avatar">
+                        <span id="overviewInitial">
+                            ?
+                        </span>
+                    </div>
+
+                    <div class="min-w-0">
+
+                        <div
+                            id="overviewName"
+                            class="fw-semibold text-truncate"
+                        >
+                            Your brand
+                        </div>
+
+                        <div
+                            id="overviewType"
+                            class="small text-muted"
+                        >
+                            Brand type
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Overview details -->
+
+                <div class="d-flex flex-column gap-3">
+
+                    <div>
+
+                        <div class="small text-muted mb-1">
+                            Industry
+                        </div>
+
+                        <div
+                            id="overviewIndustry"
+                            class="small fw-medium"
+                        >
+                            Not selected
+                        </div>
+
+                    </div>
+
+
+                    <div>
+
+                        <div class="small text-muted mb-1">
+                            Niche
+                        </div>
+
+                        <div
+                            id="overviewNiche"
+                            class="small fw-medium"
+                        >
+                            Not specified
+                        </div>
+
+                    </div>
+
+
+                    <div>
+
+                        <div class="small text-muted mb-1">
+                            Primary goal
+                        </div>
+
+                        <div
+                            id="overviewGoal"
+                            class="small fw-medium"
+                        >
+                            Not selected
+                        </div>
+
+                    </div>
+
+
+                    <div>
+
+                        <div class="small text-muted mb-1">
+                            Audience
+                        </div>
+
+                        <div
+                            id="overviewAudience"
+                            class="small fw-medium"
+                        >
+                            Not selected
+                        </div>
+
+                    </div>
+
+
+                    <div>
+
+                        <div class="small text-muted mb-1">
+                            Platforms
+                        </div>
+
+                        <div
+                            id="overviewPlatforms"
+                            class="small fw-medium"
+                        >
+                            Not selected
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     PROFILE PROGRESS
+                     ================================================= -->
+
+                <div class="mt-4 pt-4 border-top">
+
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+
+                        <span class="small fw-semibold">
+                            Profile progress
+                        </span>
+
+                        <span
+                            id="progressText"
+                            class="small fw-semibold"
+                        >
+                            0%
+                        </span>
+
+                    </div>
+
+
+                    <div
+                        class="progress"
+                        role="progressbar"
+                        aria-label="Brand profile completion"
+                        aria-valuenow="0"
+                        aria-valuemin="0"
+                        aria-valuemax="100"
+                    >
+
+                        <div
+                            id="brandProgressBar"
+                            class="progress-bar progress-bar-striped progress-bar-animated"
+                            style="width: 0%;"
+                        ></div>
+
+                    </div>
+
+
+                    <p
+                        id="progressMessage"
+                        class="small text-muted mt-2 mb-0"
+                    >
+                        Start by adding your brand name.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+
+{% block extra_js %}
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const form = document.getElementById("brandForm");
+
+    if (!form) {
+        return;
+    }
+
+
+    /* =====================================================
+       HELPERS
+       ===================================================== */
+
+    function getField(name) {
+        return form.querySelector(`[name="${name}"]`);
+    }
+
+
+    function getValue(name) {
+
+        const field = getField(name);
+
+        if (!field) {
+            return "";
+        }
+
+        return field.value.trim();
+    }
+
+
+    function getSelectedValues(name) {
+
+        const fields = form.querySelectorAll(`[name="${name}"]`);
+
+        return Array.from(fields)
+            .filter(field => field.checked)
+            .map(field => field.parentElement?.querySelector("label")?.innerText.trim() || field.value);
+
+    }
+
+
+    function displayValue(value, fallback) {
+        return value && value.trim()
+            ? value.trim()
+            : fallback;
+    }
+
+
+    /* =====================================================
+       LIVE OVERVIEW
+       ===================================================== */
+
+    function updateOverview() {
+
+        const name = getValue("name");
+        const brandType = getValue("brand_type");
+        const industry = getValue("industry");
+        const niche = getValue("niche");
+        const goal = getValue("primary_goal");
+
+        const audiences = getSelectedValues("target_audience");
+        const platforms = getSelectedValues("platforms");
+
+
+        /* Name */
+
+        const overviewName =
+            document.getElementById("overviewName");
+
+        if (overviewName) {
+            overviewName.textContent =
+                displayValue(name, "Your brand");
+        }
+
+
+        /* Initial */
+
+        const initial =
+            document.getElementById("overviewInitial");
+
+        if (initial) {
+            initial.textContent =
+                name ? name.charAt(0).toUpperCase() : "?";
+        }
+
+
+        /* Brand type */
+
+        const overviewType =
+            document.getElementById("overviewType");
+
+        if (overviewType) {
+            const select =
+                getField("brand_type");
+
+            if (select && select.selectedIndex >= 0) {
+                overviewType.textContent =
+                    select.options[select.selectedIndex].text ||
+                    "Brand type";
+            } else {
+                overviewType.textContent =
+                    displayValue(brandType, "Brand type");
+            }
+        }
+
+
+        /* Industry */
+
+        const overviewIndustry =
+            document.getElementById("overviewIndustry");
+
+        if (overviewIndustry) {
+            overviewIndustry.textContent =
+                displayValue(industry, "Not selected");
+        }
+
+
+        /* Niche */
+
+        const overviewNiche =
+            document.getElementById("overviewNiche");
+
+        if (overviewNiche) {
+            overviewNiche.textContent =
+                displayValue(niche, "Not specified");
+        }
+
+
+        /* Goal */
+
+        const overviewGoal =
+            document.getElementById("overviewGoal");
+
+        if (overviewGoal) {
+
+            const select =
+                getField("primary_goal");
+
+            if (
+                select &&
+                select.selectedIndex >= 0 &&
+                select.value
+            ) {
+                overviewGoal.textContent =
+                    select.options[select.selectedIndex].text;
+            } else {
+                overviewGoal.textContent =
+                    "Not selected";
+            }
+        }
+
+
+        /* Audience */
+
+        const overviewAudience =
+            document.getElementById("overviewAudience");
+
+        if (overviewAudience) {
+
+            overviewAudience.textContent =
+                audiences.length
+                    ? audiences.join(", ")
+                    : "Not selected";
+        }
+
+
+        /* Platforms */
+
+        const overviewPlatforms =
+            document.getElementById("overviewPlatforms");
+
+        if (overviewPlatforms) {
+
+            overviewPlatforms.textContent =
+                platforms.length
+                    ? platforms.join(", ")
+                    : "Not selected";
+        }
+
+    }
+
+
+    /* =====================================================
+       PROGRESS
+       ===================================================== */
+
+    function updateProgress() {
+
+        const fields = [
+            getField("name"),
+            getField("brand_type"),
+            getField("industry"),
+            getField("niche"),
+            getField("primary_goal")
+        ];
+
+
+        let completed = 0;
+        let total = fields.length;
+
+
+        fields.forEach(function (field) {
+
+            if (
+                field &&
+                field.value &&
+                field.value.trim()
+            ) {
+                completed++;
+            }
+
+        });
+
+
+        /* Checkbox groups */
+
+        const audienceFields =
+            form.querySelectorAll(
+                '[name="target_audience"]'
+            );
+
+        const platformFields =
+            form.querySelectorAll(
+                '[name="platforms"]'
+            );
+
+
+        total += 2;
+
+
+        if (
+            Array.from(audienceFields)
+                .some(field => field.checked)
+        ) {
+            completed++;
+        }
+
+
+        if (
+            Array.from(platformFields)
+                .some(field => field.checked)
+        ) {
+            completed++;
+        }
+
+
+        const progress =
+            Math.round((completed / total) * 100);
+
+
+        /* Bootstrap progress */
+
+        const progressBar =
+            document.getElementById(
+                "brandProgressBar"
+            );
+
+        const progressContainer =
+            progressBar
+                ? progressBar.closest(".progress")
+                : null;
+
+
+        if (progressBar) {
+
+            progressBar.style.width =
+                `${progress}%`;
+        }
+
+
+        if (progressContainer) {
+
+            progressContainer.setAttribute(
+                "aria-valuenow",
+                progress
+            );
+        }
+
+
+        const progressText =
+            document.getElementById(
+                "progressText"
+            );
+
+
+        if (progressText) {
+
+            progressText.textContent =
+                `${progress}%`;
+        }
+
+
+        /* Message */
+
+        const message =
+            document.getElementById(
+                "progressMessage"
+            );
+
+
+        if (!message) {
+            return;
+        }
+
+
+        if (progress === 0) {
+
+            message.textContent =
+                "Start by adding your brand name.";
+
+        } else if (progress < 40) {
+
+            message.textContent =
+                "Good start. Keep adding your brand details.";
+
+        } else if (progress < 70) {
+
+            message.textContent =
+                "Your brand profile is taking shape.";
+
+        } else if (progress < 100) {
+
+            message.textContent =
+                "Almost there. Complete the remaining details.";
+
+        } else {
+
+            message.textContent =
+                "Your brand profile is complete.";
+        }
+
+    }
+
+
+    /* =====================================================
+       LIVE UPDATE
+       ===================================================== */
+
+    function updateFormState() {
+
+        updateOverview();
+        updateProgress();
+
+    }
+
+
+    form.addEventListener(
+        "input",
+        updateFormState
+    );
+
+
+    form.addEventListener(
+        "change",
+        updateFormState
+    );
+
+
+    /* Initial state */
+
+    updateFormState();
+
+});
+</script>
+
+{% endblock %}

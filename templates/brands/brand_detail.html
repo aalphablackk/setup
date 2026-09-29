@@ -1,0 +1,404 @@
+{% extends "base.html" %}
+
+{% block title %}{{ brand.name }} — Workbeam{% endblock %}
+
+{% block content %}
+
+<div class="brand-detail">
+
+    <!-- =====================================================
+         PAGE HEADER
+         ===================================================== -->
+
+    <div class="d-flex flex-column flex-md-row
+                justify-content-between
+                align-items-md-center
+                gap-3 mb-4">
+
+        <div class="d-flex align-items-center gap-3">
+
+            <div class="brand-detail-avatar">
+                {{ brand.name|first|upper }}
+            </div>
+
+            <div class="min-w-0">
+
+                <div class="d-flex align-items-center
+                            flex-wrap gap-2 mb-1">
+
+                    <h1 class="h3 fw-bold mb-0 text-truncate">
+                        {{ brand.name }}
+                    </h1>
+
+                    {% if brand.is_active %}
+                        <span class="wb-status wb-status-active">
+                            Active
+                        </span>
+                    {% else %}
+                        <span class="wb-status wb-status-inactive">
+                            Inactive
+                        </span>
+                    {% endif %}
+
+                </div>
+
+                <p class="text-muted mb-0">
+                    {{ brand.get_brand_type_display }}
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- ACTIONS -->
+
+        <div class="d-flex gap-2">
+
+            <a
+                href="{% url 'brands:list' %}"
+                class="btn btn-outline-secondary"
+            >
+                <i class="bi bi-arrow-left me-2"></i>
+                Brands
+            </a>
+
+            <a
+                href="{% url 'brands:update' brand.pk %}"
+                class="btn btn-primary"
+            >
+                <i class="bi bi-pencil me-2"></i>
+                Edit
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         BRAND OVERVIEW
+         ===================================================== -->
+
+    <section class="brand-hero p-4 p-lg-5 mb-4">
+
+        <div class="row g-4 align-items-center">
+
+            <div class="col-lg-8">
+
+                <div class="small text-muted mb-2">
+                    Brand workspace
+                </div>
+
+                <h2 class="h4 fw-bold mb-2">
+                    {{ brand.name }}
+                </h2>
+
+                <p class="text-muted mb-0">
+                    Workbeam uses this information to understand
+                    your brand and provide more relevant content,
+                    research and strategy.
+                </p>
+
+            </div>
+
+
+            {% if brand.primary_goal %}
+
+                <div class="col-lg-4">
+
+                    <div class="brand-card-goal">
+
+                        <span class="brand-card-goal-label">
+                            Primary goal
+                        </span>
+
+                        <strong>
+                            {{ brand.get_primary_goal_display }}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         BRAND INFORMATION
+         ===================================================== -->
+
+    <div class="row g-4">
+
+        <!-- IDENTITY -->
+
+        <div class="col-lg-6">
+
+            <section class="brand-detail-section p-4 h-100">
+
+                <div class="mb-4">
+
+                    <div class="small text-muted mb-1">
+                        Identity
+                    </div>
+
+                    <h2 class="h5 fw-semibold mb-0">
+                        Brand basics
+                    </h2>
+
+                </div>
+
+
+                <div class="row g-4">
+
+                    <div class="col-sm-6">
+
+                        <div class="brand-detail-label">
+                            Brand name
+                        </div>
+
+                        <div class="brand-detail-value">
+                            {{ brand.name }}
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-sm-6">
+
+                        <div class="brand-detail-label">
+                            Brand type
+                        </div>
+
+                        <div class="brand-detail-value">
+                            {{ brand.get_brand_type_display }}
+                        </div>
+
+                    </div>
+
+
+                    {% if brand.industry %}
+
+                        <div class="col-sm-6">
+
+                            <div class="brand-detail-label">
+                                Industry
+                            </div>
+
+                            <div class="brand-detail-value">
+                                {{ brand.industry }}
+                            </div>
+
+                        </div>
+
+                    {% endif %}
+
+
+                    {% if brand.niche %}
+
+                        <div class="col-sm-6">
+
+                            <div class="brand-detail-label">
+                                Niche
+                            </div>
+
+                            <div class="brand-detail-value">
+                                {{ brand.niche }}
+                            </div>
+
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+            </section>
+
+        </div>
+
+
+        <!-- GOAL -->
+
+        <div class="col-lg-6">
+
+            <section class="brand-detail-section p-4 h-100">
+
+                <div class="mb-4">
+
+                    <div class="small text-muted mb-1">
+                        Direction
+                    </div>
+
+                    <h2 class="h5 fw-semibold mb-0">
+                        What you're trying to achieve
+                    </h2>
+
+                </div>
+
+
+                {% if brand.primary_goal %}
+
+                    <div class="brand-info-highlight">
+
+                        <div class="brand-detail-label">
+                            Primary goal
+                        </div>
+
+                        <div class="brand-detail-value">
+                            {{ brand.get_primary_goal_display }}
+                        </div>
+
+                    </div>
+
+                {% else %}
+
+                    <p class="text-muted mb-0">
+                        No primary goal has been selected yet.
+                    </p>
+
+                {% endif %}
+
+            </section>
+
+        </div>
+
+
+        <!-- AUDIENCE -->
+
+        <div class="col-lg-6">
+
+            <section class="brand-detail-section p-4 h-100">
+
+                <div class="mb-4">
+
+                    <div class="small text-muted mb-1">
+                        Audience
+                    </div>
+
+                    <h2 class="h5 fw-semibold mb-0">
+                        Who you're speaking to
+                    </h2>
+
+                </div>
+
+
+                {% if brand.target_audience %}
+
+                    <div class="brand-context-box">
+                        {{ brand.target_audience }}
+                    </div>
+
+                {% else %}
+
+                    <p class="text-muted mb-0">
+                        No audience information has been added yet.
+                    </p>
+
+                {% endif %}
+
+            </section>
+
+        </div>
+
+
+        <!-- PLATFORMS -->
+
+        <div class="col-lg-6">
+
+            <section class="brand-detail-section p-4 h-100">
+
+                <div class="mb-4">
+
+                    <div class="small text-muted mb-1">
+                        Channels
+                    </div>
+
+                    <h2 class="h5 fw-semibold mb-0">
+                        Content platforms
+                    </h2>
+
+                </div>
+
+
+                {% if brand.platforms %}
+
+                    <div class="brand-context-box">
+                        {{ brand.platforms }}
+                    </div>
+
+                {% else %}
+
+                    <p class="text-muted mb-0">
+                        No platforms have been selected yet.
+                    </p>
+
+                {% endif %}
+
+            </section>
+
+        </div>
+
+
+        <!-- ADDITIONAL INFORMATION -->
+
+        <div class="col-12">
+
+            <section class="brand-detail-section p-4 p-lg-5">
+
+                <div class="mb-4">
+
+                    <div class="small text-muted mb-1">
+                        Context
+                    </div>
+
+                    <h2 class="h5 fw-semibold mb-0">
+                        What Workbeam should know
+                    </h2>
+
+                </div>
+
+
+                {% if brand.additional_information %}
+
+                    <div class="brand-description">
+                        {{ brand.additional_information|linebreaksbr }}
+                    </div>
+
+                {% else %}
+
+                    <p class="text-muted mb-0">
+                        No additional information has been provided.
+                    </p>
+
+                {% endif %}
+
+            </section>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         BOTTOM ACTION
+         ===================================================== -->
+
+    <div class="d-flex justify-content-end mt-4">
+
+        <a
+            href="{% url 'brands:update' brand.pk %}"
+            class="btn btn-primary px-4"
+        >
+            <i class="bi bi-pencil me-2"></i>
+            Edit Brand
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}
