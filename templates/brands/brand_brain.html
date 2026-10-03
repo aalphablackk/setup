@@ -1,0 +1,1184 @@
+{% extends "base.html" %}
+
+{% block title %}Brand Brain — {{ brand.name }} | Workbeam{% endblock %}
+
+{% block content %}
+
+<div class="brand-brain-page">
+
+    <!-- =========================================================
+         HEADER
+    ========================================================== -->
+    <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3 mb-4">
+
+        <div>
+            <div class="d-flex align-items-center gap-2 mb-2">
+                <a
+                    href="{% url 'brands:detail' brand.pk %}"
+                    class="btn btn-sm btn-outline-secondary"
+                >
+                    <i class="bi bi-arrow-left"></i>
+                </a>
+
+                <span class="small text-muted">
+                    Brand intelligence
+                </span>
+            </div>
+
+            <h1 class="h3 mb-1">
+                Brand Brain
+            </h1>
+
+            <p class="text-muted mb-0">
+                Everything Workbeam should know about
+                <strong>{{ brand.name }}</strong>.
+            </p>
+        </div>
+
+        <div class="d-flex align-items-center gap-2">
+
+            <span class="wb-status wb-status-active">
+                <i class="bi bi-circle-fill me-1"></i>
+                Brand context
+            </span>
+
+            <a
+                href="{% url 'brands:update' brand.pk %}"
+                class="btn btn-primary"
+            >
+                <i class="bi bi-pencil me-2"></i>
+                Edit Brand
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================================================
+         BRAND SUMMARY
+    ========================================================== -->
+    <div class="brand-brain-summary mb-4">
+
+        <div class="row g-3">
+
+            <div class="col-md-4">
+                <div class="brand-brain-summary-card">
+
+                    <div class="brand-brain-summary-icon">
+                        <i class="bi bi-building"></i>
+                    </div>
+
+                    <div>
+                        <span class="small text-muted d-block">
+                            Brand
+                        </span>
+
+                        <strong>
+                            {{ brand.name }}
+                        </strong>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class="col-md-4">
+                <div class="brand-brain-summary-card">
+
+                    <div class="brand-brain-summary-icon">
+                        <i class="bi bi-bullseye"></i>
+                    </div>
+
+                    <div>
+                        <span class="small text-muted d-block">
+                            Primary goal
+                        </span>
+
+                        <strong>
+                            {% if brand.primary_goal %}
+                                {{ brand.get_primary_goal_display }}
+                            {% else %}
+                                Not defined
+                            {% endif %}
+                        </strong>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class="col-md-4">
+                <div class="brand-brain-summary-card">
+
+                    <div class="brand-brain-summary-icon">
+                        <i class="bi bi-database"></i>
+                    </div>
+
+                    <div>
+                        <span class="small text-muted d-block">
+                            Knowledge items
+                        </span>
+
+                        <strong>
+                            {{ knowledge|length }}
+                        </strong>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================================================
+         INTRO
+    ========================================================== -->
+    <div class="brand-brain-intro mb-4">
+
+        <div class="d-flex align-items-start gap-3">
+
+            <div class="brand-brain-intro-icon">
+                <i class="bi bi-lightbulb"></i>
+            </div>
+
+            <div>
+
+                <h2 class="h5 mb-1">
+                    Build your Brand Brain
+                </h2>
+
+                <p class="text-muted mb-0">
+                    Add the information that makes your brand unique.
+                    Workbeam will use this context when helping you
+                    research, plan and create content.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================================================
+         KNOWLEDGE SECTIONS
+    ========================================================== -->
+    <div class="brand-brain-sections">
+
+        <!-- =====================================================
+             BRAND STORY
+        ====================================================== -->
+        <div class="brand-brain-section">
+
+            <button
+                class="brand-brain-section-header"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#brainStory"
+                aria-expanded="true"
+                aria-controls="brainStory"
+            >
+
+                <div class="d-flex align-items-center gap-3">
+
+                    <div class="brand-brain-section-icon">
+                        <i class="bi bi-book"></i>
+                    </div>
+
+                    <div class="text-start">
+
+                        <span class="small text-muted d-block">
+                            Identity
+                        </span>
+
+                        <strong>
+                            Brand Story
+                        </strong>
+
+                    </div>
+
+                </div>
+
+                <i class="bi bi-chevron-down brand-brain-chevron"></i>
+
+            </button>
+
+
+            <div
+                id="brainStory"
+                class="collapse show"
+            >
+
+                <div class="brand-brain-section-body">
+
+                    {% for item in knowledge %}
+                        {% if item.knowledge_type == "story" %}
+
+                            <div class="brand-knowledge-item">
+
+                                <div class="brand-knowledge-content">
+                                    {{ item.content|linebreaksbr }}
+                                </div>
+
+                                <div class="brand-knowledge-meta">
+                                    <span>
+                                        {{ item.get_source_display }}
+                                    </span>
+
+                                    <span>
+                                        {{ item.updated_at|date:"M d, Y" }}
+                                    </span>
+                                </div>
+
+                            </div>
+
+                        {% endif %}
+                    {% empty %}
+
+                        <p class="text-muted mb-3">
+                            Tell Workbeam about the story behind this brand.
+                        </p>
+
+                    {% endfor %}
+
+
+                    <form
+                        method="post"
+                        action="{% url 'brands:knowledge_save' brand.pk %}"
+                        class="brand-brain-add-form"
+                    >
+
+                        {% csrf_token %}
+
+                        <input
+                            type="hidden"
+                            name="knowledge_type"
+                            value="story"
+                        >
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Add brand story
+                            </label>
+
+                            <textarea
+                                name="content"
+                                class="form-control"
+                                rows="4"
+                                placeholder="Tell Workbeam about the story, background or journey behind this brand..."
+                            ></textarea>
+
+                        </div>
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary btn-sm"
+                        >
+                            <i class="bi bi-plus-lg me-1"></i>
+                            Add knowledge
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================================================
+             AUDIENCE
+        ====================================================== -->
+        <div class="brand-brain-section">
+
+            <button
+                class="brand-brain-section-header"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#brainAudience"
+                aria-expanded="false"
+                aria-controls="brainAudience"
+            >
+
+                <div class="d-flex align-items-center gap-3">
+
+                    <div class="brand-brain-section-icon">
+                        <i class="bi bi-people"></i>
+                    </div>
+
+                    <div class="text-start">
+
+                        <span class="small text-muted d-block">
+                            People
+                        </span>
+
+                        <strong>
+                            Audience
+                        </strong>
+
+                    </div>
+
+                </div>
+
+                <i class="bi bi-chevron-down brand-brain-chevron"></i>
+
+            </button>
+
+
+            <div
+                id="brainAudience"
+                class="collapse"
+            >
+
+                <div class="brand-brain-section-body">
+
+                    {% if brand.target_audience %}
+
+                        <div class="brand-brain-existing-context mb-4">
+
+                            <span class="small text-muted d-block mb-2">
+                                From brand profile
+                            </span>
+
+                            <p class="mb-0">
+                                {{ brand.target_audience|linebreaksbr }}
+                            </p>
+
+                        </div>
+
+                    {% endif %}
+
+
+                    {% for item in knowledge %}
+                        {% if item.knowledge_type == "audience" %}
+
+                            <div class="brand-knowledge-item">
+
+                                <div class="brand-knowledge-content">
+                                    {{ item.content|linebreaksbr }}
+                                </div>
+
+                                <div class="brand-knowledge-meta">
+                                    <span>
+                                        {{ item.get_source_display }}
+                                    </span>
+
+                                    <span>
+                                        {{ item.updated_at|date:"M d, Y" }}
+                                    </span>
+                                </div>
+
+                            </div>
+
+                        {% endif %}
+                    {% endfor %}
+
+
+                    <form
+                        method="post"
+                        action="{% url 'brands:knowledge_save' brand.pk %}"
+                        class="brand-brain-add-form"
+                    >
+
+                        {% csrf_token %}
+
+                        <input
+                            type="hidden"
+                            name="knowledge_type"
+                            value="audience"
+                        >
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Add audience knowledge
+                            </label>
+
+                            <textarea
+                                name="content"
+                                class="form-control"
+                                rows="4"
+                                placeholder="Describe your ideal audience, their problems, interests, needs or motivations..."
+                            ></textarea>
+
+                        </div>
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary btn-sm"
+                        >
+                            <i class="bi bi-plus-lg me-1"></i>
+                            Add knowledge
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================================================
+             PRODUCTS & SERVICES
+        ====================================================== -->
+        <div class="brand-brain-section">
+
+            <button
+                class="brand-brain-section-header"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#brainProducts"
+                aria-expanded="false"
+                aria-controls="brainProducts"
+            >
+
+                <div class="d-flex align-items-center gap-3">
+
+                    <div class="brand-brain-section-icon">
+                        <i class="bi bi-box-seam"></i>
+                    </div>
+
+                    <div class="text-start">
+
+                        <span class="small text-muted d-block">
+                            Offer
+                        </span>
+
+                        <strong>
+                            Products &amp; Services
+                        </strong>
+
+                    </div>
+
+                </div>
+
+                <i class="bi bi-chevron-down brand-brain-chevron"></i>
+
+            </button>
+
+
+            <div
+                id="brainProducts"
+                class="collapse"
+            >
+
+                <div class="brand-brain-section-body">
+
+                    {% for item in knowledge %}
+                        {% if item.knowledge_type == "product" %}
+
+                            <div class="brand-knowledge-item">
+
+                                <div class="brand-knowledge-content">
+                                    {{ item.content|linebreaksbr }}
+                                </div>
+
+                                <div class="brand-knowledge-meta">
+                                    <span>
+                                        {{ item.get_source_display }}
+                                    </span>
+
+                                    <span>
+                                        {{ item.updated_at|date:"M d, Y" }}
+                                    </span>
+                                </div>
+
+                            </div>
+
+                        {% endif %}
+                    {% endfor %}
+
+
+                    <form
+                        method="post"
+                        action="{% url 'brands:knowledge_save' brand.pk %}"
+                        class="brand-brain-add-form"
+                    >
+
+                        {% csrf_token %}
+
+                        <input
+                            type="hidden"
+                            name="knowledge_type"
+                            value="product"
+                        >
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Add products or services
+                            </label>
+
+                            <textarea
+                                name="content"
+                                class="form-control"
+                                rows="4"
+                                placeholder="Describe what the brand sells, offers or provides..."
+                            ></textarea>
+
+                        </div>
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary btn-sm"
+                        >
+                            <i class="bi bi-plus-lg me-1"></i>
+                            Add knowledge
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================================================
+             BRAND VOICE
+        ====================================================== -->
+        <div class="brand-brain-section">
+
+            <button
+                class="brand-brain-section-header"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#brainVoice"
+                aria-expanded="false"
+                aria-controls="brainVoice"
+            >
+
+                <div class="d-flex align-items-center gap-3">
+
+                    <div class="brand-brain-section-icon">
+                        <i class="bi bi-chat-quote"></i>
+                    </div>
+
+                    <div class="text-start">
+
+                        <span class="small text-muted d-block">
+                            Communication
+                        </span>
+
+                        <strong>
+                            Brand Voice
+                        </strong>
+
+                    </div>
+
+                </div>
+
+                <i class="bi bi-chevron-down brand-brain-chevron"></i>
+
+            </button>
+
+
+            <div
+                id="brainVoice"
+                class="collapse"
+            >
+
+                <div class="brand-brain-section-body">
+
+                    {% for item in knowledge %}
+                        {% if item.knowledge_type == "voice" %}
+
+                            <div class="brand-knowledge-item">
+
+                                <div class="brand-knowledge-content">
+                                    {{ item.content|linebreaksbr }}
+                                </div>
+
+                                <div class="brand-knowledge-meta">
+                                    <span>
+                                        {{ item.get_source_display }}
+                                    </span>
+
+                                    <span>
+                                        {{ item.updated_at|date:"M d, Y" }}
+                                    </span>
+                                </div>
+
+                            </div>
+
+                        {% endif %}
+                    {% endfor %}
+
+
+                    <form
+                        method="post"
+                        action="{% url 'brands:knowledge_save' brand.pk %}"
+                        class="brand-brain-add-form"
+                    >
+
+                        {% csrf_token %}
+
+                        <input
+                            type="hidden"
+                            name="knowledge_type"
+                            value="voice"
+                        >
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Add brand voice
+                            </label>
+
+                            <textarea
+                                name="content"
+                                class="form-control"
+                                rows="4"
+                                placeholder="Describe how this brand should sound when communicating..."
+                            ></textarea>
+
+                        </div>
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary btn-sm"
+                        >
+                            <i class="bi bi-plus-lg me-1"></i>
+                            Add knowledge
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================================================
+             EXPERTISE
+        ====================================================== -->
+        <div class="brand-brain-section">
+
+            <button
+                class="brand-brain-section-header"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#brainExpertise"
+                aria-expanded="false"
+                aria-controls="brainExpertise"
+            >
+
+                <div class="d-flex align-items-center gap-3">
+
+                    <div class="brand-brain-section-icon">
+                        <i class="bi bi-award"></i>
+                    </div>
+
+                    <div class="text-start">
+
+                        <span class="small text-muted d-block">
+                            Authority
+                        </span>
+
+                        <strong>
+                            Expertise
+                        </strong>
+
+                    </div>
+
+                </div>
+
+                <i class="bi bi-chevron-down brand-brain-chevron"></i>
+
+            </button>
+
+
+            <div
+                id="brainExpertise"
+                class="collapse"
+            >
+
+                <div class="brand-brain-section-body">
+
+                    {% for item in knowledge %}
+                        {% if item.knowledge_type == "expertise" %}
+
+                            <div class="brand-knowledge-item">
+
+                                <div class="brand-knowledge-content">
+                                    {{ item.content|linebreaksbr }}
+                                </div>
+
+                                <div class="brand-knowledge-meta">
+                                    <span>
+                                        {{ item.get_source_display }}
+                                    </span>
+
+                                    <span>
+                                        {{ item.updated_at|date:"M d, Y" }}
+                                    </span>
+                                </div>
+
+                            </div>
+
+                        {% endif %}
+                    {% endfor %}
+
+
+                    <form
+                        method="post"
+                        action="{% url 'brands:knowledge_save' brand.pk %}"
+                        class="brand-brain-add-form"
+                    >
+
+                        {% csrf_token %}
+
+                        <input
+                            type="hidden"
+                            name="knowledge_type"
+                            value="expertise"
+                        >
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Add expertise
+                            </label>
+
+                            <textarea
+                                name="content"
+                                class="form-control"
+                                rows="4"
+                                placeholder="What does this brand know, understand or do particularly well?"
+                            ></textarea>
+
+                        </div>
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary btn-sm"
+                        >
+                            <i class="bi bi-plus-lg me-1"></i>
+                            Add knowledge
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================================================
+             CONTENT PREFERENCES
+        ====================================================== -->
+        <div class="brand-brain-section">
+
+            <button
+                class="brand-brain-section-header"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#brainContent"
+                aria-expanded="false"
+                aria-controls="brainContent"
+            >
+
+                <div class="d-flex align-items-center gap-3">
+
+                    <div class="brand-brain-section-icon">
+                        <i class="bi bi-pencil-square"></i>
+                    </div>
+
+                    <div class="text-start">
+
+                        <span class="small text-muted d-block">
+                            Creation
+                        </span>
+
+                        <strong>
+                            Content Preferences
+                        </strong>
+
+                    </div>
+
+                </div>
+
+                <i class="bi bi-chevron-down brand-brain-chevron"></i>
+
+            </button>
+
+
+            <div
+                id="brainContent"
+                class="collapse"
+            >
+
+                <div class="brand-brain-section-body">
+
+                    {% if brand.platforms %}
+
+                        <div class="brand-brain-existing-context mb-4">
+
+                            <span class="small text-muted d-block mb-2">
+                                From brand profile
+                            </span>
+
+                            <p class="mb-0">
+                                {{ brand.platforms|linebreaksbr }}
+                            </p>
+
+                        </div>
+
+                    {% endif %}
+
+
+                    {% for item in knowledge %}
+                        {% if item.knowledge_type == "content" %}
+
+                            <div class="brand-knowledge-item">
+
+                                <div class="brand-knowledge-content">
+                                    {{ item.content|linebreaksbr }}
+                                </div>
+
+                                <div class="brand-knowledge-meta">
+                                    <span>
+                                        {{ item.get_source_display }}
+                                    </span>
+
+                                    <span>
+                                        {{ item.updated_at|date:"M d, Y" }}
+                                    </span>
+                                </div>
+
+                            </div>
+
+                        {% endif %}
+                    {% endfor %}
+
+
+                    <form
+                        method="post"
+                        action="{% url 'brands:knowledge_save' brand.pk %}"
+                        class="brand-brain-add-form"
+                    >
+
+                        {% csrf_token %}
+
+                        <input
+                            type="hidden"
+                            name="knowledge_type"
+                            value="content"
+                        >
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Add content preferences
+                            </label>
+
+                            <textarea
+                                name="content"
+                                class="form-control"
+                                rows="4"
+                                placeholder="Describe preferred topics, formats, platforms, content styles or things the brand avoids..."
+                            ></textarea>
+
+                        </div>
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary btn-sm"
+                        >
+                            <i class="bi bi-plus-lg me-1"></i>
+                            Add knowledge
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================================================
+             GOALS
+        ====================================================== -->
+        <div class="brand-brain-section">
+
+            <button
+                class="brand-brain-section-header"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#brainGoals"
+                aria-expanded="false"
+                aria-controls="brainGoals"
+            >
+
+                <div class="d-flex align-items-center gap-3">
+
+                    <div class="brand-brain-section-icon">
+                        <i class="bi bi-flag"></i>
+                    </div>
+
+                    <div class="text-start">
+
+                        <span class="small text-muted d-block">
+                            Direction
+                        </span>
+
+                        <strong>
+                            Goals
+                        </strong>
+
+                    </div>
+
+                </div>
+
+                <i class="bi bi-chevron-down brand-brain-chevron"></i>
+
+            </button>
+
+
+            <div
+                id="brainGoals"
+                class="collapse"
+            >
+
+                <div class="brand-brain-section-body">
+
+                    {% if brand.primary_goal %}
+
+                        <div class="brand-brain-existing-context mb-4">
+
+                            <span class="small text-muted d-block mb-2">
+                                Primary brand goal
+                            </span>
+
+                            <p class="mb-0">
+                                {{ brand.get_primary_goal_display }}
+                            </p>
+
+                        </div>
+
+                    {% endif %}
+
+
+                    {% for item in knowledge %}
+                        {% if item.knowledge_type == "goal" %}
+
+                            <div class="brand-knowledge-item">
+
+                                <div class="brand-knowledge-content">
+                                    {{ item.content|linebreaksbr }}
+                                </div>
+
+                                <div class="brand-knowledge-meta">
+                                    <span>
+                                        {{ item.get_source_display }}
+                                    </span>
+
+                                    <span>
+                                        {{ item.updated_at|date:"M d, Y" }}
+                                    </span>
+                                </div>
+
+                            </div>
+
+                        {% endif %}
+                    {% endfor %}
+
+
+                    <form
+                        method="post"
+                        action="{% url 'brands:knowledge_save' brand.pk %}"
+                        class="brand-brain-add-form"
+                    >
+
+                        {% csrf_token %}
+
+                        <input
+                            type="hidden"
+                            name="knowledge_type"
+                            value="goal"
+                        >
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Add goal or direction
+                            </label>
+
+                            <textarea
+                                name="content"
+                                class="form-control"
+                                rows="4"
+                                placeholder="Tell Workbeam what the brand is trying to achieve..."
+                            ></textarea>
+
+                        </div>
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary btn-sm"
+                        >
+                            <i class="bi bi-plus-lg me-1"></i>
+                            Add knowledge
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================================================
+             OTHER
+        ====================================================== -->
+        <div class="brand-brain-section">
+
+            <button
+                class="brand-brain-section-header"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#brainOther"
+                aria-expanded="false"
+                aria-controls="brainOther"
+            >
+
+                <div class="d-flex align-items-center gap-3">
+
+                    <div class="brand-brain-section-icon">
+                        <i class="bi bi-three-dots"></i>
+                    </div>
+
+                    <div class="text-start">
+
+                        <span class="small text-muted d-block">
+                            Context
+                        </span>
+
+                        <strong>
+                            Other
+                        </strong>
+
+                    </div>
+
+                </div>
+
+                <i class="bi bi-chevron-down brand-brain-chevron"></i>
+
+            </button>
+
+
+            <div
+                id="brainOther"
+                class="collapse"
+            >
+
+                <div class="brand-brain-section-body">
+
+                    {% if brand.additional_information %}
+
+                        <div class="brand-brain-existing-context mb-4">
+
+                            <span class="small text-muted d-block mb-2">
+                                From brand profile
+                            </span>
+
+                            <p class="mb-0">
+                                {{ brand.additional_information|linebreaksbr }}
+                            </p>
+
+                        </div>
+
+                    {% endif %}
+
+
+                    {% for item in knowledge %}
+                        {% if item.knowledge_type == "other" %}
+
+                            <div class="brand-knowledge-item">
+
+                                <div class="brand-knowledge-content">
+                                    {{ item.content|linebreaksbr }}
+                                </div>
+
+                                <div class="brand-knowledge-meta">
+                                    <span>
+                                        {{ item.get_source_display }}
+                                    </span>
+
+                                    <span>
+                                        {{ item.updated_at|date:"M d, Y" }}
+                                    </span>
+                                </div>
+
+                            </div>
+
+                        {% endif %}
+                    {% endfor %}
+
+
+                    <form
+                        method="post"
+                        action="{% url 'brands:knowledge_save' brand.pk %}"
+                        class="brand-brain-add-form"
+                    >
+
+                        {% csrf_token %}
+
+                        <input
+                            type="hidden"
+                            name="knowledge_type"
+                            value="other"
+                        >
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Add additional context
+                            </label>
+
+                            <textarea
+                                name="content"
+                                class="form-control"
+                                rows="4"
+                                placeholder="Add anything else Workbeam should know about this brand..."
+                            ></textarea>
+
+                        </div>
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary btn-sm"
+                        >
+                            <i class="bi bi-plus-lg me-1"></i>
+                            Add knowledge
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

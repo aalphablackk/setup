@@ -30,4 +30,16 @@ urlpatterns = [
         views.brand_update,
         name="update",
     ),
+# Brand Brain
+    path(
+        "<int:pk>/knowledge/",
+        views.brand_knowledge,
+        name="knowledge",
+    ),
+
+    path(
+        "<int:pk>/knowledge/save/",
+        views.brand_knowledge_save,
+        name="knowledge_save",
+    ),
 ]

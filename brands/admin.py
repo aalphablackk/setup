@@ -41,16 +41,16 @@ class BrandAdmin(admin.ModelAdmin):
 
 @admin.register(BrandKnowledge)
 class BrandKnowledgeAdmin(admin.ModelAdmin):
-
     list_display = (
         "brand",
+        "knowledge_type",
         "source",
         "is_active",
-        "created_at",
         "updated_at",
     )
 
     list_filter = (
+        "knowledge_type",
         "source",
         "is_active",
     )

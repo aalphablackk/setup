@@ -93,6 +93,16 @@ class Brand(models.Model):
 
 class BrandKnowledge(models.Model):
 
+    class KnowledgeType(models.TextChoices):
+        STORY = "story", "Brand Story"
+        AUDIENCE = "audience", "Audience"
+        PRODUCT = "product", "Products & Services"
+        VOICE = "voice", "Brand Voice"
+        EXPERTISE = "expertise", "Expertise"
+        CONTENT = "content", "Content Preferences"
+        GOAL = "goal", "Goals"
+        OTHER = "other", "Other"
+
     class Source(models.TextChoices):
         USER = "user", "User"
         AI = "ai", "AI"
@@ -104,6 +114,12 @@ class BrandKnowledge(models.Model):
         Brand,
         on_delete=models.CASCADE,
         related_name="knowledge",
+    )
+
+    knowledge_type = models.CharField(
+        max_length=30,
+        choices=KnowledgeType.choices,
+        default=KnowledgeType.OTHER,
     )
 
     content = models.TextField()
@@ -130,4 +146,4 @@ class BrandKnowledge(models.Model):
         ordering = ["-updated_at"]
 
     def __str__(self):
-        return f"{self.brand.name} knowledge"
+        return f"{self.brand.name} — {self.get_knowledge_type_display()}"

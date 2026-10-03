@@ -1,8 +1,9 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 
-from .forms import BrandForm
-from .models import Brand
+from .forms import BrandForm, BrandKnowledgeForm
+from .models import Brand, BrandKnowledge
+
 
 # Create your views here.
 
@@ -103,4 +104,51 @@ def brand_update(request, pk):
             "brand": brand,
             "page_title": "Update your brand",
         },
+    )
+
+@login_required
+def brand_knowledge(request, pk):
+    brand = get_object_or_404(
+        Brand,
+        pk=pk,
+        created_by=request.user,
+    )
+
+    knowledge = brand.knowledge.filter(
+        is_active=True,
+    )
+
+    return render(
+        request,
+        "brands/brand_brain.html",
+        {
+            "brand": brand,
+            "knowledge": knowledge,
+        },
+    )
+
+
+@login_required
+def brand_knowledge_save(request, pk):
+    brand = get_object_or_404(
+        Brand,
+        pk=pk,
+        created_by=request.user,
+    )
+
+    if request.method == "POST":
+        knowledge_type = request.POST.get("knowledge_type")
+        content = request.POST.get("content", "").strip()
+
+        if knowledge_type and content:
+            BrandKnowledge.objects.create(
+                brand=brand,
+                knowledge_type=knowledge_type,
+                content=content,
+                source=BrandKnowledge.Source.USER,
+            )
+
+    return redirect(
+        "brands:knowledge",
+        pk=brand.pk,
     )

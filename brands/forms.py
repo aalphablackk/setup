@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Brand
+from .models import Brand,BrandKnowledge
 
 
 class BrandForm(forms.ModelForm):
@@ -159,3 +159,58 @@ class BrandForm(forms.ModelForm):
             instance.save()
 
         return instance
+
+
+class BrandKnowledgeForm(forms.ModelForm):
+
+    class Meta:
+        model = BrandKnowledge
+
+        fields = [
+            "knowledge_type",
+            "content",
+            "source",
+        ]
+
+        widgets = {
+            "knowledge_type": forms.Select(
+                attrs={
+                    "class": "form-select",
+                }
+            ),
+
+            "content": forms.Textarea(
+                attrs={
+                    "class": "form-control",
+                    "rows": 6,
+                    "placeholder": (
+                        "Add useful information about this brand..."
+                    ),
+                }
+            ),
+
+            "source": forms.Select(
+                attrs={
+                    "class": "form-select",
+                }
+            ),
+        }
+
+        labels = {
+            "knowledge_type": "Knowledge type",
+            "content": "Knowledge",
+            "source": "Source",
+        }
+
+        help_texts = {
+            "knowledge_type": (
+                "Choose what kind of information you're adding."
+            ),
+            "content": (
+                "Add information Workbeam can use when "
+                "understanding this brand."
+            ),
+            "source": (
+                "Where did this information come from?"
+            ),
+        }

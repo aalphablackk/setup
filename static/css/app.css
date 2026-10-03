@@ -2179,3 +2179,637 @@ footer {
         padding-right: 1rem;
     }
 }
+/* =========================================================
+   MOBILE SIDEBAR
+   ========================================================= */
+
+.offcanvas {
+    background: var(--wb-bg);
+    color: var(--wb-text);
+    border-color: var(--wb-border);
+}
+
+.offcanvas .offcanvas-header {
+    border-color: var(--wb-border) !important;
+}
+
+.offcanvas .btn-close {
+    filter: none;
+}
+
+[data-bs-theme="dark"] .offcanvas .btn-close {
+    filter: invert(1) grayscale(1) brightness(2);
+}
+
+.offcanvas .nav-link {
+    color: var(--wb-text);
+    border-radius: var(--wb-radius-md);
+}
+
+.offcanvas .nav-link:hover {
+    background: var(--wb-surface-muted);
+    color: var(--wb-text);
+}
+
+.offcanvas .nav-link.active {
+    background: var(--wb-primary);
+    color: #fff;
+}
+
+.offcanvas .nav-link.active:hover {
+    background: var(--wb-primary-hover);
+    color: #fff;
+}
+/* =========================================================
+   BRAND BRAIN
+   ========================================================= */
+
+.brand-brain-page {
+    padding: 1rem 0 3rem;
+}
+
+.brand-brain-header {
+    background: var(--wb-surface);
+    border: 1px solid var(--wb-border);
+    border-radius: var(--wb-radius-lg);
+    padding: 1.25rem 1.5rem 0;
+    box-shadow: var(--wb-shadow-sm);
+}
+
+.brand-brain-tabs {
+    display: flex;
+    gap: .25rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+.brand-brain-tabs::-webkit-scrollbar {
+    display: none;
+}
+
+.brand-brain-tab {
+    position: relative;
+    flex-shrink: 0;
+    padding: .75rem .9rem;
+    color: var(--wb-text-muted);
+    text-decoration: none;
+    font-size: .8rem;
+    font-weight: 500;
+    transition: color var(--wb-transition);
+}
+
+.brand-brain-tab:hover {
+    color: var(--wb-text);
+}
+
+.brand-brain-tab.active {
+    color: var(--wb-primary);
+    font-weight: 600;
+}
+
+.brand-brain-tab.active::after {
+    content: "";
+    position: absolute;
+    left: .75rem;
+    right: .75rem;
+    bottom: 0;
+    height: 2px;
+    background: var(--wb-primary);
+    border-radius: 999px;
+}
+
+
+/* =========================================================
+   TITLE
+   ========================================================= */
+
+.brand-brain-title-row {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+    margin: 2rem 0 1rem;
+}
+
+
+/* =========================================================
+   FILTERS
+   ========================================================= */
+
+.brand-knowledge-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem;
+    margin-bottom: 1.25rem;
+}
+
+.brand-filter {
+    display: inline-flex;
+    align-items: center;
+    gap: .35rem;
+
+    padding: .4rem .7rem;
+
+    color: var(--wb-text-muted);
+    background: var(--wb-surface);
+    border: 1px solid var(--wb-border);
+    border-radius: 999px;
+
+    text-decoration: none;
+    font-size: .75rem;
+    font-weight: 500;
+
+    transition:
+        color var(--wb-transition),
+        background-color var(--wb-transition),
+        border-color var(--wb-transition);
+}
+
+.brand-filter:hover {
+    color: var(--wb-text);
+    border-color: var(--wb-primary);
+}
+
+.brand-filter.active {
+    color: #fff;
+    background: var(--wb-primary);
+    border-color: var(--wb-primary);
+}
+
+.brand-filter span {
+    font-size: .68rem;
+    opacity: .75;
+}
+
+
+/* =========================================================
+   KNOWLEDGE CARD
+   ========================================================= */
+
+.brand-knowledge-card {
+    background: var(--wb-surface);
+    border: 1px solid var(--wb-border);
+    border-radius: var(--wb-radius-md);
+    box-shadow: var(--wb-shadow-sm);
+
+    transition:
+        transform var(--wb-transition),
+        box-shadow var(--wb-transition),
+        border-color var(--wb-transition);
+}
+
+.brand-knowledge-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--wb-shadow-md);
+    border-color: rgba(124, 58, 237, .28);
+}
+
+.brand-knowledge-card-body {
+    display: flex;
+    flex-direction: column;
+    min-height: 190px;
+    padding: 1rem;
+}
+
+.brand-knowledge-icon {
+    width: 32px;
+    height: 32px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 9px;
+
+    color: var(--wb-primary);
+    background: rgba(124, 58, 237, .1);
+
+    font-size: .85rem;
+}
+
+.brand-knowledge-title {
+    margin: 0;
+    color: var(--wb-text);
+
+    font-size: .88rem;
+    font-weight: 650;
+}
+
+.brand-knowledge-content {
+    margin: 1rem 0;
+
+    color: var(--wb-text-muted);
+
+    font-size: .78rem;
+    line-height: 1.55;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.brand-knowledge-meta {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+
+    margin-top: auto;
+    padding-top: .75rem;
+
+    border-top: 1px solid var(--wb-border);
+
+    color: var(--wb-text-muted);
+    font-size: .68rem;
+}
+
+.brand-knowledge-meta span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+/* =========================================================
+   GHOST BUTTON
+   ========================================================= */
+
+.btn-ghost {
+    color: var(--wb-text-muted);
+    background: transparent;
+    border-color: transparent;
+}
+
+.btn-ghost:hover {
+    color: var(--wb-text);
+    background: var(--wb-surface-2);
+    border-color: transparent;
+}
+
+
+/* =========================================================
+   EMPTY STATE
+   ========================================================= */
+
+.brand-brain-empty {
+    margin-top: 1rem;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 767.98px) {
+
+    .brand-brain-page {
+        padding-top: .5rem;
+    }
+
+    .brand-brain-header {
+        padding: 1rem 1rem 0;
+    }
+
+    .brand-brain-title-row {
+        align-items: stretch;
+        flex-direction: column;
+        margin-top: 1.5rem;
+    }
+
+    .brand-brain-title-row .btn {
+        align-self: flex-start;
+    }
+
+    .brand-knowledge-card-body {
+        min-height: 170px;
+    }
+}
+/* =========================================================
+   BRAND BRAIN
+========================================================= */
+
+.brand-brain-page {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+/* ---------------------------------------------------------
+   SUMMARY
+--------------------------------------------------------- */
+
+.brand-brain-summary-card {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.1rem;
+    background: var(--wb-surface);
+    border: 1px solid var(--wb-border);
+    border-radius: var(--wb-radius, 12px);
+    transition:
+        border-color var(--wb-transition),
+        background-color var(--wb-transition),
+        box-shadow var(--wb-transition);
+}
+
+.brand-brain-summary-card:hover {
+    border-color: var(--wb-primary);
+    box-shadow: var(--wb-shadow-sm, 0 4px 14px rgba(0, 0, 0, .05));
+}
+
+.brand-brain-summary-icon {
+    width: 42px;
+    height: 42px;
+    min-width: 42px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background: var(--wb-surface-muted);
+    color: var(--wb-primary);
+    font-size: 1.05rem;
+}
+
+/* ---------------------------------------------------------
+   INTRO
+--------------------------------------------------------- */
+
+.brand-brain-intro {
+    padding: 1.15rem 1.25rem;
+    background: var(--wb-surface);
+    border: 1px solid var(--wb-border);
+    border-radius: var(--wb-radius, 12px);
+}
+
+.brand-brain-intro-icon {
+    width: 42px;
+    height: 42px;
+    min-width: 42px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background: var(--wb-primary);
+    color: #fff;
+}
+
+/* ---------------------------------------------------------
+   SECTIONS
+--------------------------------------------------------- */
+
+.brand-brain-sections {
+    display: flex;
+    flex-direction: column;
+    gap: .75rem;
+}
+
+.brand-brain-section {
+    overflow: hidden;
+    background: var(--wb-surface);
+    border: 1px solid var(--wb-border);
+    border-radius: var(--wb-radius, 12px);
+    transition:
+        border-color var(--wb-transition),
+        box-shadow var(--wb-transition);
+}
+
+.brand-brain-section:focus-within,
+.brand-brain-section:hover {
+    border-color: color-mix(
+        in srgb,
+        var(--wb-primary) 35%,
+        var(--wb-border)
+    );
+}
+
+/* ---------------------------------------------------------
+   SECTION HEADER
+--------------------------------------------------------- */
+
+.brand-brain-section-header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+
+    padding: 1.1rem 1.25rem;
+
+    border: 0;
+    background: transparent;
+    color: var(--bs-body-color);
+
+    text-align: left;
+    cursor: pointer;
+
+    transition:
+        background-color var(--wb-transition),
+        color var(--wb-transition);
+}
+
+.brand-brain-section-header:hover {
+    background: var(--wb-surface-muted);
+}
+
+.brand-brain-section-header:focus-visible {
+    outline: 2px solid var(--wb-primary);
+    outline-offset: -2px;
+}
+
+.brand-brain-section-icon {
+    width: 42px;
+    height: 42px;
+    min-width: 42px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+
+    background: var(--wb-surface-muted);
+    color: var(--wb-primary);
+
+    font-size: 1rem;
+}
+
+.brand-brain-chevron {
+    color: var(--bs-secondary-color);
+    transition: transform 200ms ease;
+}
+
+.brand-brain-section-header[aria-expanded="true"]
+.brand-brain-chevron {
+    transform: rotate(180deg);
+}
+
+/* ---------------------------------------------------------
+   SECTION BODY
+--------------------------------------------------------- */
+
+.brand-brain-section-body {
+    padding: 0 1.25rem 1.25rem;
+    border-top: 1px solid var(--wb-border);
+}
+
+.brand-brain-section-body > *:first-child {
+    margin-top: 1.25rem;
+}
+
+/* ---------------------------------------------------------
+   EXISTING BRAND CONTEXT
+--------------------------------------------------------- */
+
+.brand-brain-existing-context {
+    padding: 1rem;
+    background: var(--wb-surface-muted);
+    border: 1px solid var(--wb-border);
+    border-radius: 10px;
+}
+
+.brand-brain-existing-context p {
+    white-space: normal;
+    line-height: 1.65;
+}
+
+/* ---------------------------------------------------------
+   KNOWLEDGE ITEMS
+--------------------------------------------------------- */
+
+.brand-knowledge-item {
+    padding: 1rem;
+    margin-bottom: .75rem;
+
+    background: var(--wb-surface-muted);
+    border: 1px solid var(--wb-border);
+    border-radius: 10px;
+}
+
+.brand-knowledge-item:last-of-type {
+    margin-bottom: 1rem;
+}
+
+.brand-knowledge-content {
+    color: var(--bs-body-color);
+    line-height: 1.7;
+    white-space: normal;
+    overflow-wrap: anywhere;
+}
+
+.brand-knowledge-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .5rem 1rem;
+
+    margin-top: .75rem;
+    padding-top: .7rem;
+
+    border-top: 1px solid var(--wb-border);
+
+    color: var(--bs-secondary-color);
+    font-size: .78rem;
+}
+
+/* ---------------------------------------------------------
+   ADD FORM
+--------------------------------------------------------- */
+
+.brand-brain-add-form {
+    margin-top: 1rem;
+    padding: 1rem;
+
+    background: var(--wb-surface);
+    border: 1px dashed var(--wb-border);
+    border-radius: 10px;
+}
+
+.brand-brain-add-form .form-label {
+    font-weight: 600;
+    margin-bottom: .45rem;
+}
+
+.brand-brain-add-form textarea {
+    min-height: 110px;
+    resize: vertical;
+}
+
+.brand-brain-add-form textarea:focus {
+    border-color: var(--wb-primary);
+    box-shadow: 0 0 0 .2rem color-mix(
+        in srgb,
+        var(--wb-primary) 15%,
+        transparent
+    );
+}
+
+/* ---------------------------------------------------------
+   RESPONSIVE
+--------------------------------------------------------- */
+
+@media (max-width: 767.98px) {
+
+    .brand-brain-page {
+        max-width: none;
+    }
+
+    .brand-brain-summary-card {
+        padding: .9rem;
+    }
+
+    .brand-brain-section-header {
+        padding: 1rem;
+    }
+
+    .brand-brain-section-body {
+        padding: 0 1rem 1rem;
+    }
+
+    .brand-brain-section-body > *:first-child {
+        margin-top: 1rem;
+    }
+
+    .brand-brain-intro {
+        padding: 1rem;
+    }
+
+    .brand-brain-intro-icon,
+    .brand-brain-section-icon {
+        width: 38px;
+        height: 38px;
+        min-width: 38px;
+    }
+
+    .brand-brain-section-header strong {
+        font-size: .95rem;
+    }
+
+    .brand-knowledge-meta {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: .25rem;
+    }
+
+    .brand-brain-add-form {
+        padding: .9rem;
+    }
+}
+
+/* ---------------------------------------------------------
+   DARK THEME
+--------------------------------------------------------- */
+
+[data-bs-theme="dark"] .brand-brain-intro-icon {
+    color: #fff;
+}
+
+[data-bs-theme="dark"] .brand-brain-summary-card:hover {
+    box-shadow: none;
+}
+
+[data-bs-theme="dark"] .brand-brain-section-header:hover {
+    background: var(--wb-surface-muted);
+}

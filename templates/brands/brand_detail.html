@@ -387,17 +387,25 @@
          BOTTOM ACTION
          ===================================================== -->
 
-    <div class="d-flex justify-content-end mt-4">
-
+    <div class="d-flex justify-content-end mt-4 gap-3">
+        
         <a
-            href="{% url 'brands:update' brand.pk %}"
-            class="btn btn-primary px-4"
+        href="{% url 'brands:update' brand.pk %}"
+        class="btn btn-primary px-4 pe-4"
         >
-            <i class="bi bi-pencil me-2"></i>
-            Edit Brand
-        </a>
+        <i class="bi bi-pencil me-2"></i>
+        Edit Brand
+    </a>
+    
+    <a
+    href="{% url 'brands:knowledge' brand.pk %}"
+    class="btn btn-primary px-4"
+    >
+    Brand Knowledge
+    </a>
+    
+</div>
 
-    </div>
 
 </div>
 

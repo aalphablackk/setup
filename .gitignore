@@ -6,3 +6,7 @@ media/
 .env
 PRD.md
 templates.zip
+
+# Python
+__pycache__/
+*.pyc
