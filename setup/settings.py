@@ -67,6 +67,7 @@ INSTALLED_APPS = [
     # Workbeam apps
     "brands",
     "dashboard",
+    "research",
 
 ]
 
@@ -277,7 +278,9 @@ MAILERS = {
     },
 }
 
+TAVILY_API_KEY = config("TAVILY_API_KEY")
 
+OPENAI_API_KEY = config("OPENAI_API_KEY")
 
 
 # ============================================================

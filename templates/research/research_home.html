@@ -1,0 +1,179 @@
+{% extends "base.html" %}
+
+{% block title %}Research | Workbeam{% endblock %}
+
+{% block content %}
+
+<div class="research-page">
+
+    <!-- Header -->
+    <div class="research-header mb-4">
+
+        <div>
+            <div class="d-flex align-items-center gap-2 mb-2">
+                <span class="research-header-icon">
+                    <i class="bi bi-search"></i>
+                </span>
+
+                <span class="text-muted small fw-semibold text-uppercase">
+                    Intelligence
+                </span>
+            </div>
+
+            <h1 class="h3 fw-bold mb-1">
+                Research
+            </h1>
+
+            <p class="text-muted mb-0">
+                Explore topics, audiences, markets, competitors, and ideas.
+            </p>
+        </div>
+
+        <div class="mt-3 mt-md-0">
+            <a
+                href="{% url 'research:create' %}"
+                class="btn btn-primary"
+            >
+                <i class="bi bi-plus-lg me-2"></i>
+                Start Research
+            </a>
+        </div>
+
+    </div>
+
+
+    <!-- Research introduction -->
+    <div class="research-intro mb-4">
+
+        <div class="research-intro-icon">
+            <i class="bi bi-lightbulb"></i>
+        </div>
+
+        <div>
+            <h2 class="h6 fw-semibold mb-1">
+                Research anything
+            </h2>
+
+            <p class="text-muted mb-0">
+                Start with a brand or investigate something independently.
+                Give Workbeam a clear research brief and build from there.
+            </p>
+        </div>
+
+    </div>
+
+
+    <!-- Previous research -->
+    <div class="d-flex align-items-center justify-content-between mb-3">
+
+        <div>
+            <h2 class="h5 fw-semibold mb-1">
+                Your research
+            </h2>
+
+            <p class="text-muted small mb-0">
+                Previous research sessions and investigations.
+            </p>
+        </div>
+
+    </div>
+
+
+    {% if sessions %}
+
+        <div class="research-session-list">
+
+            {% for session in sessions %}
+                <a href="{% url 'research:detail' session.pk %}" class="research-session-card text-decoration-none">
+                <div class="research-session-card">
+
+                    <div class="research-session-main">
+
+                        <div class="research-session-icon">
+                            {% if session.mode == "connected" %}
+                                <i class="bi bi-briefcase"></i>
+                            {% else %}
+                                <i class="bi bi-search"></i>
+                            {% endif %}
+                        </div>
+
+                        <div class="research-session-content">
+
+                            <div class="d-flex flex-wrap align-items-center gap-2 mb-1">
+
+                                <h3 class="h6 fw-semibold mb-0">
+                                    {{ session.title }}
+                                </h3>
+
+                                {% if session.mode == "connected" %}
+                                    <span class="badge text-bg-primary">
+                                        {{ session.brand.name }}
+                                    </span>
+                                {% else %}
+                                    <span class="badge text-bg-secondary">
+                                        Independent
+                                    </span>
+                                {% endif %}
+
+                            </div>
+
+                            <p class="text-muted small mb-2">
+                                {{ session.research_brief|truncatechars:180 }}
+                            </p>
+
+                            <div class="research-session-meta">
+
+                                <span>
+                                    <i class="bi bi-circle-fill me-1"></i>
+                                    {{ session.get_status_display }}
+                                </span>
+
+                                <span>
+                                    Updated {{ session.updated_at|date:"M d, Y" }}
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+                </a>
+
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+
+        <div class="wb-empty text-center py-5">
+
+            <div class="mb-3">
+                <i class="bi bi-search fs-1 text-muted"></i>
+            </div>
+
+            <h3 class="h5 fw-semibold">
+                No research yet
+            </h3>
+
+            <p class="text-muted mb-4">
+                Start an investigation and turn your questions into useful
+                research findings.
+            </p>
+
+            <a
+                href="{% url 'research:create' %}"
+                class="btn btn-primary"
+            >
+                <i class="bi bi-plus-lg me-2"></i>
+                Start your first research
+            </a>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

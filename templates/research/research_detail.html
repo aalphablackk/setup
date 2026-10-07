@@ -1,0 +1,1952 @@
+{% extends "base.html" %}
+
+{% block title %}{{ session.title }} · Research{% endblock %}
+
+{% block content %}
+
+<div class="research-detail-page">
+
+    <!-- =====================================================
+         RESEARCH HEADER
+    ====================================================== -->
+
+    <div class="research-header">
+
+        <div class="research-detail-heading">
+
+            <div class="research-header-icon">
+                <i class="bi bi-search"></i>
+            </div>
+
+            <div class="research-detail-header-content">
+
+                <!-- Title -->
+                <div class="research-detail-title-row">
+
+                    <h1>{{ session.title }}</h1>
+
+                    {% if session.mode == "connected" %}
+                        <span class="badge text-bg-primary">
+                            Connected
+                        </span>
+                    {% else %}
+                        <span class="badge text-bg-secondary">
+                            Independent
+                        </span>
+                    {% endif %}
+
+                    <span class="badge text-bg-light">
+                        {{ session.status|title }}
+                    </span>
+
+                </div>
+
+
+                <!-- Research Brief -->
+                <div class="research-brief-collapse">
+
+                    <button
+                        class="research-collapse-trigger"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#researchBrief"
+                        aria-expanded="false"
+                        aria-controls="researchBrief"
+                    >
+                        <span>
+                            <i class="bi bi-file-text me-1"></i>
+                            View research brief
+                        </span>
+
+                        <i class="bi bi-chevron-down research-collapse-icon"></i>
+                    </button>
+
+
+                    <div
+                        id="researchBrief"
+                        class="collapse"
+                    >
+                        <div class="research-brief-content">
+                            {{ session.research_brief }}
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <!-- Research Depth -->
+                <div class="research-depth-panel">
+
+                    <div class="research-depth-heading">
+
+                        <div>
+
+                            <span class="research-depth-label">
+                                Research depth
+                            </span>
+
+                            <span class="research-depth-hint">
+                                Choose how much coverage Workbeam should use.
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="research-depth-options">
+
+                        <!-- Quick -->
+                        <label class="research-depth-option">
+
+                            <input
+                                type="radio"
+                                name="depth"
+                                value="quick"
+                                class="research-depth-radio"
+                                {% if session.depth == "quick" %}
+                                    checked
+                                {% endif %}
+                            >
+
+                            <div class="research-depth-content">
+
+                                <div class="research-depth-title">
+
+                                    <span>
+                                        Quick
+                                    </span>
+
+                                    <span class="badge text-bg-light">
+                                        Fast
+                                    </span>
+
+                                </div>
+
+                                <p>
+                                    Focused research with fewer searches.
+                                </p>
+
+                            </div>
+
+                        </label>
+
+
+                        <!-- Standard -->
+                        <label class="research-depth-option">
+
+                            <input
+                                type="radio"
+                                name="depth"
+                                value="standard"
+                                class="research-depth-radio"
+                                {% if session.depth == "standard" %}
+                                    checked
+                                {% endif %}
+                            >
+
+                            <div class="research-depth-content">
+
+                                <div class="research-depth-title">
+
+                                    <span>
+                                        Standard
+                                    </span>
+
+                                    <span class="badge text-bg-primary">
+                                        Recommended
+                                    </span>
+
+                                </div>
+
+                                <p>
+                                    Balanced coverage across multiple research angles.
+                                </p>
+
+                            </div>
+
+                        </label>
+
+
+                        <!-- Deep -->
+                        <label class="research-depth-option">
+
+                            <input
+                                type="radio"
+                                name="depth"
+                                value="deep"
+                                class="research-depth-radio"
+                                {% if session.depth == "deep" %}
+                                    checked
+                                {% endif %}
+                            >
+
+                            <div class="research-depth-content">
+
+                                <div class="research-depth-title">
+
+                                    <span>
+                                        Deep
+                                    </span>
+
+                                    <span class="badge text-bg-light">
+                                        More coverage
+                                    </span>
+
+                                </div>
+
+                                <p>
+                                    Broader investigation for complex questions.
+                                </p>
+
+                            </div>
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Run Research -->
+        <div class="research-header-actions">
+
+            {% if sources %}
+
+                <form
+                    id="researchRunForm"
+                    method="post"
+                    action="{% url 'research:run' session.pk %}"
+                >
+
+                    {% csrf_token %}
+
+                    <button
+                        id="researchRunButton"
+                        type="submit"
+                        class="btn btn-primary"
+                        {% if session.status == "researching" %}
+                            disabled
+                        {% endif %}
+                    >
+
+                        {% if session.status == "researching" %}
+
+                            <span
+                                class="spinner-border spinner-border-sm me-1"
+                                aria-hidden="true"
+                            ></span>
+
+                            Researching...
+
+                        {% else %}
+
+                            <i class="bi bi-play-fill me-1"></i>
+                            Run Research
+
+                        {% endif %}
+
+                    </button>
+
+                </form>
+
+            {% else %}
+
+                <a
+                    href="{% url 'research:source_add' session.pk %}"
+                    class="btn btn-primary"
+                >
+                    <i class="bi bi-plus-lg me-1"></i>
+                    Add Research Source
+                </a>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         RESEARCH PROGRESS
+    ====================================================== -->
+
+    <div
+        id="researchProgress"
+        class="research-progress-card {% if session.status != 'researching' %}d-none{% endif %}"
+    >
+
+        <div class="research-progress-header">
+
+            <div>
+
+                <span class="research-section-eyebrow">
+                    Research in progress
+                </span>
+
+                <h3 id="researchProgressTitle">
+                    Researching...
+                </h3>
+
+            </div>
+
+            <div
+                id="researchProgressSpinner"
+                class="spinner-border spinner-border-sm"
+                aria-hidden="true"
+            ></div>
+
+        </div>
+
+
+        <div class="research-progress-steps">
+
+            <div
+                class="research-progress-step"
+                data-stage="planning"
+            >
+                <span class="research-progress-step-icon">
+                    <i class="bi bi-circle"></i>
+                </span>
+
+                <span>
+                    Planning research
+                </span>
+            </div>
+
+
+            <div
+                class="research-progress-step"
+                data-stage="searching"
+            >
+                <span class="research-progress-step-icon">
+                    <i class="bi bi-circle"></i>
+                </span>
+
+                <span>
+                    Searching for information
+                </span>
+            </div>
+
+
+            <div
+                class="research-progress-step"
+                data-stage="collecting"
+            >
+                <span class="research-progress-step-icon">
+                    <i class="bi bi-circle"></i>
+                </span>
+
+                <span>
+                    Collecting evidence
+                </span>
+            </div>
+
+
+            <div
+                class="research-progress-step"
+                data-stage="analyzing"
+            >
+                <span class="research-progress-step-icon">
+                    <i class="bi bi-circle"></i>
+                </span>
+
+                <span>
+                    Analyzing evidence
+                </span>
+            </div>
+
+
+            <div
+                class="research-progress-step"
+                data-stage="building"
+            >
+                <span class="research-progress-step-icon">
+                    <i class="bi bi-circle"></i>
+                </span>
+
+                <span>
+                    Building intelligence
+                </span>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         RESEARCH SOURCES
+    ====================================================== -->
+
+    <section class="research-detail-section">
+
+        <div class="research-section-heading">
+
+            <div>
+
+                <span class="research-section-eyebrow">
+                    Sources
+                </span>
+
+                <h2>
+                    Research Sources
+                </h2>
+
+                <p>
+                    Where Workbeam gathers evidence for this research.
+                </p>
+
+            </div>
+
+
+            <a
+                href="{% url 'research:source_add' session.pk %}"
+                class="btn btn-primary"
+            >
+                <i class="bi bi-plus-lg me-1"></i>
+                Add Source
+            </a>
+
+        </div>
+
+
+        {% if sources %}
+
+            <div class="research-source-list">
+
+                {% for source in sources %}
+
+                    <div class="research-source-card">
+
+                        <div class="research-source-icon">
+
+                            {% if source.source_type == "web" %}
+                                <i class="bi bi-globe2"></i>
+
+                            {% elif source.source_type == "instagram" %}
+                                <i class="bi bi-instagram"></i>
+
+                            {% elif source.source_type == "tiktok" %}
+                                <i class="bi bi-tiktok"></i>
+
+                            {% elif source.source_type == "linkedin" %}
+                                <i class="bi bi-linkedin"></i>
+
+                            {% else %}
+                                <i class="bi bi-link-45deg"></i>
+                            {% endif %}
+
+                        </div>
+
+
+                        <div class="research-source-content">
+
+                            <div class="research-source-title-row">
+
+                                <div>
+
+                                    <h3>
+                                        {{ source.name }}
+                                    </h3>
+
+                                    <span class="research-source-type">
+                                        {{ source.get_source_type_display }}
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+                            {% if source.url %}
+
+                                <p class="research-source-url">
+                                    {{ source.url }}
+                                </p>
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% else %}
+
+            <div class="research-empty-state">
+
+                <div class="research-empty-icon">
+                    <i class="bi bi-database-add"></i>
+                </div>
+
+                <h3>
+                    Add a research source to get started
+                </h3>
+
+                <p>
+                    Workbeam needs at least one research source before it can
+                    collect evidence and generate intelligence.
+                </p>
+
+                <a
+                    href="{% url 'research:source_add' session.pk %}"
+                    class="btn btn-primary"
+                >
+                    <i class="bi bi-plus-lg me-1"></i>
+                    Add Research Source
+                </a>
+
+            </div>
+
+        {% endif %}
+
+    </section>
+
+
+    <!-- =====================================================
+         INTELLIGENCE
+    ====================================================== -->
+
+    <section class="research-detail-section research-intelligence-section">
+
+    <div class="research-section-heading">
+
+        <div>
+
+            <span class="research-section-eyebrow">
+                Intelligence
+            </span>
+
+            <h2>
+                What Matters Now
+            </h2>
+
+            <p>
+                The most important signals across your research history.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    {% if what_matters_now %}
+
+        <!-- =================================================
+             WHAT MATTERS NOW
+        ================================================== -->
+
+        <div class="research-key-findings">
+
+            <div
+                class="accordion research-findings-accordion"
+                id="whatMattersNowAccordion"
+            >
+
+                {% for ranked in what_matters_now %}
+
+                    {% with finding=ranked.finding %}
+
+                        <div class="accordion-item research-key-finding">
+
+                            <h2
+                                class="accordion-header"
+                                id="whatMattersHeading{{ forloop.counter }}"
+                            >
+
+                                <button
+                                    class="accordion-button collapsed"
+                                    type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#whatMatters{{ forloop.counter }}"
+                                    aria-expanded="false"
+                                    aria-controls="whatMatters{{ forloop.counter }}"
+                                >
+
+                                    <div class="research-key-finding-number">
+                                        {{ forloop.counter|stringformat:"02d" }}
+                                    </div>
+
+
+                                    <div class="research-key-finding-content">
+
+                                        <div class="research-finding-meta">
+
+                                            <span>
+                                                {{ finding.get_finding_type_display }}
+                                            </span>
+
+                                            <span>
+                                                {{ finding.get_confidence_display }}
+                                                confidence
+                                            </span>
+
+                                            <span>
+                                                Importance {{ finding.importance }}/10
+                                            </span>
+
+                                            {% if finding.run %}
+                                                <span>
+                                                    Run #{{ finding.run.pk }}
+                                                </span>
+                                            {% endif %}
+
+                                        </div>
+
+
+                                        {% if finding.topic %}
+
+                                            <h3>
+                                                {{ finding.topic }}
+                                            </h3>
+
+                                        {% endif %}
+
+
+                                        <p>
+                                            {{ finding.finding }}
+                                        </p>
+
+
+                                        <div class="research-finding-meta">
+
+                                            <span>
+                                                Priority
+                                                {{ ranked.score|floatformat:0 }}%
+                                            </span>
+
+                                        </div>
+
+                                    </div>
+
+                                </button>
+
+                            </h2>
+
+
+                            <div
+                                id="whatMatters{{ forloop.counter }}"
+                                class="accordion-collapse collapse"
+                                aria-labelledby="whatMattersHeading{{ forloop.counter }}"
+                                data-bs-parent="#whatMattersNowAccordion"
+                            >
+
+                                <div class="accordion-body">
+
+                                    <!-- WHY IT MATTERS -->
+
+                                    {% if finding.why_it_matters %}
+
+                                        <div class="research-finding-detail">
+
+                                            <span class="research-finding-detail-label">
+                                                Why it matters
+                                            </span>
+
+                                            <p>
+                                                {{ finding.why_it_matters }}
+                                            </p>
+
+                                        </div>
+
+                                    {% endif %}
+
+
+                                    <!-- AUDIENCE -->
+
+                                    {% if finding.audience %}
+
+                                        <div class="research-finding-detail">
+
+                                            <span class="research-finding-detail-label">
+                                                Relevant audience
+                                            </span>
+
+                                            <p>
+                                                {{ finding.audience }}
+                                            </p>
+
+                                        </div>
+
+                                    {% endif %}
+
+
+                                    <!-- SCORE BREAKDOWN -->
+
+                                    <div class="research-finding-detail">
+
+                                        <span class="research-finding-detail-label">
+                                            Why this ranked highly
+                                        </span>
+
+                                        <div class="row g-2 mt-1">
+
+                                            <div class="col-md-4">
+
+                                                <div class="p-3 bg-light rounded">
+
+                                                    <small class="text-muted d-block">
+                                                        Importance
+                                                    </small>
+
+                                                    <strong>
+                                                        {{ ranked.importance_score|floatformat:0 }}%
+                                                    </strong>
+
+                                                </div>
+
+                                            </div>
+
+
+                                            <div class="col-md-4">
+
+                                                <div class="p-3 bg-light rounded">
+
+                                                    <small class="text-muted d-block">
+                                                        Confidence
+                                                    </small>
+
+                                                    <strong>
+                                                        {{ ranked.confidence_score|floatformat:0 }}%
+                                                    </strong>
+
+                                                </div>
+
+                                            </div>
+
+
+                                            <div class="col-md-4">
+
+                                                <div class="p-3 bg-light rounded">
+
+                                                    <small class="text-muted d-block">
+                                                        Recency
+                                                    </small>
+
+                                                    <strong>
+                                                        {{ ranked.recency_score|floatformat:0 }}%
+                                                    </strong>
+
+                                                </div>
+
+                                            </div>
+
+
+                                            <div class="col-md-4">
+
+                                                <div class="p-3 bg-light rounded">
+
+                                                    <small class="text-muted d-block">
+                                                        Repetition
+                                                    </small>
+
+                                                    <strong>
+                                                        {{ ranked.repetition_score|floatformat:0 }}%
+                                                    </strong>
+
+                                                </div>
+
+                                            </div>
+
+
+                                            <div class="col-md-4">
+
+                                                <div class="p-3 bg-light rounded">
+
+                                                    <small class="text-muted d-block">
+                                                        Actionability
+                                                    </small>
+
+                                                    <strong>
+                                                        {{ ranked.actionability_score|floatformat:0 }}%
+                                                    </strong>
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <!-- LIMITATIONS -->
+
+                                    {% if finding.limitations %}
+
+                                        <div class="research-finding-detail">
+
+                                            <span class="research-finding-detail-label">
+                                                Limitations
+                                            </span>
+
+                                            <p>
+                                                {{ finding.limitations }}
+                                            </p>
+
+                                        </div>
+
+                                    {% endif %}
+
+
+                                    <!-- RELATED QUESTIONS -->
+
+                                    {% if finding.related_questions %}
+
+                                        <div class="research-finding-detail">
+
+                                            <span class="research-finding-detail-label">
+                                                Related questions
+                                            </span>
+
+                                            <ul class="research-finding-list">
+
+                                                {% for question in finding.related_questions %}
+
+                                                    <li>
+                                                        {{ question }}
+                                                    </li>
+
+                                                {% endfor %}
+
+                                            </ul>
+
+                                        </div>
+
+                                    {% endif %}
+
+
+                                    <!-- CONTENT OPPORTUNITIES -->
+
+                                    {% if finding.content_opportunities %}
+
+                                        <div class="research-finding-detail">
+
+                                            <span class="research-finding-detail-label">
+                                                Content opportunities
+                                            </span>
+
+                                            <ul class="research-finding-list">
+
+                                                {% for opportunity in finding.content_opportunities %}
+
+                                                    <li>
+                                                        {{ opportunity }}
+                                                    </li>
+
+                                                {% endfor %}
+
+                                            </ul>
+
+                                        </div>
+
+                                    {% endif %}
+
+
+                                    <!-- EVIDENCE -->
+
+                                    {% if finding.evidence %}
+
+                                        <div class="research-finding-detail">
+
+                                            <span class="research-finding-detail-label">
+                                                Evidence
+                                            </span>
+
+                                            <p>
+                                                {{ finding.evidence }}
+                                            </p>
+
+                                        </div>
+
+                                    {% endif %}
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    {% endwith %}
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             ALL REMAINING FINDINGS
+        ================================================== -->
+
+        {% if all_findings %}
+
+            <div class="research-all-findings mt-4">
+
+                <button
+                    type="button"
+                    class="research-all-findings-trigger collapsed"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#allResearchFindingsPanel"
+                    aria-expanded="false"
+                    aria-controls="allResearchFindingsPanel"
+                >
+
+                    <span>
+
+                        <i class="bi bi-list-ul me-2"></i>
+
+                        <strong>
+                            View all research findings
+                        </strong>
+
+                        <span class="research-all-findings-count">
+                            {{ all_findings|length }}
+                        </span>
+
+                    </span>
+
+
+                    <i class="bi bi-chevron-down"></i>
+
+                </button>
+
+
+                <div
+                    id="allResearchFindingsPanel"
+                    class="collapse"
+                >
+
+                    <div
+                        class="accordion research-all-findings-accordion mt-3"
+                        id="allFindingsAccordion"
+                    >
+
+                        {% for finding in all_findings %}
+
+                            <div class="accordion-item research-secondary-finding">
+
+                                <h2
+                                    class="accordion-header"
+                                    id="secondaryFindingHeading{{ forloop.counter }}"
+                                >
+
+                                    <button
+                                        class="accordion-button collapsed"
+                                        type="button"
+                                        data-bs-toggle="collapse"
+                                        data-bs-target="#secondaryFinding{{ forloop.counter }}"
+                                        aria-expanded="false"
+                                        aria-controls="secondaryFinding{{ forloop.counter }}"
+                                    >
+
+                                        <div>
+
+                                            <div class="research-finding-meta">
+
+                                                <span>
+                                                    {{ finding.get_finding_type_display }}
+                                                </span>
+
+                                                <span>
+                                                    {{ finding.get_confidence_display }}
+                                                    confidence
+                                                </span>
+
+                                                <span>
+                                                    Importance
+                                                    {{ finding.importance }}/10
+                                                </span>
+
+                                            </div>
+
+
+                                            {% if finding.topic %}
+
+                                                <strong>
+                                                    {{ finding.topic }}
+                                                </strong>
+
+                                            {% else %}
+
+                                                <strong>
+                                                    Research finding
+                                                </strong>
+
+                                            {% endif %}
+
+                                        </div>
+
+                                    </button>
+
+                                </h2>
+
+
+                                <div
+                                    id="secondaryFinding{{ forloop.counter }}"
+                                    class="accordion-collapse collapse"
+                                    aria-labelledby="secondaryFindingHeading{{ forloop.counter }}"
+                                    data-bs-parent="#allFindingsAccordion"
+                                >
+
+                                    <div class="accordion-body">
+
+                                        <p class="research-secondary-finding-main">
+                                            {{ finding.finding }}
+                                        </p>
+
+
+                                        {% if finding.why_it_matters %}
+
+                                            <div class="research-finding-detail">
+
+                                                <span class="research-finding-detail-label">
+                                                    Why it matters
+                                                </span>
+
+                                                <p>
+                                                    {{ finding.why_it_matters }}
+                                                </p>
+
+                                            </div>
+
+                                        {% endif %}
+
+
+                                        {% if finding.audience %}
+
+                                            <div class="research-finding-detail">
+
+                                                <span class="research-finding-detail-label">
+                                                    Audience
+                                                </span>
+
+                                                <p>
+                                                    {{ finding.audience }}
+                                                </p>
+
+                                            </div>
+
+                                        {% endif %}
+
+
+                                        {% if finding.limitations %}
+
+                                            <div class="research-finding-detail">
+
+                                                <span class="research-finding-detail-label">
+                                                    Limitations
+                                                </span>
+
+                                                <p>
+                                                    {{ finding.limitations }}
+                                                </p>
+
+                                            </div>
+
+                                        {% endif %}
+
+
+                                        {% if finding.related_questions %}
+
+                                            <div class="research-finding-detail">
+
+                                                <span class="research-finding-detail-label">
+                                                    Related questions
+                                                </span>
+
+                                                <ul class="research-finding-list">
+
+                                                    {% for question in finding.related_questions %}
+
+                                                        <li>
+                                                            {{ question }}
+                                                        </li>
+
+                                                    {% endfor %}
+
+                                                </ul>
+
+                                            </div>
+
+                                        {% endif %}
+
+
+                                        {% if finding.content_opportunities %}
+
+                                            <div class="research-finding-detail">
+
+                                                <span class="research-finding-detail-label">
+                                                    Content opportunities
+                                                </span>
+
+                                                <ul class="research-finding-list">
+
+                                                    {% for opportunity in finding.content_opportunities %}
+
+                                                        <li>
+                                                            {{ opportunity }}
+                                                        </li>
+
+                                                    {% endfor %}
+
+                                                </ul>
+
+                                            </div>
+
+                                        {% endif %}
+
+
+                                        {% if finding.evidence %}
+
+                                            <div class="research-finding-detail">
+
+                                                <span class="research-finding-detail-label">
+                                                    Evidence
+                                                </span>
+
+                                                <p>
+                                                    {{ finding.evidence }}
+                                                </p>
+
+                                            </div>
+
+                                        {% endif %}
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        {% endif %}
+
+
+    {% elif key_findings %}
+
+        <!-- =================================================
+             FALLBACK
+             For older research sessions that do not yet have
+             What Matters Now ranking data.
+        ================================================== -->
+
+        <div class="research-key-findings">
+
+            <div
+                class="accordion research-findings-accordion"
+                id="majorFindingsAccordion"
+            >
+
+                {% for finding in key_findings %}
+
+                    <div class="accordion-item research-key-finding">
+
+                        <h2
+                            class="accordion-header"
+                            id="majorFindingHeading{{ forloop.counter }}"
+                        >
+
+                            <button
+                                class="accordion-button collapsed"
+                                type="button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#majorFinding{{ forloop.counter }}"
+                                aria-expanded="false"
+                                aria-controls="majorFinding{{ forloop.counter }}"
+                            >
+
+                                <div class="research-key-finding-number">
+                                    {{ forloop.counter|stringformat:"02d" }}
+                                </div>
+
+
+                                <div class="research-key-finding-content">
+
+                                    <div class="research-finding-meta">
+
+                                        <span>
+                                            {{ finding.get_finding_type_display }}
+                                        </span>
+
+                                        <span>
+                                            {{ finding.get_confidence_display }}
+                                            confidence
+                                        </span>
+
+                                    </div>
+
+
+                                    {% if finding.topic %}
+
+                                        <h3>
+                                            {{ finding.topic }}
+                                        </h3>
+
+                                    {% endif %}
+
+
+                                    <p>
+                                        {{ finding.finding }}
+                                    </p>
+
+                                </div>
+
+                            </button>
+
+                        </h2>
+
+
+                        <div
+                            id="majorFinding{{ forloop.counter }}"
+                            class="accordion-collapse collapse"
+                            aria-labelledby="majorFindingHeading{{ forloop.counter }}"
+                            data-bs-parent="#majorFindingsAccordion"
+                        >
+
+                            <div class="accordion-body">
+
+                                {% if finding.why_it_matters %}
+
+                                    <div class="research-finding-detail">
+
+                                        <span class="research-finding-detail-label">
+                                            Why it matters
+                                        </span>
+
+                                        <p>
+                                            {{ finding.why_it_matters }}
+                                        </p>
+
+                                    </div>
+
+                                {% endif %}
+
+
+                                {% if finding.audience %}
+
+                                    <div class="research-finding-detail">
+
+                                        <span class="research-finding-detail-label">
+                                            Relevant audience
+                                        </span>
+
+                                        <p>
+                                            {{ finding.audience }}
+                                        </p>
+
+                                    </div>
+
+                                {% endif %}
+
+
+                                {% if finding.limitations %}
+
+                                    <div class="research-finding-detail">
+
+                                        <span class="research-finding-detail-label">
+                                            Limitations
+                                        </span>
+
+                                        <p>
+                                            {{ finding.limitations }}
+                                        </p>
+
+                                    </div>
+
+                                {% endif %}
+
+
+                                {% if finding.related_questions %}
+
+                                    <div class="research-finding-detail">
+
+                                        <span class="research-finding-detail-label">
+                                            Related questions
+                                        </span>
+
+                                        <ul class="research-finding-list">
+
+                                            {% for question in finding.related_questions %}
+
+                                                <li>
+                                                    {{ question }}
+                                                </li>
+
+                                            {% endfor %}
+
+                                        </ul>
+
+                                    </div>
+
+                                {% endif %}
+
+
+                                {% if finding.content_opportunities %}
+
+                                    <div class="research-finding-detail">
+
+                                        <span class="research-finding-detail-label">
+                                            Content opportunities
+                                        </span>
+
+                                        <ul class="research-finding-list">
+
+                                            {% for opportunity in finding.content_opportunities %}
+
+                                                <li>
+                                                    {{ opportunity }}
+                                                </li>
+
+                                            {% endfor %}
+
+                                        </ul>
+
+                                    </div>
+
+                                {% endif %}
+
+
+                                {% if finding.evidence %}
+
+                                    <div class="research-finding-detail">
+
+                                        <span class="research-finding-detail-label">
+                                            Evidence
+                                        </span>
+
+                                        <p>
+                                            {{ finding.evidence }}
+                                        </p>
+
+                                    </div>
+
+                                {% endif %}
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+
+    {% else %}
+
+        <div class="research-empty-state">
+
+            <div class="research-empty-icon">
+                <i class="bi bi-lightbulb"></i>
+            </div>
+
+            <h3>
+                No intelligence yet
+            </h3>
+
+            <p>
+                Run the research to generate key insights.
+            </p>
+
+        </div>
+
+    {% endif %}
+
+</section>
+
+
+    <!-- =====================================================
+         RESEARCH SIGNALS
+    ====================================================== -->
+
+    <section class="research-detail-section">
+
+        <div class="research-section-heading">
+
+            <div>
+
+                <span class="research-section-eyebrow">
+                    Signals
+                </span>
+
+                <h2>
+                    Research Signals
+                </h2>
+
+                <p>
+                    A quick view of what surfaced during research.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="research-signal-grid">
+
+            <div class="research-signal-card">
+
+                <span class="research-signal-value">
+                    {{ signal_counts.problems }}
+                </span>
+
+                <span class="research-signal-label">
+                    Problems
+                </span>
+
+            </div>
+
+
+            <div class="research-signal-card">
+
+                <span class="research-signal-value">
+                    {{ signal_counts.trends }}
+                </span>
+
+                <span class="research-signal-label">
+                    Trends
+                </span>
+
+            </div>
+
+
+            <div class="research-signal-card">
+
+                <span class="research-signal-value">
+                    {{ signal_counts.opportunities }}
+                </span>
+
+                <span class="research-signal-label">
+                    Opportunities
+                </span>
+
+            </div>
+
+
+            <div class="research-signal-card">
+
+                <span class="research-signal-value">
+                    {{ signal_counts.questions }}
+                </span>
+
+                <span class="research-signal-label">
+                    Questions
+                </span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         EVIDENCE
+    ====================================================== -->
+
+    <section class="research-detail-section research-evidence-section">
+
+        <div class="research-section-heading">
+
+            <div>
+
+                <span class="research-section-eyebrow">
+                    Evidence
+                </span>
+
+                <h2>
+                    Research Evidence
+                </h2>
+
+                <p>
+                    Inspect the source material behind Workbeam's intelligence.
+                </p>
+
+            </div>
+
+
+            {% if items %}
+
+                <span class="research-result-count">
+
+                    {{ items|length }}
+                    result{{ items|length|pluralize }}
+
+                </span>
+
+            {% endif %}
+
+        </div>
+
+
+        {% if items %}
+
+            <div
+                class="accordion research-evidence-accordion"
+                id="researchEvidenceAccordion"
+            >
+
+                {% for item in items %}
+
+                    <div class="accordion-item research-evidence-card">
+
+                        <h2
+                            class="accordion-header"
+                            id="researchEvidenceHeading{{ forloop.counter }}"
+                        >
+
+                            <button
+                                class="accordion-button collapsed research-evidence-button"
+                                type="button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#researchEvidenceCollapse{{ forloop.counter }}"
+                                aria-expanded="false"
+                                aria-controls="researchEvidenceCollapse{{ forloop.counter }}"
+                            >
+
+                                <div class="research-evidence-main">
+
+                                    <div class="research-evidence-meta">
+
+                                        <span class="research-evidence-source">
+                                            {{ item.source.get_source_type_display }}
+                                        </span>
+
+                                        {% if item.source.name %}
+
+                                            <span class="research-evidence-source-name">
+                                                {{ item.source.name }}
+                                            </span>
+
+                                        {% endif %}
+
+                                    </div>
+
+
+                                    <span class="research-evidence-title">
+                                        {{ item.title|default:"Untitled research result" }}
+                                    </span>
+
+                                </div>
+
+                            </button>
+
+                        </h2>
+
+
+                        <div
+                            id="researchEvidenceCollapse{{ forloop.counter }}"
+                            class="accordion-collapse collapse"
+                            aria-labelledby="researchEvidenceHeading{{ forloop.counter }}"
+                            data-bs-parent="#researchEvidenceAccordion"
+                        >
+
+                            <div class="accordion-body research-evidence-body">
+
+                                {% if item.raw_content %}
+
+                                    <div class="research-evidence-content">
+                                        {{ item.raw_content|truncatewords:100 }}
+                                    </div>
+
+                                {% else %}
+
+                                    <p class="research-evidence-empty">
+                                        No extracted content is available
+                                        for this source.
+                                    </p>
+
+                                {% endif %}
+
+
+                                <div class="research-evidence-footer">
+
+                                    {% if item.published_at %}
+
+                                        <span class="research-evidence-date">
+
+                                            <i class="bi bi-calendar3"></i>
+
+                                            {{ item.published_at|date:"M d, Y" }}
+
+                                        </span>
+
+                                    {% endif %}
+
+
+                                    {% if item.url %}
+
+                                        <a
+                                            href="{{ item.url }}"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            class="research-evidence-link"
+                                        >
+                                            Open source
+
+                                            <i class="bi bi-box-arrow-up-right"></i>
+                                        </a>
+
+                                    {% endif %}
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% else %}
+
+            <div class="research-empty-state">
+
+                <div class="research-empty-icon">
+                    <i class="bi bi-file-earmark-text"></i>
+                </div>
+
+                <h3>
+                    No research evidence yet
+                </h3>
+
+                <p>
+                    Run the research to collect evidence from your selected sources.
+                </p>
+
+            </div>
+
+        {% endif %}
+
+    </section>
+
+</div>
+
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const progressCard =
+        document.getElementById("researchProgress");
+
+    const runForm =
+        document.getElementById("researchRunForm");
+
+    const runButton =
+        document.getElementById("researchRunButton");
+
+
+    if (!progressCard) {
+        return;
+    }
+
+
+    const statusUrl =
+        "{% url 'research:run_status' session.pk %}";
+
+
+    const stageOrder = [
+        "planning",
+        "searching",
+        "collecting",
+        "analyzing",
+        "building",
+    ];
+
+
+    function updateProgress(data) {
+
+        const stage = data.stage;
+        const status = data.status;
+
+
+        if (
+            status === "idle" ||
+            status === "pending"
+        ) {
+            return;
+        }
+
+
+        if (status === "failed") {
+
+            progressCard.classList.remove("d-none");
+
+
+            document.getElementById(
+                "researchProgressTitle"
+            ).textContent = "Research failed";
+
+
+            progressCard.classList.add(
+                "research-progress-error"
+            );
+
+
+            if (data.error) {
+
+                document.getElementById(
+                    "researchProgressTitle"
+                ).textContent = data.error;
+
+            }
+
+
+            return;
+        }
+
+
+        if (status === "completed") {
+
+            document.getElementById(
+                "researchProgressTitle"
+            ).textContent = "Research complete";
+
+
+            progressCard.classList.remove(
+                "research-progress-error"
+            );
+
+
+            stageOrder.forEach(function (stageName) {
+
+                const step = document.querySelector(
+                    `[data-stage="${stageName}"]`
+                );
+
+
+                if (!step) {
+                    return;
+                }
+
+
+                step.classList.add(
+                    "is-complete"
+                );
+
+            });
+
+
+            setTimeout(function () {
+
+                window.location.reload();
+
+            }, 800);
+
+
+            return;
+        }
+
+
+        progressCard.classList.remove("d-none");
+
+
+        const title =
+            document.getElementById(
+                "researchProgressTitle"
+            );
+
+
+        if (data.message) {
+
+            title.textContent =
+                data.message;
+
+        }
+
+
+        const currentIndex =
+            stageOrder.indexOf(stage);
+
+
+        document.querySelectorAll(
+            ".research-progress-step"
+        ).forEach(function (step) {
+
+            const stepStage =
+                step.dataset.stage;
+
+            const stepIndex =
+                stageOrder.indexOf(stepStage);
+
+
+            step.classList.remove(
+                "is-active",
+                "is-complete"
+            );
+
+
+            if (
+                stepIndex < currentIndex
+            ) {
+
+                step.classList.add(
+                    "is-complete"
+                );
+
+            }
+
+
+            if (
+                stepIndex === currentIndex
+            ) {
+
+                step.classList.add(
+                    "is-active"
+                );
+
+            }
+
+        });
+
+    }
+
+
+    let polling = null;
+
+
+    function checkStatus() {
+
+        fetch(statusUrl, {
+            method: "GET",
+            headers: {
+                "X-Requested-With": "XMLHttpRequest"
+            }
+        })
+
+        .then(function (response) {
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "Unable to check research status."
+                );
+
+            }
+
+            return response.json();
+
+        })
+
+        .then(function (data) {
+
+            updateProgress(data);
+
+
+            if (
+                data.status === "completed" ||
+                data.status === "failed"
+            ) {
+
+                clearInterval(polling);
+
+            }
+
+        })
+
+        .catch(function (error) {
+
+            console.error(
+                "Research status error:",
+                error
+            );
+
+        });
+
+    }
+
+
+    /*
+     * If a research run is already active when
+     * the page loads, immediately start polling.
+     */
+
+    {% if session.status == "researching" %}
+
+        progressCard.classList.remove(
+            "d-none"
+        );
+
+
+        polling = setInterval(
+            checkStatus,
+            1000
+        );
+
+
+        checkStatus();
+
+    {% endif %}
+
+
+    /*
+     * When the user starts a new research run,
+     * show the loader immediately.
+     */
+
+    if (runForm) {
+
+        runForm.addEventListener(
+            "submit",
+            function () {
+
+                progressCard.classList.remove(
+                    "d-none"
+                );
+
+
+                if (runButton) {
+
+                    runButton.disabled = true;
+
+
+                    runButton.innerHTML = `
+                        <span
+                            class="spinner-border spinner-border-sm me-1"
+                            aria-hidden="true"
+                        ></span>
+                        Researching...
+                    `;
+
+                }
+
+
+                polling = setInterval(
+                    checkStatus,
+                    1000
+                );
+
+            }
+        );
+
+    }
+
+});
+
+</script>
+
+{% endblock %}

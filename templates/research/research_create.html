@@ -1,0 +1,284 @@
+{% extends "base.html" %}
+
+{% block title %}Start Research | Workbeam{% endblock %}
+
+{% block content %}
+
+<div class="research-form-page">
+
+    <!-- Header -->
+    <div class="mb-4">
+
+        <a
+            href="{% url 'research:home' %}"
+            class="btn btn-sm btn-light mb-3"
+        >
+            <i class="bi bi-arrow-left me-2"></i>
+            Back to Research
+        </a>
+
+        <h1 class="h3 fw-bold mb-1">
+            Start Research
+        </h1>
+
+        <p class="text-muted mb-0">
+            Tell Workbeam what you want to understand.
+        </p>
+
+    </div>
+
+
+    <!-- Error -->
+    {% if error %}
+
+        <div class="alert alert-danger mb-4">
+            {{ error }}
+        </div>
+
+    {% endif %}
+
+
+    <form method="post">
+
+        {% csrf_token %}
+
+        <!-- Research mode -->
+        <div class="research-form-card mb-4">
+
+            <div class="mb-3">
+
+                <h2 class="h5 fw-semibold mb-1">
+                    How do you want to research?
+                </h2>
+
+                <p class="text-muted small mb-0">
+                    Choose whether this research should use an existing brand
+                    or stand completely on its own.
+                </p>
+
+            </div>
+
+
+            <div class="research-mode-options">
+
+                <!-- Connected -->
+                <label class="research-mode-option">
+
+                    <input
+                        type="radio"
+                        name="mode"
+                        value="connected"
+                        class="research-mode-radio"
+                        id="modeConnected"
+                    >
+
+                    <span class="research-mode-content">
+
+                        <span class="research-mode-icon">
+                            <i class="bi bi-briefcase"></i>
+                        </span>
+
+                        <span>
+                            <strong class="d-block">
+                                Research for a brand
+                            </strong>
+
+                            <small class="text-muted">
+                                Use the selected brand's existing context.
+                            </small>
+                        </span>
+
+                    </span>
+
+                </label>
+
+
+                <!-- Independent -->
+                <label class="research-mode-option">
+
+                    <input
+                        type="radio"
+                        name="mode"
+                        value="independent"
+                        class="research-mode-radio"
+                        id="modeIndependent"
+                        checked
+                    >
+
+                    <span class="research-mode-content">
+
+                        <span class="research-mode-icon">
+                            <i class="bi bi-search"></i>
+                        </span>
+
+                        <span>
+                            <strong class="d-block">
+                                Independent research
+                            </strong>
+
+                            <small class="text-muted">
+                                Research only what you provide here.
+                            </small>
+                        </span>
+
+                    </span>
+
+                </label>
+
+            </div>
+
+        </div>
+
+
+        <!-- Brand selection -->
+        <div
+            class="research-form-card mb-4"
+            id="brandSelection"
+            hidden
+        >
+
+            <label
+                for="brand"
+                class="form-label fw-semibold"
+            >
+                Brand
+            </label>
+
+            <select
+                name="brand"
+                id="brand"
+                class="form-select"
+            >
+
+                <option value="">
+                    Select a brand
+                </option>
+
+                {% for brand in brands %}
+
+                    <option value="{{ brand.pk }}">
+                        {{ brand.name }}
+                    </option>
+
+                {% endfor %}
+
+            </select>
+
+            <div class="form-text">
+                Workbeam will use this brand's context when conducting the
+                research.
+            </div>
+
+        </div>
+
+
+        <!-- Research details -->
+        <div class="research-form-card mb-4">
+
+            <div class="mb-4">
+
+                <label
+                    for="title"
+                    class="form-label fw-semibold"
+                >
+                    Research title
+                </label>
+
+                <input
+                    type="text"
+                    name="title"
+                    id="title"
+                    class="form-control"
+                    placeholder="e.g. Nigerian SME automation opportunities"
+                    required
+                >
+
+            </div>
+
+
+            <div>
+
+                <label
+                    for="researchBrief"
+                    class="form-label fw-semibold"
+                >
+                    What do you want to research?
+                </label>
+
+                <textarea
+                    name="research_brief"
+                    id="researchBrief"
+                    class="form-control"
+                    rows="9"
+                    placeholder="Describe what you want to understand. Include any questions, ideas, problems, markets, audiences, competitors or topics you want investigated."
+                    required
+                ></textarea>
+
+                <div class="form-text">
+                    The more useful context you provide, the more focused the
+                    research can become.
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Actions -->
+        <div class="d-flex flex-column flex-sm-row gap-2">
+
+            <a
+                href="{% url 'research:home' %}"
+                class="btn btn-light"
+            >
+                Cancel
+            </a>
+
+            <button
+                type="submit"
+                class="btn btn-primary"
+            >
+                <i class="bi bi-search me-2"></i>
+                Start Research
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const connectedMode = document.getElementById("modeConnected");
+    const independentMode = document.getElementById("modeIndependent");
+    const brandSelection = document.getElementById("brandSelection");
+    const brandField = document.getElementById("brand");
+
+    function updateResearchMode() {
+
+        if (connectedMode.checked) {
+
+            brandSelection.hidden = false;
+            brandField.required = true;
+
+        } else {
+
+            brandSelection.hidden = true;
+            brandField.required = false;
+            brandField.value = "";
+
+        }
+    }
+
+    connectedMode.addEventListener("change", updateResearchMode);
+    independentMode.addEventListener("change", updateResearchMode);
+
+    updateResearchMode();
+
+});
+</script>
+
+{% endblock %}
