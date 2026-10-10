@@ -73,7 +73,8 @@ class WebResearchService:
 
     def collect_for_session(self, session, run):
         source = session.sources.filter(
-            source_type="web"
+            source_type="web",
+            is_active=True,
         ).first()
 
         if not source:

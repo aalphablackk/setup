@@ -92,11 +92,10 @@ class ResearchAnalyzer:
 
             evidence.append(
                 {
+                    "item_id": item.pk,
                     "title": item.title,
                     "url": item.url,
-                    "content": content[
-                        : self.MAX_CONTENT_PER_ITEM
-                    ],
+                    "content": content[: self.MAX_CONTENT_PER_ITEM],
                 }
             )
 
@@ -165,6 +164,10 @@ IMPORTANT RULES:
     by the available evidence.
 23. Aim for approximately {finding_limit} useful findings.
 24. Never exceed {finding_limit} findings.
+25. For every finding, return evidence_item_ids containing the
+    item_id values of the supplied evidence items that directly
+    support that finding. Only use IDs present in the supplied
+    evidence. Return an empty list if no item directly supports it.
 
 IMPORTANCE SCORE:
 
@@ -273,7 +276,8 @@ Return JSON exactly in this structure:
             "content_opportunities": [
                 "Specific content idea that could be created from this finding."
             ],
-            "evidence": "Evidence and relevant source URL.",
+            "evidence": "Evidence summary and relevant source URL.",
+            "evidence_item_ids": [123],
             "confidence": "high",
             "importance": 8
         }}
@@ -308,24 +312,27 @@ Research evidence:
             raise ValueError(
                 "The AI returned invalid JSON."
             ) from exc
+        allowed_item_ids = {
+            entry["item_id"]
+            for entry in evidence
+        }
 
         self._validate_result(
             result=result,
             finding_limit=finding_limit,
+            allowed_item_ids=allowed_item_ids,
         )
 
         return result
 
-    def _validate_result(self, result, finding_limit):
+    
+    def _validate_result(self, result, finding_limit, allowed_item_ids=None):
         if not isinstance(result, dict):
             raise ValueError(
                 "AI analysis must return a JSON object."
             )
 
-        if not isinstance(
-            result.get("summary"),
-            str,
-        ):
+        if not isinstance(result.get("summary"), str):
             raise ValueError(
                 "AI analysis is missing a valid summary."
             )
@@ -343,30 +350,49 @@ Research evidence:
             )
 
         for finding in findings:
-
+            # 1. Validate the finding structure.
             if not isinstance(finding, dict):
                 raise ValueError(
                     "Invalid finding returned by AI."
                 )
 
-            if (
-                finding.get("finding_type")
-                not in self.ALLOWED_FINDING_TYPES
-            ):
+            # 2. Validate evidence item IDs.
+            evidence_item_ids = finding.get("evidence_item_ids", [])
+
+            if not isinstance(evidence_item_ids, list):
                 raise ValueError(
-                    f"Invalid finding type: "
-                    f"{finding.get('finding_type')}"
+                    "A finding has invalid evidence item IDs."
                 )
 
-            if (
-                finding.get("confidence")
-                not in self.ALLOWED_CONFIDENCE
+            if any(
+                not isinstance(item_id, int) or isinstance(item_id, bool)
+                for item_id in evidence_item_ids
             ):
                 raise ValueError(
-                    f"Invalid confidence: "
-                    f"{finding.get('confidence')}"
+                    "Evidence item IDs must be integers."
                 )
 
+            # 3. Ensure the AI only references evidence it received.
+            if (
+                allowed_item_ids is not None
+                and not set(evidence_item_ids).issubset(allowed_item_ids)
+            ):
+                raise ValueError(
+                    "A finding references evidence that was not supplied."
+                )
+
+            # 4. Validate finding type and confidence.
+            if finding.get("finding_type") not in self.ALLOWED_FINDING_TYPES:
+                raise ValueError(
+                    f"Invalid finding type: {finding.get('finding_type')}"
+                )
+
+            if finding.get("confidence") not in self.ALLOWED_CONFIDENCE:
+                raise ValueError(
+                    f"Invalid confidence: {finding.get('confidence')}"
+                )
+
+            # 5. Validate the main finding content.
             if not finding.get("finding"):
                 raise ValueError(
                     "A finding is missing its main content."
@@ -374,7 +400,7 @@ Research evidence:
 
             importance = finding.get("importance")
 
-            if not isinstance(importance, int):
+            if not isinstance(importance, int) or isinstance(importance, bool):
                 raise ValueError(
                     "A finding has an invalid importance score."
                 )
@@ -384,58 +410,29 @@ Research evidence:
                     "Importance score must be between 1 and 10."
                 )
 
-            if not isinstance(
-                finding.get("topic", ""),
-                str,
-            ):
-                raise ValueError(
-                    "A finding has an invalid topic value."
-                )
+            # 6. Validate text fields.
+            text_fields = (
+                "topic",
+                "audience",
+                "why_it_matters",
+                "limitations",
+                "evidence",
+            )
 
-            if not isinstance(
-                finding.get("audience", ""),
-                str,
-            ):
-                raise ValueError(
-                    "A finding has an invalid audience value."
-                )
+            for field in text_fields:
+                if not isinstance(finding.get(field, ""), str):
+                    raise ValueError(
+                        f"A finding has an invalid {field} value."
+                    )
 
-            if not isinstance(
-                finding.get("why_it_matters", ""),
-                str,
-            ):
-                raise ValueError(
-                    "A finding has an invalid why_it_matters value."
-                )
+            # 7. Validate list fields.
+            list_fields = (
+                "related_questions",
+                "content_opportunities",
+            )
 
-            if not isinstance(
-                finding.get("limitations", ""),
-                str,
-            ):
-                raise ValueError(
-                    "A finding has an invalid limitations value."
-                )
-
-            if not isinstance(
-                finding.get("evidence", ""),
-                str,
-            ):
-                raise ValueError(
-                    "A finding has an invalid evidence value."
-                )
-
-            if not isinstance(
-                finding.get("related_questions", []),
-                list,
-            ):
-                raise ValueError(
-                    "A finding has invalid related questions."
-                )
-
-            if not isinstance(
-                finding.get("content_opportunities", []),
-                list,
-            ):
-                raise ValueError(
-                    "A finding has invalid content opportunities."
-                )
+            for field in list_fields:
+                if not isinstance(finding.get(field, []), list):
+                    raise ValueError(
+                        f"A finding has invalid {field.replace('_', ' ')}."
+                    )

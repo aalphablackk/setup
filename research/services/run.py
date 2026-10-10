@@ -113,11 +113,31 @@ class ResearchRunService:
 
             session.summary = analysis["summary"]
 
-            for finding in analysis["findings"]:
+            item_by_id = {
+                item.pk: item
+                for item in items
+            }
 
-                ResearchFinding.objects.create(
+            for finding in analysis["findings"]:
+                evidence_item_ids = finding.get(
+                    "evidence_item_ids",
+                    [],
+                )
+
+                supporting_items = [
+                    item_by_id[item_id]
+                    for item_id in evidence_item_ids
+                    if item_id in item_by_id
+                ]
+
+                saved_finding = ResearchFinding.objects.create(
                     session=session,
                     run=run,
+                    research_item=(
+                        supporting_items[0]
+                        if supporting_items
+                        else None
+                    ),
                     finding_type=finding["finding_type"],
                     topic=finding.get("topic", ""),
                     finding=finding["finding"],
@@ -136,6 +156,8 @@ class ResearchRunService:
                     confidence=finding["confidence"],
                     importance=finding["importance"],
                 )
+
+                saved_finding.supporting_items.set(supporting_items)
 
 
             # -------------------------------------------------

@@ -13,4 +13,5 @@ urlpatterns = [
     path("<int:pk>/sources/add/", views.research_source_add, name="source_add"), 
     path("<int:pk>/run/",views.research_run,name="run",),
     path("<int:pk>/run-status/",views.research_run_status,name="run_status",),
+    path("<int:pk>/sources/<int:source_pk>/remove/",views.research_source_remove,name="source_remove",),
 ]

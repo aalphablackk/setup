@@ -1,0 +1,44 @@
+
+{% with sources=finding.supporting_items.all %}
+    {% if sources %}
+        <div class="research-finding-detail research-finding-sources">
+            <span class="research-finding-detail-label">
+                <i class="bi bi-link-45deg me-1" aria-hidden="true"></i>
+                Supporting sources
+            </span>
+
+            <ul class="research-finding-sources-list">
+                {% for item in sources %}
+                    <li>
+                        <a
+                            href="{{ item.url }}"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="research-finding-source-link"
+                        >
+                            <span>
+                                {{ item.title|default:"Untitled source" }}
+                            </span>
+                            <i class="bi bi-box-arrow-up-right" aria-hidden="true"></i>
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% elif finding.research_item and finding.research_item.url %}
+        <div class="research-finding-detail research-finding-sources">
+            <span class="research-finding-detail-label">
+                Supporting source
+            </span>
+            <a
+                href="{{ finding.research_item.url }}"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="research-finding-source-link"
+            >
+                {{ finding.research_item.title|default:"Open original source" }}
+                <i class="bi bi-box-arrow-up-right" aria-hidden="true"></i>
+            </a>
+        </div>
+    {% endif %}
+{% endwith %}

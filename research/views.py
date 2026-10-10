@@ -17,7 +17,8 @@ def research_home(request):
     ).select_related("brand")
 
     independent_sessions = ResearchSession.objects.filter(
-        brand__isnull=True
+        created_by=request.user,
+        brand__isnull=True,
     )
 
     sessions = (sessions | independent_sessions).order_by("-updated_at")
@@ -115,7 +116,7 @@ def research_detail(request, pk):
         created_by=request.user,
     )
 
-    sources = session.sources.all()
+    sources = session.sources.filter(is_active=True)
 
     latest_run = session.runs.first()
 
@@ -193,6 +194,7 @@ def research_detail(request, pk):
             "what_matters_now": what_matters_now,
         },
     )
+
 @login_required
 def research_source_add(request, pk):
     session = get_object_or_404(
@@ -206,13 +208,37 @@ def research_source_add(request, pk):
         name = request.POST.get("name", "").strip()
         url = request.POST.get("url", "").strip()
 
-        if source_type and name:
-            ResearchSource.objects.create(
-                session=session,
-                source_type=source_type,
-                name=name,
-                url=url,
+        if source_type != ResearchSource.SourceType.WEB or not name:
+            return render(
+                request,
+                "research/research_source_add.html",
+                {
+                    "session": session,
+                    "error": "Only Web research sources are currently supported.",
+                },
             )
+
+        # Prevent duplicate URLs within the same session.
+        if url and session.sources.filter(
+            source_type=ResearchSource.SourceType.WEB,
+            url__iexact=url,
+            is_active=True,
+        ).exists():
+            return render(
+                request,
+                "research/research_source_add.html",
+                {
+                    "session": session,
+                    "error": "This source URL has already been added to this research session.",
+                },
+            )
+
+        ResearchSource.objects.create(
+            session=session,
+            source_type=source_type,
+            name=name,
+            url=url,
+        )
 
         return redirect("research:detail", pk=session.pk)
 
@@ -221,6 +247,7 @@ def research_source_add(request, pk):
         "research/research_source_add.html",
         {"session": session},
     )
+
 
 @login_required
 def research_run(request, pk):
@@ -284,3 +311,26 @@ def research_run_status(request, pk):
         "result_count": run.result_count,
         "error": run.error_message if run.status == "failed" else None,
     })
+
+@login_required
+def research_source_remove(request, pk, source_pk):
+    if request.method != "POST":
+        return redirect("research:detail", pk=pk)
+
+    session = get_object_or_404(
+        ResearchSession,
+        pk=pk,
+        created_by=request.user,
+    )
+
+    source = get_object_or_404(
+        ResearchSource,
+        pk=source_pk,
+        session=session,
+        is_active=True,
+    )
+
+    source.is_active = False
+    source.save(update_fields=["is_active"])
+
+    return redirect("research:detail", pk=session.pk)

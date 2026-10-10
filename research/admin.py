@@ -84,19 +84,25 @@ class ResearchItemAdmin(admin.ModelAdmin):
     )
 
 
+
 @admin.register(ResearchFinding)
 class ResearchFindingAdmin(admin.ModelAdmin):
     list_display = (
         "topic",
         "finding_type",
         "confidence",
+        "importance",
         "session",
+        "run",
+        "supporting_source_count",
         "created_at",
     )
 
     list_filter = (
         "finding_type",
         "confidence",
+        "importance",
+        "session__depth",
     )
 
     search_fields = (
@@ -105,12 +111,22 @@ class ResearchFindingAdmin(admin.ModelAdmin):
         "audience",
         "evidence",
         "session__title",
+        "run__id",
     )
 
     readonly_fields = (
         "created_at",
         "updated_at",
+        "supporting_source_count",
     )
+
+    filter_horizontal = ("supporting_items",)
+
+    def supporting_source_count(self, obj):
+        return obj.supporting_items.count()
+
+    supporting_source_count.short_description = "Supporting sources"
+
 @admin.register(ResearchRun)
 class ResearchRunAdmin(admin.ModelAdmin):
     list_display = (

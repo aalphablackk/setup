@@ -94,6 +94,7 @@ class ResearchSource(models.Model):
         blank=True,
         max_length=1000,
     )
+    is_active = models.BooleanField(default=True)
 
     metadata = models.JSONField(
         default=dict,
@@ -180,6 +181,11 @@ class ResearchFinding(models.Model):
         on_delete=models.SET_NULL,
         related_name="findings",
         null=True,
+        blank=True,
+    )
+    supporting_items = models.ManyToManyField(
+        ResearchItem,
+        related_name="supporting_findings",
         blank=True,
     )
 

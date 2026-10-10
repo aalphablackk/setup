@@ -476,6 +476,69 @@
 
                         </div>
 
+                                                
+                        <button
+                            type="button"
+                            class="btn btn-sm btn-outline-secondary research-source-remove"
+                            data-bs-toggle="modal"
+                            data-bs-target="#removeSourceModal{{ source.pk }}"
+                        >
+                            <i class="bi bi-x-circle me-1" aria-hidden="true"></i>
+                            Remove
+                        </button>
+
+                        <div
+                            class="modal fade"
+                            id="removeSourceModal{{ source.pk }}"
+                            tabindex="-1"
+                            aria-labelledby="removeSourceTitle{{ source.pk }}"
+                            aria-hidden="true"
+                        >
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5
+                                            class="modal-title"
+                                            id="removeSourceTitle{{ source.pk }}"
+                                        >
+                                            Remove research source?
+                                        </h5>
+                                        <button
+                                            type="button"
+                                            class="btn-close"
+                                            data-bs-dismiss="modal"
+                                            aria-label="Close"
+                                        ></button>
+                                    </div>
+
+                                    <div class="modal-body">
+                                        Remove <strong>{{ source.name }}</strong> from future
+                                        research runs? Existing evidence will be preserved.
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button
+                                            type="button"
+                                            class="btn btn-outline-secondary"
+                                            data-bs-dismiss="modal"
+                                        >
+                                            Cancel
+                                        </button>
+
+                                        <form
+                                            method="post"
+                                            action="{% url 'research:source_remove' session.pk source.pk %}"
+                                        >
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-primary">
+                                                Remove source
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
 
                 {% endfor %}
@@ -557,9 +620,8 @@
                 {% for ranked in what_matters_now %}
 
                     {% with finding=ranked.finding %}
-
-                        <div class="accordion-item research-key-finding">
-
+                    <div class="accordion-item research-key-finding">
+                        
                             <h2
                                 class="accordion-header"
                                 id="whatMattersHeading{{ forloop.counter }}"
@@ -572,7 +634,7 @@
                                     data-bs-target="#whatMatters{{ forloop.counter }}"
                                     aria-expanded="false"
                                     aria-controls="whatMatters{{ forloop.counter }}"
-                                >
+                                    >
 
                                     <div class="research-key-finding-number">
                                         {{ forloop.counter|stringformat:"02d" }}
@@ -582,7 +644,7 @@
                                     <div class="research-key-finding-content">
 
                                         <div class="research-finding-meta">
-
+                                            
                                             <span>
                                                 {{ finding.get_finding_type_display }}
                                             </span>
@@ -597,14 +659,14 @@
                                             </span>
 
                                             {% if finding.run %}
-                                                <span>
-                                                    Run #{{ finding.run.pk }}
+                                            <span>
+                                                Run #{{ finding.run.pk }}
                                                 </span>
-                                            {% endif %}
+                                                {% endif %}
 
                                         </div>
-
-
+                                        
+                                        
                                         {% if finding.topic %}
 
                                             <h3>
@@ -612,7 +674,7 @@
                                             </h3>
 
                                         {% endif %}
-
+                                        
 
                                         <p>
                                             {{ finding.finding }}
@@ -625,15 +687,15 @@
                                                 Priority
                                                 {{ ranked.score|floatformat:0 }}%
                                             </span>
-
+                                            
                                         </div>
 
                                     </div>
-
+                                    
                                 </button>
-
+                                
                             </h2>
-
+                            
 
                             <div
                                 id="whatMatters{{ forloop.counter }}"
@@ -641,9 +703,9 @@
                                 aria-labelledby="whatMattersHeading{{ forloop.counter }}"
                                 data-bs-parent="#whatMattersNowAccordion"
                             >
-
+                            
                                 <div class="accordion-body">
-
+                                    
                                     <!-- WHY IT MATTERS -->
 
                                     {% if finding.why_it_matters %}
@@ -661,10 +723,10 @@
                                         </div>
 
                                     {% endif %}
-
+                                    
 
                                     <!-- AUDIENCE -->
-
+                                    
                                     {% if finding.audience %}
 
                                         <div class="research-finding-detail">
@@ -681,7 +743,7 @@
 
                                     {% endif %}
 
-
+                                    
                                     <!-- SCORE BREAKDOWN -->
 
                                     <div class="research-finding-detail">
@@ -693,7 +755,7 @@
                                         <div class="row g-2 mt-1">
 
                                             <div class="col-md-4">
-
+                                                
                                                 <div class="p-3 bg-light rounded">
 
                                                     <small class="text-muted d-block">
@@ -708,7 +770,7 @@
 
                                             </div>
 
-
+                                            
                                             <div class="col-md-4">
 
                                                 <div class="p-3 bg-light rounded">
@@ -719,9 +781,9 @@
 
                                                     <strong>
                                                         {{ ranked.confidence_score|floatformat:0 }}%
-                                                    </strong>
+                                                        </strong>
 
-                                                </div>
+                                                    </div>
 
                                             </div>
 
@@ -736,10 +798,10 @@
 
                                                     <strong>
                                                         {{ ranked.recency_score|floatformat:0 }}%
-                                                    </strong>
+                                                        </strong>
 
                                                 </div>
-
+                                                
                                             </div>
 
 
@@ -754,7 +816,7 @@
                                                     <strong>
                                                         {{ ranked.repetition_score|floatformat:0 }}%
                                                     </strong>
-
+                                                    
                                                 </div>
 
                                             </div>
@@ -763,14 +825,14 @@
                                             <div class="col-md-4">
 
                                                 <div class="p-3 bg-light rounded">
-
+                                                    
                                                     <small class="text-muted d-block">
                                                         Actionability
                                                     </small>
 
                                                     <strong>
                                                         {{ ranked.actionability_score|floatformat:0 }}%
-                                                    </strong>
+                                                        </strong>
 
                                                 </div>
 
@@ -784,13 +846,13 @@
                                     <!-- LIMITATIONS -->
 
                                     {% if finding.limitations %}
-
+                                    
                                         <div class="research-finding-detail">
 
                                             <span class="research-finding-detail-label">
                                                 Limitations
                                             </span>
-
+                                            
                                             <p>
                                                 {{ finding.limitations }}
                                             </p>
@@ -799,33 +861,33 @@
 
                                     {% endif %}
 
-
+                                    
                                     <!-- RELATED QUESTIONS -->
 
                                     {% if finding.related_questions %}
 
-                                        <div class="research-finding-detail">
+                                    <div class="research-finding-detail">
 
                                             <span class="research-finding-detail-label">
                                                 Related questions
                                             </span>
 
                                             <ul class="research-finding-list">
-
+                                                
                                                 {% for question in finding.related_questions %}
 
-                                                    <li>
+                                                <li>
                                                         {{ question }}
                                                     </li>
-
-                                                {% endfor %}
+                                                    
+                                                    {% endfor %}
 
                                             </ul>
 
                                         </div>
 
                                     {% endif %}
-
+                                    
 
                                     <!-- CONTENT OPPORTUNITIES -->
 
@@ -848,7 +910,7 @@
                                                 {% endfor %}
 
                                             </ul>
-
+                                            
                                         </div>
 
                                     {% endif %}
@@ -857,31 +919,33 @@
                                     <!-- EVIDENCE -->
 
                                     {% if finding.evidence %}
-
+                                    
                                         <div class="research-finding-detail">
 
                                             <span class="research-finding-detail-label">
                                                 Evidence
                                             </span>
-
+                                            
                                             <p>
                                                 {{ finding.evidence }}
                                             </p>
 
                                         </div>
-
+                                        
                                     {% endif %}
 
-                                </div>
+                                    {% include "research/includes/finding_evidence.html" with finding=finding %}
 
+                                </div>
+                                
                             </div>
 
                         </div>
-
+                        
                     {% endwith %}
 
                 {% endfor %}
-
+                
             </div>
 
         </div>
@@ -890,7 +954,7 @@
         <!-- =================================================
              ALL REMAINING FINDINGS
         ================================================== -->
-
+        
         {% if all_findings %}
 
             <div class="research-all-findings mt-4">
@@ -935,10 +999,10 @@
                     >
 
                         {% for finding in all_findings %}
+                        
+                        <div class="accordion-item research-secondary-finding">
 
-                            <div class="accordion-item research-secondary-finding">
-
-                                <h2
+                            <h2
                                     class="accordion-header"
                                     id="secondaryFindingHeading{{ forloop.counter }}"
                                 >
@@ -951,15 +1015,15 @@
                                         aria-expanded="false"
                                         aria-controls="secondaryFinding{{ forloop.counter }}"
                                     >
-
+                                    
                                         <div>
-
+                                            
                                             <div class="research-finding-meta">
-
+                                                
                                                 <span>
                                                     {{ finding.get_finding_type_display }}
                                                 </span>
-
+                                                
                                                 <span>
                                                     {{ finding.get_confidence_display }}
                                                     confidence
@@ -970,9 +1034,13 @@
                                                     {{ finding.importance }}/10
                                                 </span>
 
+                                                {% if finding.run %}
+                                                    <span>Run #{{ finding.run.pk }}</span>
+                                                {% endif %}
+                                                
                                             </div>
 
-
+                                            
                                             {% if finding.topic %}
 
                                                 <strong>
@@ -980,7 +1048,7 @@
                                                 </strong>
 
                                             {% else %}
-
+                                            
                                                 <strong>
                                                     Research finding
                                                 </strong>
@@ -990,7 +1058,7 @@
                                         </div>
 
                                     </button>
-
+                                    
                                 </h2>
 
 
@@ -1011,25 +1079,25 @@
                                         {% if finding.why_it_matters %}
 
                                             <div class="research-finding-detail">
-
+                                                
                                                 <span class="research-finding-detail-label">
                                                     Why it matters
                                                 </span>
-
+                                                
                                                 <p>
                                                     {{ finding.why_it_matters }}
                                                 </p>
-
+                                                
                                             </div>
 
                                         {% endif %}
-
+                                        
 
                                         {% if finding.audience %}
 
-                                            <div class="research-finding-detail">
+                                        <div class="research-finding-detail">
 
-                                                <span class="research-finding-detail-label">
+                                            <span class="research-finding-detail-label">
                                                     Audience
                                                 </span>
 
@@ -1041,11 +1109,11 @@
 
                                         {% endif %}
 
-
+                                        
                                         {% if finding.limitations %}
 
                                             <div class="research-finding-detail">
-
+                                                
                                                 <span class="research-finding-detail-label">
                                                     Limitations
                                                 </span>
@@ -1053,10 +1121,10 @@
                                                 <p>
                                                     {{ finding.limitations }}
                                                 </p>
-
+                                                
                                             </div>
 
-                                        {% endif %}
+                                            {% endif %}
 
 
                                         {% if finding.related_questions %}
@@ -1066,26 +1134,26 @@
                                                 <span class="research-finding-detail-label">
                                                     Related questions
                                                 </span>
-
+                                                
                                                 <ul class="research-finding-list">
 
                                                     {% for question in finding.related_questions %}
 
-                                                        <li>
+                                                    <li>
                                                             {{ question }}
                                                         </li>
 
                                                     {% endfor %}
-
+                                                    
                                                 </ul>
-
+                                                
                                             </div>
 
                                         {% endif %}
 
 
                                         {% if finding.content_opportunities %}
-
+                                        
                                             <div class="research-finding-detail">
 
                                                 <span class="research-finding-detail-label">
@@ -1096,11 +1164,11 @@
 
                                                     {% for opportunity in finding.content_opportunities %}
 
-                                                        <li>
+                                                    <li>
                                                             {{ opportunity }}
                                                         </li>
 
-                                                    {% endfor %}
+                                                        {% endfor %}
 
                                                 </ul>
 
@@ -1108,38 +1176,40 @@
 
                                         {% endif %}
 
-
+                                        
                                         {% if finding.evidence %}
 
                                             <div class="research-finding-detail">
-
+                                                
                                                 <span class="research-finding-detail-label">
                                                     Evidence
                                                 </span>
-
+                                                
                                                 <p>
                                                     {{ finding.evidence }}
                                                 </p>
 
                                             </div>
-
+                                            
                                         {% endif %}
+
+                                        {% include "research/includes/finding_evidence.html" with finding=finding %}
 
                                     </div>
 
                                 </div>
-
+                                
                             </div>
-
+                            
                         {% endfor %}
-
+                        
                     </div>
 
                 </div>
 
             </div>
 
-        {% endif %}
+            {% endif %}
 
 
     {% elif key_findings %}
@@ -1158,94 +1228,100 @@
             >
 
                 {% for finding in key_findings %}
-
-                    <div class="accordion-item research-key-finding">
-
+                
+                <div class="accordion-item research-key-finding">
+                    
                         <h2
                             class="accordion-header"
                             id="majorFindingHeading{{ forloop.counter }}"
                         >
-
+                        
                             <button
-                                class="accordion-button collapsed"
-                                type="button"
+                            class="accordion-button collapsed"
+                            type="button"
                                 data-bs-toggle="collapse"
                                 data-bs-target="#majorFinding{{ forloop.counter }}"
                                 aria-expanded="false"
                                 aria-controls="majorFinding{{ forloop.counter }}"
-                            >
+                                >
 
                                 <div class="research-key-finding-number">
                                     {{ forloop.counter|stringformat:"02d" }}
                                 </div>
-
+                                
 
                                 <div class="research-key-finding-content">
-
+                                    
                                     <div class="research-finding-meta">
-
+                                        
                                         <span>
                                             {{ finding.get_finding_type_display }}
                                         </span>
-
+                                        
                                         <span>
                                             {{ finding.get_confidence_display }}
                                             confidence
                                         </span>
+
+                                        <span>Importance {{ finding.importance }}/10</span>
+
+                                        {% if finding.run %}
+                                            <span>Run #{{ finding.run.pk }}</span>
+                                        {% endif %}
 
                                     </div>
 
 
                                     {% if finding.topic %}
 
-                                        <h3>
+                                    <h3>
                                             {{ finding.topic }}
                                         </h3>
 
-                                    {% endif %}
+                                        {% endif %}
 
 
-                                    <p>
+                                        <p>
                                         {{ finding.finding }}
                                     </p>
 
                                 </div>
 
                             </button>
-
+                            
                         </h2>
-
+                        
 
                         <div
                             id="majorFinding{{ forloop.counter }}"
                             class="accordion-collapse collapse"
                             aria-labelledby="majorFindingHeading{{ forloop.counter }}"
                             data-bs-parent="#majorFindingsAccordion"
-                        >
+                            >
 
                             <div class="accordion-body">
-
+                                
                                 {% if finding.why_it_matters %}
+                                
+                                <div class="research-finding-detail">
 
-                                    <div class="research-finding-detail">
-
-                                        <span class="research-finding-detail-label">
+                                    <span class="research-finding-detail-label">
                                             Why it matters
                                         </span>
 
                                         <p>
                                             {{ finding.why_it_matters }}
                                         </p>
-
+                                        
                                     </div>
-
+                                    
                                 {% endif %}
-
+                                
 
                                 {% if finding.audience %}
 
                                     <div class="research-finding-detail">
-
+                                        
                                         <span class="research-finding-detail-label">
                                             Relevant audience
                                         </span>
@@ -1255,12 +1331,12 @@
                                         </p>
 
                                     </div>
-
+                                    
                                 {% endif %}
 
 
                                 {% if finding.limitations %}
-
+                                
                                     <div class="research-finding-detail">
 
                                         <span class="research-finding-detail-label">
@@ -1316,17 +1392,17 @@
                                                 <li>
                                                     {{ opportunity }}
                                                 </li>
-
+                                                
                                             {% endfor %}
-
+                                            
                                         </ul>
 
                                     </div>
 
-                                {% endif %}
+                                    {% endif %}
 
 
-                                {% if finding.evidence %}
+                                    {% if finding.evidence %}
 
                                     <div class="research-finding-detail">
 
@@ -1339,8 +1415,10 @@
                                         </p>
 
                                     </div>
-
+                                    
                                 {% endif %}
+
+                                {% include "research/includes/finding_evidence.html" with finding=finding %}
 
                             </div>
 
@@ -1509,15 +1587,15 @@
                 id="researchEvidenceAccordion"
             >
 
+                
                 {% for item in items %}
 
-                    <div class="accordion-item research-evidence-card">
+                    <div class="accordion-item research-evidence-card{% if forloop.counter > 5 %} research-evidence-hidden d-none{% endif %}">
 
                         <h2
                             class="accordion-header"
                             id="researchEvidenceHeading{{ forloop.counter }}"
                         >
-
                             <button
                                 class="accordion-button collapsed research-evidence-button"
                                 type="button"
@@ -1526,36 +1604,25 @@
                                 aria-expanded="false"
                                 aria-controls="researchEvidenceCollapse{{ forloop.counter }}"
                             >
-
                                 <div class="research-evidence-main">
-
                                     <div class="research-evidence-meta">
-
                                         <span class="research-evidence-source">
                                             {{ item.source.get_source_type_display }}
                                         </span>
 
                                         {% if item.source.name %}
-
                                             <span class="research-evidence-source-name">
                                                 {{ item.source.name }}
                                             </span>
-
                                         {% endif %}
-
                                     </div>
-
 
                                     <span class="research-evidence-title">
                                         {{ item.title|default:"Untitled research result" }}
                                     </span>
-
                                 </div>
-
                             </button>
-
                         </h2>
-
 
                         <div
                             id="researchEvidenceCollapse{{ forloop.counter }}"
@@ -1563,42 +1630,26 @@
                             aria-labelledby="researchEvidenceHeading{{ forloop.counter }}"
                             data-bs-parent="#researchEvidenceAccordion"
                         >
-
                             <div class="accordion-body research-evidence-body">
-
                                 {% if item.raw_content %}
-
                                     <div class="research-evidence-content">
                                         {{ item.raw_content|truncatewords:100 }}
                                     </div>
-
                                 {% else %}
-
                                     <p class="research-evidence-empty">
-                                        No extracted content is available
-                                        for this source.
+                                        No extracted content is available for this source.
                                     </p>
-
                                 {% endif %}
 
-
                                 <div class="research-evidence-footer">
-
                                     {% if item.published_at %}
-
                                         <span class="research-evidence-date">
-
                                             <i class="bi bi-calendar3"></i>
-
                                             {{ item.published_at|date:"M d, Y" }}
-
                                         </span>
-
                                     {% endif %}
 
-
                                     {% if item.url %}
-
                                         <a
                                             href="{{ item.url }}"
                                             target="_blank"
@@ -1606,21 +1657,34 @@
                                             class="research-evidence-link"
                                         >
                                             Open source
-
                                             <i class="bi bi-box-arrow-up-right"></i>
                                         </a>
-
                                     {% endif %}
-
                                 </div>
-
                             </div>
-
                         </div>
-
                     </div>
 
+                {% empty %}
+                    <div class="research-evidence-empty">
+                        No evidence has been collected yet.
+                    </div>
                 {% endfor %}
+
+                {% if items|length > 5 %}
+                    <div class="research-evidence-actions">
+                        <button
+                            type="button"
+                            class="btn btn-sm btn-outline-secondary"
+                            id="researchEvidenceToggle"
+                            aria-expanded="false"
+                        >
+                            Show more evidence
+                            <i class="bi bi-chevron-down ms-1"></i>
+                        </button>
+                    </div>
+                {% endif %}
+
 
             </div>
 
@@ -1679,6 +1743,30 @@ document.addEventListener("DOMContentLoaded", function () {
         "analyzing",
         "building",
     ];
+    
+    const evidenceToggle = document.getElementById("researchEvidenceToggle");
+
+    if (evidenceToggle) {
+        evidenceToggle.addEventListener("click", function () {
+            const hiddenItems = document.querySelectorAll(
+                "#researchEvidenceAccordion .research-evidence-hidden"
+            );
+
+            const isExpanded =
+                this.getAttribute("aria-expanded") === "true";
+
+            hiddenItems.forEach((item) => {
+                item.classList.toggle("d-none", isExpanded);
+            });
+
+            this.setAttribute("aria-expanded", String(!isExpanded));
+
+            this.innerHTML = isExpanded
+                ? 'Show more evidence <i class="bi bi-chevron-down ms-1"></i>'
+                : 'Show less evidence <i class="bi bi-chevron-up ms-1"></i>';
+        });
+    }
+
 
 
     function updateProgress(data) {
@@ -1904,7 +1992,7 @@ document.addEventListener("DOMContentLoaded", function () {
         checkStatus();
 
     {% endif %}
-
+    
 
     /*
      * When the user starts a new research run,

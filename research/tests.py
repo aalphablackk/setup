@@ -3,13 +3,14 @@ from unittest.mock import patch
 
 from django.contrib.auth import get_user_model
 from django.test import TestCase, override_settings
-
+from research.services.analyzer import ResearchAnalyzer
 from research.models import (
     ResearchItem,
     ResearchRun,
     ResearchRunItem,
     ResearchSession,
     ResearchSource,
+    ResearchFinding
 )
 from research.services.run import ResearchRunService
 from research.services.web import WebResearchService
@@ -323,3 +324,177 @@ class ResearchRunServiceTests(TestCase):
         self.assertIn(ResearchSession.Depth.STANDARD, valid_depths)
         self.assertIn(ResearchSession.Depth.DEEP, valid_depths)
         self.assertNotIn("ultra", valid_depths)
+
+    @patch("research.services.run.ResearchAnalyzer")
+    @patch("research.services.run.WebResearchService")
+    def test_finding_links_to_one_supporting_source(
+        self, web_service_class, analyzer_class
+    ):
+        source = ResearchSource.objects.create(
+            session=self.session,
+            source_type="web",
+            name="Test source",
+            url="https://example.com/source-one",
+        )
+
+        item = ResearchItem.objects.create(
+            source=source,
+            title="Source one",
+            url="https://example.com/source-one",
+            raw_content="Evidence about audience problems.",
+        )
+
+        web_service_class.return_value.collect_for_session.return_value = [
+            item
+        ]
+
+        analyzer_class.return_value.analyze.return_value = {
+            "summary": "Test summary",
+            "findings": [
+                {
+                    "finding_type": "problem",
+                    "topic": "Audience problems",
+                    "finding": "The audience struggles with repetitive tasks.",
+                    "audience": "Small business owners",
+                    "why_it_matters": "Automation may save time.",
+                    "limitations": "",
+                    "related_questions": [],
+                    "content_opportunities": [],
+                    "evidence": "Source one supports this finding.",
+                    "evidence_item_ids": [item.pk],
+                    "confidence": "high",
+                    "importance": 8,
+                }
+            ],
+        }
+
+        run = ResearchRunService().execute(self.session)
+        finding = ResearchFinding.objects.get(run=run)
+
+        self.assertQuerySetEqual(
+            finding.supporting_items.order_by("pk"),
+            [item],
+            transform=lambda obj: obj,
+        )
+        self.assertEqual(finding.research_item, item)
+
+    @patch("research.services.run.ResearchAnalyzer")
+    @patch("research.services.run.WebResearchService")
+    def test_finding_links_to_multiple_supporting_sources(
+        self, web_service_class, analyzer_class
+    ):
+        source_one = ResearchSource.objects.create(
+            session=self.session,
+            source_type="web",
+            name="Source one",
+            url="https://example.com/source-one",
+        )
+        source_two = ResearchSource.objects.create(
+            session=self.session,
+            source_type="web",
+            name="Source two",
+            url="https://example.com/source-two",
+        )
+
+        item_one = ResearchItem.objects.create(
+            source=source_one,
+            title="Source one",
+            url="https://example.com/source-one",
+            raw_content="First supporting evidence.",
+        )
+        item_two = ResearchItem.objects.create(
+            source=source_two,
+            title="Source two",
+            url="https://example.com/source-two",
+            raw_content="Second supporting evidence.",
+        )
+
+        web_service_class.return_value.collect_for_session.return_value = [
+            item_one,
+            item_two,
+        ]
+
+        analyzer_class.return_value.analyze.return_value = {
+            "summary": "Test summary",
+            "findings": [
+                {
+                    "finding_type": "trend",
+                    "topic": "Repeated pattern",
+                    "finding": "Both sources describe the same pattern.",
+                    "audience": "Small business owners",
+                    "why_it_matters": "The pattern may deserve attention.",
+                    "limitations": "",
+                    "related_questions": [],
+                    "content_opportunities": [],
+                    "evidence": "Both sources support this finding.",
+                    "evidence_item_ids": [item_one.pk, item_two.pk],
+                    "confidence": "high",
+                    "importance": 8,
+                }
+            ],
+        }
+
+        run = ResearchRunService().execute(self.session)
+        finding = ResearchFinding.objects.get(run=run)
+
+        self.assertSetEqual(
+            set(finding.supporting_items.values_list("pk", flat=True)),
+            {item_one.pk, item_two.pk},
+        )
+        self.assertEqual(finding.research_item, item_one)
+
+class ResearchAnalyzerValidationTests(TestCase):
+    def setUp(self):
+        self.analyzer = ResearchAnalyzer()
+
+    def valid_finding(self, **overrides):
+        finding = {
+            "finding_type": "problem",
+            "topic": "Time management",
+            "finding": "The audience struggles with time management.",
+            "audience": "Small business owners",
+            "why_it_matters": "This affects productivity.",
+            "limitations": "",
+            "related_questions": [],
+            "content_opportunities": [],
+            "evidence": "Test evidence.",
+            "evidence_item_ids": [1],
+            "confidence": "high",
+            "importance": 8,
+        }
+        finding.update(overrides)
+        return finding
+
+    def test_rejects_evidence_id_not_supplied(self):
+        result = {
+            "summary": "Test summary",
+            "findings": [
+                self.valid_finding(evidence_item_ids=[999])
+            ],
+        }
+
+        with self.assertRaisesMessage(
+            ValueError,
+            "A finding references evidence that was not supplied.",
+        ):
+            self.analyzer._validate_result(
+                result,
+                finding_limit=12,
+                allowed_item_ids={1, 2},
+            )
+
+    def test_rejects_malformed_finding(self):
+        result = {
+            "summary": "Test summary",
+            "findings": ["not a finding dictionary"],
+        }
+
+        with self.assertRaisesMessage(
+            ValueError,
+            "Invalid finding returned by AI.",
+        ):
+            self.analyzer._validate_result(
+                result,
+                finding_limit=12,
+                allowed_item_ids={1, 2},
+            )
