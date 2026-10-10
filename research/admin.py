@@ -116,6 +116,7 @@ class ResearchRunAdmin(admin.ModelAdmin):
     list_display = (
         "id",
         "session",
+        "depth",
         "status",
         "search_count",
         "result_count",
@@ -123,11 +124,15 @@ class ResearchRunAdmin(admin.ModelAdmin):
         "completed_at",
     )
 
-    list_filter = ("status",)
+    list_filter = (
+        "depth",
+        "status",
+        "created_at",
+    )
 
     search_fields = (
         "session__title",
-        "error_message",
+        "session__research_brief",
     )
 
     readonly_fields = (

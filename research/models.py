@@ -218,20 +218,6 @@ class ResearchFinding(models.Model):
         choices=Confidence.choices,
         default=Confidence.MEDIUM,
     )
-
-    audience = models.TextField(
-        blank=True,
-    )
-
-    evidence = models.TextField(
-        blank=True,
-    )
-
-    confidence = models.CharField(
-        max_length=10,
-        choices=Confidence.choices,
-        default=Confidence.MEDIUM,
-    )
     run = models.ForeignKey(
         "ResearchRun",
         on_delete=models.CASCADE,
@@ -293,6 +279,13 @@ class ResearchRun(models.Model):
         ResearchSession,
         on_delete=models.CASCADE,
         related_name="runs",
+    )
+    depth = models.CharField(
+        max_length=20,
+        choices=ResearchSession.Depth.choices,
+        null=True,
+        blank=True,
+        help_text="Research depth used for this run.",
     )
 
     status = models.CharField(

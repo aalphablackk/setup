@@ -235,6 +235,12 @@ def research_run(request, pk):
 
     if session.status == ResearchSession.Status.RESEARCHING:
         return redirect("research:detail", pk=session.pk)
+    
+    posted_depth = request.POST.get("depth")
+
+    if posted_depth in ResearchSession.Depth.values:
+        session.depth = posted_depth
+        session.save(update_fields=["depth", "updated_at"])
 
     def run_research():
         try:

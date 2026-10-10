@@ -21,6 +21,7 @@ class ResearchRunService:
 
         run = ResearchRun.objects.create(
             session=session,
+            depth=session.depth,
             status=ResearchRun.Status.RUNNING,
             stage=ResearchRun.Stage.PLANNING,
             stage_message="Planning your research...",
